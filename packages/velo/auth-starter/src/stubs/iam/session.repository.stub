@@ -1,0 +1,44 @@
+import type {
+  ISessionRepository,
+  Session,
+  CreateSessionData,
+} from '@lumiarq/framework/auth';
+import { randomUUID } from 'node:crypto';
+
+/**
+ * In-memory SessionRepository for the IAM bounded context.
+ * Replace with a real database adapter when wiring persistent storage.
+ * Session tokens are stored as SHA-256 hash — never raw.
+ */
+export class SessionRepository implements ISessionRepository {
+  private readonly store = new Map<string, Session>();
+
+  async create(data: CreateSessionData): Promise<Session> {
+    const session: Session = {
+      id:        randomUUID(),
+      userId:    data.userId,
+      tokenHash: data.tokenHash,
+      expiresAt: data.expiresAt,
+      createdAt: new Date(),
+    };
+    this.store.set(session.id, session);
+    return session;
+  }
+
+  async findByToken(tokenHash: string): Promise<Session | null> {
+    for (const session of this.store.values()) {
+      if (session.tokenHash === tokenHash) return session;
+    }
+    return null;
+  }
+
+  async revoke(sessionId: string): Promise<void> {
+    this.store.delete(sessionId);
+  }
+
+  async revokeAllForUser(userId: string): Promise<void> {
+    for (const [id, session] of this.store.entries()) {
+      if (session.userId === userId) this.store.delete(id);
+    }
+  }
+}

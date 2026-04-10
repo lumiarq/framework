@@ -1,0 +1,9 @@
+import { defineEvent } from '@lumiarq/framework';
+import { z }           from 'zod';
+
+export const UserAccountDeleted = defineEvent({
+  name:   'user.account-deleted',
+  schema: z.object({
+    userId:         z.string().uuid(),
+  }),
+});

@@ -1,0 +1,7 @@
+import { z } from 'zod';
+
+export const DeleteAccountValidator = z.object({
+  confirmation: z.literal('DELETE MY ACCOUNT'),
+});
+
+export type DeleteAccountData = z.infer<typeof DeleteAccountValidator>;

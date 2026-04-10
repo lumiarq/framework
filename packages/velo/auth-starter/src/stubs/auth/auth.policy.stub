@@ -1,0 +1,11 @@
+import { definePolicy } from '@lumiarq/framework';
+import type { AuthUser }   from '@/modules/Auth/contracts/types/auth-user.dto';
+
+/**
+ * Auth policy — governs auth-related resources.
+ * Extend abilities as the application grows.
+ */
+export const AuthPolicy = definePolicy<AuthUser, unknown>({
+  // Example: only admins can view other users' sessions
+  viewSession: (user) => user.role === 'admin',
+});

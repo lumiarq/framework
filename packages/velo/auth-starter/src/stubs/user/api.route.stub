@@ -1,0 +1,8 @@
+import { Route } from '@lumiarq/framework';
+import { GetProfileHandler }    from '@/modules/User/http/handlers/get-profile.handler';
+import { UpdateProfileHandler } from '@/modules/User/http/handlers/update-profile.handler';
+import { DeleteAccountHandler } from '@/modules/User/http/handlers/delete-account.handler';
+
+Route.get('/api/user/profile',    GetProfileHandler,    { middleware: ['lumiarq.auth'] });
+Route.put('/api/user/profile',    UpdateProfileHandler,  { middleware: ['lumiarq.auth'] });
+Route.delete('/api/user/account', DeleteAccountHandler,  { middleware: ['lumiarq.auth'] });

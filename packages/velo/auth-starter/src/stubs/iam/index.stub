@@ -1,0 +1,28 @@
+// exports Actions, Models, Events, and Types only.
+// NEVER export tasks, repositories, handlers, or loaders from this file.
+
+export { IAMModule }             from '@/modules/IAM/module';
+
+// Actions
+export { LoginAction }           from '@/modules/IAM/logic/actions/login.action';
+export { RegisterAction }        from '@/modules/IAM/logic/actions/register.action';
+export { LogoutAction }          from '@/modules/IAM/logic/actions/logout.action';
+export { ForgotPasswordAction }  from '@/modules/IAM/logic/actions/forgot-password.action';
+export { ResetPasswordAction }   from '@/modules/IAM/logic/actions/reset-password.action';
+
+// Models
+export type { Identity }         from '@/modules/IAM/contracts/models/identity.model';
+export type { Session }          from '@/modules/IAM/contracts/models/session.model';
+export type { AuthUser }         from '@/modules/IAM/contracts/types/auth-user.dto';
+export type { JwtPayload }       from '@/modules/IAM/contracts/types/jwt-payload.types';
+
+// Validators
+export { LoginValidator }        from '@/modules/IAM/contracts/validators/login.validator';
+export type { LoginData }        from '@/modules/IAM/contracts/validators/login.validator';
+export { RegisterValidator }     from '@/modules/IAM/contracts/validators/register.validator';
+export type { RegisterData }     from '@/modules/IAM/contracts/validators/register.validator';
+
+// Events
+export { UserRegistered }        from '@/modules/IAM/events/definitions/user-registered.event';
+export { UserLoggedIn }          from '@/modules/IAM/events/definitions/user-logged-in.event';
+export { PasswordReset }         from '@/modules/IAM/events/definitions/password-reset.event';

@@ -1,0 +1,20 @@
+import { defineAction }                                       from '@lumiarq/framework';
+import { BaseResendVerificationEmailAction } from '@lumiarq/framework/auth';
+import { IdentityRepository }                from '@/modules/Auth/database/repositories/identity.repository';
+import type { BaseResendVerificationEmailInput } from '@lumiarq/framework/auth';
+
+const identityRepo = new IdentityRepository();
+
+export const ResendVerificationEmailAction = defineAction(
+  async (input: BaseResendVerificationEmailInput) => {
+    return BaseResendVerificationEmailAction(input, {
+      identityRepo,
+      async onTokenGenerated({ identityId, email, token, tokenHash }) {
+        // TODO: store tokenHash in email_verifications table and send email via mailer
+        // Example:
+        // await emailVerificationRepo.upsert({ identityId, tokenHash, expiresAt: ... });
+        // await mailer.send({ to: email, subject: 'Verify email', token });
+      },
+    });
+  },
+);

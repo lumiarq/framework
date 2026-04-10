@@ -1,0 +1,46 @@
+<template>
+  <div class="auth-page">
+    <h1>Create account</h1>
+    <div v-if="error" class="error">{{ error }}</div>
+    <form @submit.prevent="handleSubmit">
+      <label>
+        Name
+        <input v-model="name" type="text" required />
+      </label>
+      <label>
+        Email
+        <input v-model="email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input v-model="password" type="password" required />
+      </label>
+      <button type="submit">Create account</button>
+    </form>
+    <a href="/auth/login">Already have an account?</a>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const name     = ref('');
+const email    = ref('');
+const password = ref('');
+const error    = ref<string | null>(null);
+
+async function handleSubmit(): Promise<void> {
+  error.value = null;
+  const res = await fetch('/api/auth/register', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ name: name.value, email: email.value, password: password.value }),
+  });
+  if (!res.ok) {
+    const data = await res.json() as { message?: string };
+    error.value = data.message ?? 'Registration failed.';
+    return;
+  }
+  window.location.href = '/auth/verify-email';
+}
+</script>

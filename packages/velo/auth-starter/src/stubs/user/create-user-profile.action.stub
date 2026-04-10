@@ -1,0 +1,26 @@
+import { defineAction, EventBus }   from '@lumiarq/framework';
+import type { User }                from '@/modules/User/contracts/models/user.model';
+import { UserRepository }           from '@/modules/User/database/repositories/user.repository';
+import { CreateUserTask }           from '@/modules/User/logic/tasks/create-user.task';
+import { UserProfileCreated }       from '@/modules/User/events/definitions/user-profile-created.event';
+
+const userRepo = new UserRepository();
+
+export interface CreateUserProfileInput {
+  identityId:  string;
+  displayName: string;
+  avatarUrl?:  string | null;
+}
+
+export const CreateUserProfileAction = defineAction(
+  async (input: CreateUserProfileInput): Promise<User> => {
+    const user = await CreateUserTask(input, userRepo);
+
+    EventBus.emit(UserProfileCreated, {
+      userId:         user.id,
+      identityId:     user.identityId,
+    });
+
+    return user;
+  },
+);

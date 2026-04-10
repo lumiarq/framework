@@ -1,0 +1,10 @@
+import { defineHandler }   from '@lumiarq/framework';
+import { GetProfileQuery } from '@/modules/User/logic/queries/get-profile.query';
+
+export const GetProfileHandler = defineHandler(
+  async (_req: Request, ctx: { userId: string }): Promise<Response> => {
+    const user = await GetProfileQuery(ctx.userId);
+    if (!user) return Response.json({ error: 'Not found' }, { status: 404 });
+    return Response.json({ id: user.id, displayName: user.displayName, avatarUrl: user.avatarUrl });
+  },
+);

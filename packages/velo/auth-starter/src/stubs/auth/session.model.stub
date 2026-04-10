@@ -1,0 +1,2 @@
+// Re-export Session from @lumiarq/framework/auth.
+export type { Session } from '@lumiarq/framework/auth';

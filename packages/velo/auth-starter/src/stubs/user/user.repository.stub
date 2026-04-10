@@ -1,0 +1,53 @@
+import type { User } from '@/modules/User/contracts/models/user.model';
+import { randomUUID } from 'node:crypto';
+
+export interface CreateUserData {
+  identityId:  string;
+  displayName: string;
+  avatarUrl?:  string | null;
+}
+
+/**
+ * In-memory UserRepository for user profiles.
+ * Replace with a real database adapter when wiring persistent storage.
+ */
+export class UserRepository {
+  private readonly store = new Map<string, User>();
+
+  async findById(id: string): Promise<User | null> {
+    return this.store.get(id) ?? null;
+  }
+
+  async findByIdentityId(identityId: string): Promise<User | null> {
+    for (const user of this.store.values()) {
+      if (user.identityId === identityId) return user;
+    }
+    return null;
+  }
+
+  async create(data: CreateUserData): Promise<User> {
+    const user: User = {
+      id:          randomUUID(),
+      identityId:  data.identityId,
+      displayName: data.displayName,
+      avatarUrl:   data.avatarUrl ?? null,
+      createdAt:   new Date(),
+      updatedAt:   new Date(),
+    };
+    this.store.set(user.id, user);
+    return user;
+  }
+
+  async update(id: string, data: Partial<CreateUserData>): Promise<User | null> {
+    const user = this.store.get(id);
+    if (!user) return null;
+    if (data.displayName) user.displayName = data.displayName;
+    if ('avatarUrl' in data) user.avatarUrl = data.avatarUrl ?? null;
+    user.updatedAt = new Date();
+    return user;
+  }
+
+  async delete(id: string): Promise<void> {
+    this.store.delete(id);
+  }
+}

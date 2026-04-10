@@ -1,0 +1,45 @@
+{
+  "name": "@velo/core",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ core primitives \u2014 defineRoute, defineHandler, defineAction, defineTask, defineLoader, defineModule, definePolicy, defineEvent, defineConfig, EventBus, Gate, error types",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "jose": "^6.2.1",
+    "marked": "^17.0.4",
+    "marked-highlight": "^2.2.3",
+    "zod": "^3.24.1"
+  }
+}

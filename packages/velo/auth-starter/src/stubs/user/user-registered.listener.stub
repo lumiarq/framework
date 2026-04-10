@@ -1,0 +1,21 @@
+import { CreateUserProfileAction } from '@/modules/User/logic/actions/create-user-profile.action';
+import { GetProfileQuery }          from '@/modules/User/logic/queries/get-profile.query';
+
+/**
+ * Handles Auth/UserRegistered — creates a User profile for each new identity.
+ * Idempotency is checked via GetProfileQuery before delegating to the Action.
+ *
+ * Registered in bootstrap/events.ts — do not call EventBus.listen() here.
+ */
+export async function onUserRegistered(payload: {
+  identityId:     string;
+  email:          string;
+}): Promise<void> {
+  const existing = await GetProfileQuery(payload.identityId);
+  if (existing) return; // already processed — idempotency guard
+
+  await CreateUserProfileAction({
+    identityId:  payload.identityId,
+    displayName: payload.email.split('@')[0] ?? payload.email,
+  });
+}

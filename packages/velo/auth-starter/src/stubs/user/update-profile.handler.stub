@@ -1,0 +1,13 @@
+import { defineHandler, sanitizeObject } from '@lumiarq/framework';
+import { UpdateProfileValidator }        from '@/modules/User/contracts/validators/update-profile.validator';
+import { UpdateUserProfileAction }       from '@/modules/User/logic/actions/update-user-profile.action';
+
+export const UpdateProfileHandler = defineHandler(
+  async (req: Request, ctx: { userId: string }): Promise<Response> => {
+    const body  = sanitizeObject((await req.json()) as Record<string, unknown>);
+    const input = UpdateProfileValidator.parse(body);
+    const user  = await UpdateUserProfileAction(ctx.userId, input);
+    if (!user) return Response.json({ error: 'Not found' }, { status: 404 });
+    return Response.json({ id: user.id, displayName: user.displayName });
+  },
+);

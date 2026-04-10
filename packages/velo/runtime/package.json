@@ -1,0 +1,45 @@
+{
+  "name": "@velo/runtime",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ runtime \u2014 request lifecycle, loader orchestration (parallel + deduplication), middleware pipeline",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0",
+    "hono": "^4.12.7",
+    "@velo/contracts": "workspace:*",
+    "@velo/http": "workspace:*",
+    "@velo/testing": "workspace:*",
+    "@velo/context": "workspace:*",
+    "@velo/core": "workspace:*",
+    "@velo/modules": "workspace:*",
+    "@velo/security": "workspace:*"
+  }
+}

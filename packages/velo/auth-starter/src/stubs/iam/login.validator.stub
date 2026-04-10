@@ -1,0 +1,5 @@
+import { BaseLoginValidator } from '@lumiarq/framework/auth';
+export type { BaseLoginData as LoginData } from '@lumiarq/framework/auth';
+
+/** Validates login request body. Extend here to add app-specific rules. */
+export const LoginValidator = BaseLoginValidator;

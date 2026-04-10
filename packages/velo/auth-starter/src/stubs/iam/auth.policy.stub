@@ -1,0 +1,11 @@
+import { definePolicy } from '@lumiarq/framework';
+import type { AuthUser }   from '@/modules/IAM/contracts/types/auth-user.dto';
+
+/**
+ * IAM policy — governs identity and access management resources.
+ * Extend abilities as the application grows.
+ */
+export const IAMPolicy = definePolicy<AuthUser, unknown>({
+  // Example: only admins can view other identities' sessions
+  viewSession: (user) => user.role === 'admin',
+});

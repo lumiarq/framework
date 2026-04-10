@@ -1,0 +1,35 @@
+// Exports Actions, Models, Events, Validators, and Types only.
+// NEVER export tasks, repositories, handlers, or loaders from this file.
+
+export { AuthModule }                    from '@/modules/Auth/module';
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+export { LoginAction }                   from '@/modules/Auth/logic/actions/login.action';
+export { RegisterAction }                from '@/modules/Auth/logic/actions/register.action';
+export { LogoutAction }                  from '@/modules/Auth/logic/actions/logout.action';
+export { ForgotPasswordAction }          from '@/modules/Auth/logic/actions/forgot-password.action';
+export { ResetPasswordAction }           from '@/modules/Auth/logic/actions/reset-password.action';
+export { VerifyEmailAction }             from '@/modules/Auth/logic/actions/verify-email.action';
+export { ResendVerificationEmailAction } from '@/modules/Auth/logic/actions/resend-verification-email.action';
+export { ConfirmPasswordAction }         from '@/modules/Auth/logic/actions/confirm-password.action';
+
+// ── Models & Types ────────────────────────────────────────────────────────────
+export type { Identity }                 from '@/modules/Auth/contracts/models/identity.model';
+export type { Session }                  from '@/modules/Auth/contracts/models/session.model';
+export type { AuthUser }                 from '@/modules/Auth/contracts/types/auth-user.dto';
+export type { JwtPayload }               from '@/modules/Auth/contracts/types/jwt-payload.types';
+
+// ── Validators ────────────────────────────────────────────────────────────────
+export { LoginValidator }                from '@/modules/Auth/contracts/validators/login.validator';
+export type { LoginData }                from '@/modules/Auth/contracts/validators/login.validator';
+export { RegisterValidator }             from '@/modules/Auth/contracts/validators/register.validator';
+export type { RegisterData }             from '@/modules/Auth/contracts/validators/register.validator';
+export { VerifyEmailValidator }          from '@/modules/Auth/contracts/validators/verify-email.validator';
+export type { VerifyEmailData }          from '@/modules/Auth/contracts/validators/verify-email.validator';
+
+// ── Events ────────────────────────────────────────────────────────────────────
+export { UserRegistered }                from '@/modules/Auth/events/definitions/user-registered.event';
+export { UserLoggedIn }                  from '@/modules/Auth/events/definitions/user-logged-in.event';
+export { PasswordReset }                 from '@/modules/Auth/events/definitions/password-reset.event';
+export { EmailVerificationSent }         from '@/modules/Auth/events/definitions/email-verification-sent.event';
+export { EmailVerified }                 from '@/modules/Auth/events/definitions/email-verified.event';

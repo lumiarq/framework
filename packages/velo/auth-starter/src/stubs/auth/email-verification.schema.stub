@@ -1,0 +1,16 @@
+import { sql }                          from 'drizzle-orm';
+import { sqliteTable, text, integer }   from 'drizzle-orm/sqlite-core';
+import { identities }                   from './identity.schema';
+
+export const emailVerifications = sqliteTable('email_verifications', {
+  id:         text('id').primaryKey(),
+  identityId: text('identity_id').notNull()
+                .references(() => identities.id, { onDelete: 'cascade' }),
+  tokenHash:  text('token_hash').notNull().unique(),
+  expiresAt:  integer('expires_at', { mode: 'timestamp_ms' }).notNull(),
+  createdAt:  integer('created_at', { mode: 'timestamp_ms' }).notNull()
+                .default(sql`(unixepoch() * 1000)`),
+});
+
+export type EmailVerificationRow    = typeof emailVerifications.$inferSelect;
+export type NewEmailVerificationRow = typeof emailVerifications.$inferInsert;

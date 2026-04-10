@@ -1,0 +1,39 @@
+import { createSignal, onMount, Switch, Match } from 'solid-js';
+
+export default function VerifyEmailPage() {
+  const [status, setStatus] = createSignal<'pending' | 'success' | 'error'>('pending');
+
+  onMount(async () => {
+    const params = new URLSearchParams(window.location.search);
+    const token  = params.get('token') ?? '';
+    const id     = params.get('id') ?? '';
+
+    if (!token || !id) {
+      setStatus('error');
+      return;
+    }
+
+    const res = await fetch('/api/auth/verify-email', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ token, identityId: id }),
+    });
+    setStatus(res.ok ? 'success' : 'error');
+  });
+
+  return (
+    <div class="auth-page">
+      <Switch>
+        <Match when={status() === 'pending'}>
+          <p>Verifying...</p>
+        </Match>
+        <Match when={status() === 'success'}>
+          <p>Email verified! <a href="/auth/login">Sign in</a></p>
+        </Match>
+        <Match when={status() === 'error'}>
+          <p>Verification failed. <a href="/auth/resend-verification">Resend link</a></p>
+        </Match>
+      </Switch>
+    </div>
+  );
+}

@@ -1,0 +1,39 @@
+import { createSignal, Show } from 'solid-js';
+
+export default function LoginPage() {
+  const [email, setEmail]       = createSignal('');
+  const [password, setPassword] = createSignal('');
+  const [error, setError]       = createSignal<string | null>(null);
+
+  async function handleSubmit(e: SubmitEvent): Promise<void> {
+    e.preventDefault();
+    setError(null);
+    const res = await fetch('/api/auth/login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email: email(), password: password() }),
+    });
+    if (!res.ok) {
+      const data = await res.json() as { message?: string };
+      setError(data.message ?? 'Login failed.');
+      return;
+    }
+    window.location.href = '/dashboard';
+  }
+
+  return (
+    <div class="auth-page">
+      <h1>Sign in</h1>
+      <Show when={error()}>
+        <div class="error">{error()}</div>
+      </Show>
+      <form onSubmit={handleSubmit}>
+        <label>Email <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required /></label>
+        <label>Password <input type="password" value={password()} onInput={e => setPassword(e.currentTarget.value)} required /></label>
+        <button type="submit">Sign in</button>
+      </form>
+      <a href="/auth/forgot-password">Forgot password?</a>
+      <a href="/auth/register">Create account</a>
+    </div>
+  );
+}

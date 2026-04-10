@@ -1,0 +1,12 @@
+import { defineHandler, sanitizeObject } from '@lumiarq/framework';
+import { DeleteAccountValidator }        from '@/modules/User/contracts/validators/delete-account.validator';
+import { DeleteUserAccountAction }       from '@/modules/User/logic/actions/delete-user-account.action';
+
+export const DeleteAccountHandler = defineHandler(
+  async (req: Request, ctx: { userId: string }): Promise<Response> => {
+    const body = sanitizeObject((await req.json()) as Record<string, unknown>);
+    DeleteAccountValidator.parse(body); // validates confirmation phrase
+    await DeleteUserAccountAction(ctx.userId);
+    return Response.json({ ok: true });
+  },
+);

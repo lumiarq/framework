@@ -1,0 +1,21 @@
+import { defineAction, EventBus }            from '@lumiarq/framework';
+import { BaseRegisterAction, type Identity }  from '@lumiarq/framework/auth';
+import type { RegisterData }                  from '@/modules/IAM/contracts/validators/register.validator';
+import { IdentityRepository }                 from '@/modules/IAM/database/repositories/identity.repository';
+import { UserRegistered }                     from '@/modules/IAM/events/definitions/user-registered.event';
+
+// Shared with LoginAction — must be the same store instance in production.
+const identityRepo = new IdentityRepository();
+
+export const RegisterAction = defineAction(
+  async (input: RegisterData): Promise<Identity> => {
+    const identity = await BaseRegisterAction(input, { identityRepo });
+
+    EventBus.emit(UserRegistered, {
+      identityId:     identity.id,
+      email:          identity.email,
+    });
+
+    return identity;
+  },
+);

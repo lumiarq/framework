@@ -1,0 +1,8 @@
+import { z } from 'zod';
+
+export const VerifyEmailValidator = z.object({
+  token:      z.string().min(1),
+  identityId: z.string().uuid(),
+});
+
+export type VerifyEmailData = z.infer<typeof VerifyEmailValidator>;

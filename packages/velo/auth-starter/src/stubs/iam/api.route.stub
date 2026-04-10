@@ -1,0 +1,12 @@
+import { Route } from '@lumiarq/framework';
+import { LoginHandler }          from '@/modules/IAM/http/handlers/login.handler';
+import { RegisterHandler }       from '@/modules/IAM/http/handlers/register.handler';
+import { LogoutHandler }         from '@/modules/IAM/http/handlers/logout.handler';
+import { ForgotPasswordHandler } from '@/modules/IAM/http/handlers/forgot-password.handler';
+import { ResetPasswordHandler }  from '@/modules/IAM/http/handlers/reset-password.handler';
+
+Route.post('/api/iam/login',           LoginHandler);
+Route.post('/api/iam/register',        RegisterHandler);
+Route.post('/api/iam/logout',          LogoutHandler,         { middleware: ['lumiarq.auth'] });
+Route.post('/api/iam/forgot-password', ForgotPasswordHandler);
+Route.post('/api/iam/reset-password',  ResetPasswordHandler);

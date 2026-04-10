@@ -1,0 +1,12 @@
+import { defineAction }           from '@lumiarq/framework';
+import type { User }              from '@/modules/User/contracts/models/user.model';
+import type { UpdateProfileData } from '@/modules/User/contracts/validators/update-profile.validator';
+import { UserRepository }         from '@/modules/User/database/repositories/user.repository';
+import { UpdateUserTask }         from '@/modules/User/logic/tasks/update-user.task';
+
+const userRepo = new UserRepository();
+
+export const UpdateUserProfileAction = defineAction(
+  async (userId: string, input: UpdateProfileData): Promise<User | null> =>
+    UpdateUserTask(userId, input as Partial<{ displayName: string; avatarUrl: string | null }>, userRepo),
+);

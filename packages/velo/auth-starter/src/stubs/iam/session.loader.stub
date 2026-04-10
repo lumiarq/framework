@@ -1,0 +1,16 @@
+import { defineLoader } from '@lumiarq/framework';
+import { z }            from 'zod';
+
+/**
+ * Session loader — provides the current authenticated user to the renderer.
+ * TODO: implement JWT verification from Authorization header / cookie.
+ */
+export const SessionLoader = defineLoader({
+  id:     'Session',
+  schema: z.object({ token: z.string().optional() }),
+  async fetch({ input }) {
+    void input;
+    // TODO: verify JWT and return AuthUser or null
+    return { user: null };
+  },
+});

@@ -1,0 +1,20 @@
+// Exports Actions, Queries, Models, Events, and Types only.
+// NEVER export tasks, repositories, handlers, or loaders from this file.
+
+export { UserModule }               from '@/modules/User/module';
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+export { CreateUserProfileAction }  from '@/modules/User/logic/actions/create-user-profile.action';
+export { UpdateUserProfileAction }  from '@/modules/User/logic/actions/update-user-profile.action';
+export { DeleteUserAccountAction }  from '@/modules/User/logic/actions/delete-user-account.action';
+
+// ── Queries ───────────────────────────────────────────────────────────────────
+export { GetProfileQuery }          from '@/modules/User/logic/queries/get-profile.query';
+
+// ── Models & Types ────────────────────────────────────────────────────────────
+export type { User }                from '@/modules/User/contracts/models/user.model';
+export type { UserDto }             from '@/modules/User/contracts/types/user.dto';
+
+// ── Events ────────────────────────────────────────────────────────────────────
+export { UserProfileCreated }       from '@/modules/User/events/definitions/user-profile-created.event';
+export { UserAccountDeleted }       from '@/modules/User/events/definitions/user-account-deleted.event';

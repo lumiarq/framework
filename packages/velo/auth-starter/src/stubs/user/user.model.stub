@@ -1,0 +1,12 @@
+/**
+ * User profile — distinct from Identity (auth record).
+ * Identity owns credentials. User owns profile data.
+ */
+export interface User {
+  id:          string;
+  identityId:  string; // FK → Auth/Identity.id
+  displayName: string;
+  avatarUrl:   string | null;
+  createdAt:   Date;
+  updatedAt:   Date;
+}

@@ -1,0 +1,2 @@
+// TODO: define session table schema using your database adapter.
+// Fields: id, userId (FK identity), tokenHash, expiresAt, createdAt

@@ -1,0 +1,79 @@
+import { BaseRepository }      from '@lumiarq/framework/database';
+import { eq }                  from 'drizzle-orm';
+import type {
+  ISessionRepository,
+  Session,
+  CreateSessionData,
+} from '@lumiarq/framework/auth';
+import { sessions, type SessionRow } from '../schemas/session.schema';
+
+function toModel(row: SessionRow): Session {
+  return {
+    id:        row.id,
+    userId:    row.userId,
+    tokenHash: row.tokenHash,
+    expiresAt: row.expiresAt,
+    createdAt: row.createdAt,
+  };
+}
+
+export class SessionRepository
+  extends BaseRepository<Session, CreateSessionData>
+  implements ISessionRepository
+{
+  // ─── ISessionRepository ───────────────────────────────────────────────────
+
+  async create(data: CreateSessionData): Promise<Session> {
+    const [row] = await this.db
+      .insert(sessions)
+      .values({
+        id:        crypto.randomUUID(),
+        userId:    data.userId,
+        tokenHash: data.tokenHash,
+        expiresAt: data.expiresAt,
+        createdAt: new Date(),
+      })
+      .returning();
+    return toModel(row!);
+  }
+
+  async findByToken(tokenHash: string): Promise<Session | null> {
+    const [row] = await this.db
+      .select()
+      .from(sessions)
+      .where(eq(sessions.tokenHash, tokenHash))
+      .limit(1);
+    return row ? toModel(row) : null;
+  }
+
+  async revoke(sessionId: string): Promise<void> {
+    await this.db.delete(sessions).where(eq(sessions.id, sessionId));
+  }
+
+  async revokeAllForUser(userId: string): Promise<void> {
+    await this.db.delete(sessions).where(eq(sessions.userId, userId));
+  }
+
+  // ─── BaseRepository abstract implementations ───────────────────────────────
+
+  async findById(id: string): Promise<Session | null> {
+    const [row] = await this.db
+      .select()
+      .from(sessions)
+      .where(eq(sessions.id, id))
+      .limit(1);
+    return row ? toModel(row) : null;
+  }
+
+  async findAll(_opts?: { limit?: number; offset?: number }): Promise<Session[]> {
+    return [];
+  }
+
+  async update(_id: string, _data: Partial<CreateSessionData>): Promise<Session> {
+    throw new Error('SessionRepository.update is not supported.');
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.revoke(id);
+  }
+}

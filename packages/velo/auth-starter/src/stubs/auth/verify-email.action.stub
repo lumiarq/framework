@@ -1,0 +1,25 @@
+import { defineAction }                                       from '@lumiarq/framework';
+import { BaseVerifyEmailAction }                          from '@lumiarq/framework/auth';
+import type { BaseVerifyEmailInput, VerifyEmailResponse } from '@lumiarq/framework/auth';
+import { IdentityRepository }                             from '@/modules/Auth/database/repositories/identity.repository';
+
+const identityRepo = new IdentityRepository();
+
+/**
+ * Application-level email verification action.
+ * Looks up the stored tokenHash and expiresAt from the email_verifications table,
+ * then delegates to BaseVerifyEmailAction.
+ *
+ * TODO: inject EmailVerificationRepository to fetch the real record.
+ */
+export const VerifyEmailAction = defineAction(
+  async (input: BaseVerifyEmailInput): Promise<VerifyEmailResponse> => {
+    // TODO: const record = await emailVerificationRepo.findByIdentityId(input.identityId);
+    // TODO: if (!record) return { verified: false };
+    return BaseVerifyEmailAction(input, {
+      identityRepo,
+      tokenHash: '', // TODO: record.tokenHash
+      expiresAt: new Date(0), // TODO: new Date(record.expiresAt)
+    });
+  },
+);

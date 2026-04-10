@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [
+    [
+      "@velo/adapters",
+      "@velo/auth",
+      "@velo/auth-starter",
+      "@velo/build",
+      "@velo/cache",
+      "@velo/context",
+      "@velo/contracts",
+      "@velo/core",
+      "@velo/database",
+      "@velo/http",
+      "@velo/migrations",
+      "@velo/modules",
+      "@velo/query",
+      "@velo/runtime",
+      "@velo/search",
+      "@velo/security",
+      "@velo/support",
+      "@velo/testing",
+      "@velo/tinker",
+      "@velo/veil"
+    ]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

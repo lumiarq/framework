@@ -1,0 +1,136 @@
+{
+  "name": "@lumiarq/framework",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ \u2014 meta-package re-exporting all framework packages",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./database": {
+      "import": "./dist/database.js",
+      "types": "./dist/database.d.ts"
+    },
+    "./runtime": {
+      "import": "./dist/runtime.js",
+      "types": "./dist/runtime.d.ts"
+    },
+    "./build": {
+      "import": "./dist/build.js",
+      "types": "./dist/build.d.ts"
+    },
+    "./auth": {
+      "import": "./dist/auth.js",
+      "types": "./dist/auth.d.ts"
+    },
+    "./adapters": {
+      "import": "./dist/adapters.js",
+      "types": "./dist/adapters.d.ts"
+    },
+    "./adapters/node": {
+      "import": "./dist/adapters/node.js",
+      "types": "./dist/adapters/node.d.ts"
+    },
+    "./migrations": {
+      "import": "./dist/migrations.js",
+      "types": "./dist/migrations.d.ts"
+    },
+    "./env": {
+      "import": "./dist/env.js",
+      "types": "./dist/env.d.ts"
+    },
+    "./contracts": {
+      "import": "./dist/contracts.js",
+      "types": "./dist/contracts.d.ts"
+    },
+    "./context": {
+      "import": "./dist/context.js",
+      "types": "./dist/context.d.ts"
+    },
+    "./http": {
+      "import": "./dist/http.js",
+      "types": "./dist/http.d.ts"
+    },
+    "./modules": {
+      "import": "./dist/modules.js",
+      "types": "./dist/modules.d.ts"
+    },
+    "./cache": {
+      "import": "./dist/cache.js",
+      "types": "./dist/cache.d.ts"
+    },
+    "./testing": {
+      "import": "./dist/testing.js",
+      "types": "./dist/testing.d.ts"
+    },
+    "./tinker": {
+      "import": "./dist/tinker.js",
+      "types": "./dist/tinker.d.ts"
+    },
+    "./traze": {
+      "import": "./dist/traze.js",
+      "types": "./dist/traze.d.ts"
+    },
+    "./veil": {
+      "import": "./dist/veil.js",
+      "types": "./dist/veil.d.ts"
+    },
+    "./query": {
+      "import": "./dist/query.js",
+      "types": "./dist/query.d.ts"
+    },
+    "./query/react": {
+      "import": "./dist/query-react.js",
+      "types": "./dist/query-react.d.ts"
+    },
+    "./query/vue": {
+      "import": "./dist/query-vue.js",
+      "types": "./dist/query-vue.d.ts"
+    },
+    "./query/svelte": {
+      "import": "./dist/query-svelte.js",
+      "types": "./dist/query-svelte.d.ts"
+    },
+    "./query/solid": {
+      "import": "./dist/query-solid.js",
+      "types": "./dist/query-solid.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@lumiarq/lumis": "^1.0.0",
+    "@velo/contracts": "workspace:*",
+    "@velo/core": "workspace:*",
+    "@velo/runtime": "workspace:*",
+    "@velo/database": "workspace:*",
+    "@velo/migrations": "workspace:*",
+    "@velo/adapters": "workspace:*",
+    "@velo/build": "workspace:*",
+    "@velo/auth": "workspace:*",
+    "@velo/veil": "workspace:*",
+    "@velo/query": "workspace:*",
+    "@velo/http": "workspace:*",
+    "@velo/context": "workspace:*",
+    "@velo/modules": "workspace:*",
+    "@velo/cache": "workspace:*",
+    "@velo/testing": "workspace:*",
+    "@velo/tinker": "workspace:*",
+    "@traze/sdk": "workspace:^"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

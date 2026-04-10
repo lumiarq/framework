@@ -1,0 +1,45 @@
+<script lang="ts">
+  let name     = $state('');
+  let email    = $state('');
+  let password = $state('');
+  let error    = $state<string | null>(null);
+
+  async function handleSubmit(e: SubmitEvent): Promise<void> {
+    e.preventDefault();
+    error = null;
+    const res = await fetch('/api/auth/register', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name, email, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json() as { message?: string };
+      error = data.message ?? 'Registration failed.';
+      return;
+    }
+    window.location.href = '/auth/verify-email';
+  }
+</script>
+
+<div class="auth-page">
+  <h1>Create account</h1>
+  {#if error}
+    <div class="error">{error}</div>
+  {/if}
+  <form onsubmit={handleSubmit}>
+    <label>
+      Name
+      <input type="text" bind:value={name} required />
+    </label>
+    <label>
+      Email
+      <input type="email" bind:value={email} required />
+    </label>
+    <label>
+      Password
+      <input type="password" bind:value={password} required />
+    </label>
+    <button type="submit">Create account</button>
+  </form>
+  <a href="/auth/login">Already have an account?</a>
+</div>

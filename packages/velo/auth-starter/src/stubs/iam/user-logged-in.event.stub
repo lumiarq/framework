@@ -1,0 +1,10 @@
+import { defineEvent } from '@lumiarq/framework';
+import { z }           from 'zod';
+
+export const UserLoggedIn = defineEvent({
+  name:   'iam.user-logged-in',
+  schema: z.object({
+    identityId:     z.string().uuid(),
+    sessionId:      z.string().uuid(),
+  }),
+});

@@ -1,0 +1,14 @@
+import type { Hono } from 'hono';
+
+/**
+ * Returns a Cloudflare Workers-compatible export object from a Hono app.
+ * Assign the return value to `export default` in your Worker entry point.
+ *
+ * @example
+ * // entrypoints/worker.ts
+ * import { app } from '@/bootstrap/app'
+ * export default buildCloudflareAdapter(app)
+ */
+export function buildCloudflareAdapter(app: Hono): { fetch: typeof app.fetch } {
+  return { fetch: app.fetch.bind(app) };
+}

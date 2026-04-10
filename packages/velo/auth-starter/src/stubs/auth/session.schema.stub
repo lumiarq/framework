@@ -1,0 +1,16 @@
+import { sql }                          from 'drizzle-orm';
+import { sqliteTable, text, integer }   from 'drizzle-orm/sqlite-core';
+import { identities }                   from './identity.schema';
+
+export const sessions = sqliteTable('sessions', {
+  id:        text('id').primaryKey(),
+  userId:    text('user_id').notNull()
+               .references(() => identities.id, { onDelete: 'cascade' }),
+  tokenHash: text('token_hash').notNull().unique(),
+  expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull()
+               .default(sql`(unixepoch() * 1000)`),
+});
+
+export type SessionRow    = typeof sessions.$inferSelect;
+export type NewSessionRow = typeof sessions.$inferInsert;

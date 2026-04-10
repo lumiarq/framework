@@ -1,0 +1,8 @@
+import { defineTask } from '@lumiarq/framework';
+import type { User }   from '@/modules/User/contracts/models/user.model';
+import type { UserRepository } from '@/modules/User/database/repositories/user.repository';
+
+export const UpdateUserTask = defineTask(
+  async (id: string, data: Partial<{ displayName: string; avatarUrl: string | null }>, repo: UserRepository): Promise<User | null> =>
+    repo.update(id, data),
+);

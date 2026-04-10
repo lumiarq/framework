@@ -1,0 +1,9 @@
+import { defineHandler } from '@lumiarq/framework';
+import { LogoutAction }  from '@/modules/IAM/logic/actions/logout.action';
+
+export const LogoutHandler = defineHandler(
+  async (req: Request, ctx: { sessionId: string }): Promise<Response> => {
+    await LogoutAction({ sessionId: ctx.sessionId });
+    return Response.json({ ok: true });
+  },
+);

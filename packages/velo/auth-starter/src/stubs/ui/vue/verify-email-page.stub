@@ -1,0 +1,31 @@
+<template>
+  <div class="auth-page">
+    <p v-if="status === 'pending'">Verifying...</p>
+    <p v-else-if="status === 'success'">Email verified! <a href="/auth/login">Sign in</a></p>
+    <p v-else>Verification failed. <a href="/auth/resend-verification">Resend link</a></p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+const status = ref<'pending' | 'success' | 'error'>('pending');
+
+onMounted(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token') ?? '';
+  const id     = params.get('id') ?? '';
+
+  if (!token || !id) {
+    status.value = 'error';
+    return;
+  }
+
+  const res = await fetch('/api/auth/verify-email', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ token, identityId: id }),
+  });
+  status.value = res.ok ? 'success' : 'error';
+});
+</script>

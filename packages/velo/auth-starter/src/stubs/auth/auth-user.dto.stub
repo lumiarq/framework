@@ -1,0 +1,10 @@
+/**
+ * The authenticated user shape exposed to the rest of the application.
+ * Credential fields (hashes, raw secrets) are NEVER included here.
+ */
+export interface AuthUser {
+  id:        string;
+  email:     string;
+  role:      string;
+  sessionId: string;
+}

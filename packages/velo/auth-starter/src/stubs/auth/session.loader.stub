@@ -1,0 +1,42 @@
+import { defineLoader }         from '@lumiarq/framework';
+import { VerifyJwtTask }        from '@lumiarq/framework/auth';
+import type { AuthUser }        from '@/modules/Auth/contracts/types/auth-user.dto';
+import type { JwtPayload }      from '@/modules/Auth/contracts/types/jwt-payload.types';
+import { env }                  from '@/bootstrap/env';
+import { z }                    from 'zod';
+
+/**
+ * Session loader — verifies the JWT from the Authorization header and returns
+ * the authenticated user for the renderer. Returns `{ user: null }` when the
+ * token is absent, expired, or invalid — never throws.
+ *
+ * The token string is extracted by the runtime pipeline and passed as `input.token`.
+ * Routers typically read it from the `Authorization: Bearer <token>` header.
+ */
+export const SessionLoader = defineLoader({
+  id:     'Session',
+  schema: z.object({ token: z.string().optional() }),
+
+  async fetch({ input }): Promise<{ user: AuthUser | null }> {
+    if (!input.token) return { user: null };
+
+    try {
+      const claims = await VerifyJwtTask({
+        token:     input.token,
+        publicKey: env.JWT_PUBLIC_KEY,
+      }) as JwtPayload;
+
+      const user: AuthUser = {
+        id:        claims.sub,
+        email:     claims.email,
+        role:      claims.role,
+        sessionId: claims.sessionId,
+      };
+
+      return { user };
+    } catch {
+      // Token is expired, malformed, or signed with the wrong key
+      return { user: null };
+    }
+  },
+});

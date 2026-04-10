@@ -1,0 +1,40 @@
+import { createSignal, Show } from 'solid-js';
+
+export default function RegisterPage() {
+  const [name, setName]         = createSignal('');
+  const [email, setEmail]       = createSignal('');
+  const [password, setPassword] = createSignal('');
+  const [error, setError]       = createSignal<string | null>(null);
+
+  async function handleSubmit(e: SubmitEvent): Promise<void> {
+    e.preventDefault();
+    setError(null);
+    const res = await fetch('/api/auth/register', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name: name(), email: email(), password: password() }),
+    });
+    if (!res.ok) {
+      const data = await res.json() as { message?: string };
+      setError(data.message ?? 'Registration failed.');
+      return;
+    }
+    window.location.href = '/auth/verify-email';
+  }
+
+  return (
+    <div class="auth-page">
+      <h1>Create account</h1>
+      <Show when={error()}>
+        <div class="error">{error()}</div>
+      </Show>
+      <form onSubmit={handleSubmit}>
+        <label>Name <input type="text" value={name()} onInput={e => setName(e.currentTarget.value)} required /></label>
+        <label>Email <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required /></label>
+        <label>Password <input type="password" value={password()} onInput={e => setPassword(e.currentTarget.value)} required /></label>
+        <button type="submit">Create account</button>
+      </form>
+      <a href="/auth/login">Already have an account?</a>
+    </div>
+  );
+}

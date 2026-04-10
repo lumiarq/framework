@@ -1,0 +1,33 @@
+<script lang="ts">
+  let status = $state<'pending' | 'success' | 'error'>('pending');
+
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token') ?? '';
+  const id     = params.get('id') ?? '';
+
+  async function verify(): Promise<void> {
+    if (!token || !id) {
+      status = 'error';
+      return;
+    }
+    const res = await fetch('/api/auth/verify-email', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ token, identityId: id }),
+    });
+    status = res.ok ? 'success' : 'error';
+  }
+
+  // Trigger on mount
+  verify();
+</script>
+
+<div class="auth-page">
+  {#if status === 'pending'}
+    <p>Verifying...</p>
+  {:else if status === 'success'}
+    <p>Email verified! <a href="/auth/login">Sign in</a></p>
+  {:else}
+    <p>Verification failed. <a href="/auth/resend-verification">Resend link</a></p>
+  {/if}
+</div>

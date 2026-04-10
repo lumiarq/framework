@@ -1,0 +1,12 @@
+import { defineHandler, sanitizeObject }   from '@lumiarq/framework';
+import { BaseVerifyEmailValidator }         from '@lumiarq/framework/auth';
+import { VerifyEmailAction }                from '@/modules/Auth/logic/actions/verify-email.action';
+import type { HandlerContext }              from '@lumiarq/framework';
+
+export const VerifyEmailHandler = defineHandler(async (c: HandlerContext) => {
+  const identityId = c.get<string>('userId');
+  const raw        = await c.req.json<Record<string, unknown>>();
+  const { token }  = BaseVerifyEmailValidator.parse(sanitizeObject(raw));
+  const result     = await VerifyEmailAction({ token, identityId });
+  return c.json(result);
+});

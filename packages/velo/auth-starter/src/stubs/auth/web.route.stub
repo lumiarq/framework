@@ -1,0 +1,7 @@
+// import { Route } from '@lumiarq/framework'; // uncomment when adding web routes
+
+// Web routes require: Route.get(path, Handler, { render: 'static' | 'dynamic' })
+// Add server-rendered auth pages here (login form, register form, etc.)
+// Example:
+// import { LoginPageHandler } from '@/modules/Auth/http/handlers/login-page.handler';
+// Route.get('/auth/login', LoginPageHandler, { render: 'dynamic', middleware: ['lumiarq.guest'] });

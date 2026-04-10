@@ -1,0 +1,21 @@
+import React, { useEffect, useState } from 'react';
+
+export default function VerifyEmailPage() {
+  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('token') ?? '';
+  const id     = params.get('id') ?? '';
+
+  useEffect(() => {
+    if (!token || !id) { setStatus('error'); return; }
+    fetch('/api/auth/verify-email', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ token, identityId: id }),
+    }).then(r => setStatus(r.ok ? 'success' : 'error'));
+  }, []);
+
+  if (status === 'pending') return <div className="auth-page"><p>Verifying...</p></div>;
+  if (status === 'success') return <div className="auth-page"><p>Email verified! <a href="/auth/login">Sign in</a></p></div>;
+  return <div className="auth-page"><p>Verification failed. <a href="/auth/resend-verification">Resend link</a></p></div>;
+}

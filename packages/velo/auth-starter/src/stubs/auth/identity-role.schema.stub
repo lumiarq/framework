@@ -1,0 +1,15 @@
+import { sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
+import { identities }                    from './identity.schema';
+import { roles }                         from './role.schema';
+
+export const identityRoles = sqliteTable('identity_roles', {
+  identityId: text('identity_id').notNull()
+                .references(() => identities.id, { onDelete: 'cascade' }),
+  roleId:     text('role_id').notNull()
+                .references(() => roles.id, { onDelete: 'cascade' }),
+}, (t) => ({
+  pk: primaryKey({ columns: [t.identityId, t.roleId] }),
+}));
+
+export type IdentityRoleRow    = typeof identityRoles.$inferSelect;
+export type NewIdentityRoleRow = typeof identityRoles.$inferInsert;

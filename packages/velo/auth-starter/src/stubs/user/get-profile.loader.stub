@@ -1,0 +1,12 @@
+import { defineLoader }    from '@lumiarq/framework';
+import { z }               from 'zod';
+import { GetProfileQuery } from '@/modules/User/logic/queries/get-profile.query';
+
+export const GetProfileLoader = defineLoader({
+  id:     'GetProfile',
+  schema: z.object({ userId: z.string().uuid() }),
+  async fetch({ input }) {
+    const user = await GetProfileQuery(input.userId);
+    return { user };
+  },
+});

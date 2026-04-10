@@ -1,0 +1,9 @@
+import { defineEvent } from '@lumiarq/framework';
+import { z }           from 'zod';
+
+export const EmailVerified = defineEvent({
+  name:   'auth.email_verified',
+  schema: z.object({
+    identityId:     z.string().uuid(),
+  }),
+});

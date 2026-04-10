@@ -1,0 +1,3 @@
+// Re-export Identity from @lumiarq/framework/auth.
+// Other modules import Identity from Auth/index.ts — not from auth-core directly.
+export type { Identity } from '@lumiarq/framework/auth';

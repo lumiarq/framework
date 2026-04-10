@@ -1,0 +1,7 @@
+// import { Route } from '@lumiarq/framework'; // uncomment when adding web routes
+
+// Web routes require: Route.get(path, Handler, { render: 'static' | 'dynamic' })
+// Add server-rendered user profile pages here.
+// Example:
+// import { SettingsPageHandler } from '@/modules/User/http/handlers/settings-page.handler';
+// Route.get('/user/settings', SettingsPageHandler, { render: 'dynamic', middleware: ['lumiarq.auth'] });

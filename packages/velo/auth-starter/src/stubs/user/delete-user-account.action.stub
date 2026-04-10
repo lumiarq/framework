@@ -1,0 +1,15 @@
+import { defineAction, EventBus }    from '@lumiarq/framework';
+import { UserRepository }            from '@/modules/User/database/repositories/user.repository';
+import { UserAccountDeleted }        from '@/modules/User/events/definitions/user-account-deleted.event';
+
+const userRepo = new UserRepository();
+
+export const DeleteUserAccountAction = defineAction(
+  async (userId: string): Promise<void> => {
+    await userRepo.delete(userId);
+
+    EventBus.emit(UserAccountDeleted, {
+      userId,
+    });
+  },
+);

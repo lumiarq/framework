@@ -1,0 +1,2 @@
+// TODO: define identity table schema using your database adapter.
+// Fields: id, email, passwordHash, createdAt, updatedAt

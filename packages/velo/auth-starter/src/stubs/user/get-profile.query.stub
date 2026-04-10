@@ -1,0 +1,15 @@
+import { defineQuery }    from '@lumiarq/framework';
+import { UserRepository } from '@/modules/User/database/repositories/user.repository';
+import type { User }      from '@/modules/User/contracts/models/user.model';
+
+const _repo = new UserRepository();
+
+/**
+ * Looks up a User profile by the authenticated identity ID.
+ * Read-only — no writes, no events.
+ * Called by GetProfileHandler, GetProfileLoader, and listeners for idempotency checks.
+ */
+export const GetProfileQuery = defineQuery(
+  async (identityId: string): Promise<User | null> =>
+    _repo.findByIdentityId(identityId),
+);

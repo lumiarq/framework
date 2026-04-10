@@ -1,0 +1,11 @@
+import { defineAction }         from '@lumiarq/framework';
+import { BaseLogoutAction }     from '@lumiarq/framework/auth';
+import type { BaseLogoutInput } from '@lumiarq/framework/auth';
+import { SessionRepository }    from '@/modules/IAM/database/repositories/session.repository';
+
+const sessionRepo = new SessionRepository();
+
+export const LogoutAction = defineAction(
+  async (input: BaseLogoutInput): Promise<void> =>
+    BaseLogoutAction(input, { sessionRepo }),
+);

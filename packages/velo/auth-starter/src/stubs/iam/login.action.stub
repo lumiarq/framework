@@ -1,0 +1,29 @@
+import { defineAction, EventBus }               from '@lumiarq/framework';
+import { BaseLoginAction, type BaseLoginResult } from '@lumiarq/framework/auth';
+import type { LoginData }                        from '@/modules/IAM/contracts/validators/login.validator';
+import { IdentityRepository }                    from '@/modules/IAM/database/repositories/identity.repository';
+import { SessionRepository }                     from '@/modules/IAM/database/repositories/session.repository';
+import { UserLoggedIn }                          from '@/modules/IAM/events/definitions/user-logged-in.event';
+import authConfig                                from '@/config/auth';
+
+// Module-level singletons — swap for real repos when a DB adapter is wired.
+const identityRepo = new IdentityRepository();
+const sessionRepo  = new SessionRepository();
+
+export const LoginAction = defineAction(
+  async (input: LoginData): Promise<BaseLoginResult> => {
+    const result = await BaseLoginAction(input, {
+      identityRepo,
+      sessionRepo,
+      jwtPrivateKey: authConfig.jwtPrivateKey,
+      sessionTtlMs:  authConfig.sessionTtlMs,
+    });
+
+    EventBus.emit(UserLoggedIn, {
+      identityId:     result.identity.id,
+      sessionId:      result.session.id,
+    });
+
+    return result;
+  },
+);

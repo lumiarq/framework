@@ -1,0 +1,53 @@
+{
+  "name": "@velo/adapters",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ deployment adapters \u2014 Node.js, Cloudflare Workers, Static/shared-hosting",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./node": {
+      "import": "./dist/node/index.js",
+      "types": "./dist/node/index.d.ts"
+    },
+    "./cloudflare": {
+      "import": "./dist/cloudflare/index.js",
+      "types": "./dist/cloudflare/index.d.ts"
+    },
+    "./static": {
+      "import": "./dist/static/index.js",
+      "types": "./dist/static/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.11",
+    "hono": "^4.12.7",
+    "@velo/build": "workspace:*",
+    "@velo/core": "workspace:*",
+    "@velo/runtime": "workspace:*"
+  }
+}

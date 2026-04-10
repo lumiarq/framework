@@ -1,0 +1,4 @@
+import type { User } from '@/modules/User/contracts/models/user.model';
+
+/** Safe public representation of a user profile. */
+export type UserDto = Pick<User, 'id' | 'identityId' | 'displayName' | 'avatarUrl'>;

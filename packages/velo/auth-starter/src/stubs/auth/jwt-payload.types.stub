@@ -1,0 +1,9 @@
+/** Claims carried inside the JWT. */
+export interface JwtPayload {
+  sub:       string; // identity id
+  email:     string;
+  role:      string;
+  sessionId: string;
+  iat?:      number;
+  exp?:      number;
+}

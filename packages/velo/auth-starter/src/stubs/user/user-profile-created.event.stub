@@ -1,0 +1,10 @@
+import { defineEvent } from '@lumiarq/framework';
+import { z }           from 'zod';
+
+export const UserProfileCreated = defineEvent({
+  name:   'user.profile-created',
+  schema: z.object({
+    userId:         z.string().uuid(),
+    identityId:     z.string().uuid(),
+  }),
+});

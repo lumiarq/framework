@@ -1,0 +1,9 @@
+import { definePolicy } from '@lumiarq/framework';
+import type { User }     from '@/modules/User/contracts/models/user.model';
+
+export interface PolicyActor { id: string; role: string }
+
+export const UserPolicy = definePolicy<PolicyActor, User>({
+  update: (actor, user) => !!user && (actor.id === user.identityId || actor.role === 'admin'),
+  delete: (actor, user) => !!user && (actor.id === user.identityId || actor.role === 'admin'),
+});

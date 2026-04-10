@@ -1,0 +1,12 @@
+packages:
+  - 'packages/velo/*'
+  - 'packages/framework'
+  - 'packages/tools/*'
+  # LOCAL DEV ONLY: links @traze/sdk so workspace:^ resolves without hitting npm.
+  # pnpm replaces workspace:^ with the real version (e.g. ^0.1.0) at publish time.
+  # Remove this line after @traze/sdk is published and you no longer need local linking.
+  - '../traze/packages/*'
+allowBuilds:
+  esbuild: true
+  argon2: true
+  vue-demi: true

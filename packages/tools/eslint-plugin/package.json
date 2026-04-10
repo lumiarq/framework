@@ -1,0 +1,35 @@
+{
+  "name": "@lumiarq/eslint-plugin",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ ESLint plugin — architectural boundary enforcement rules",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "boundary:check": "vitest run tests/rules.test.ts src/rules/rules.test.ts",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2",
+    "@types/eslint": "^9.6.1",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  }
+}

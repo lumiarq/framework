@@ -1,0 +1,32 @@
+import type { User }  from '@/modules/User/contracts/models/user.model';
+import { randomUUID } from 'node:crypto';
+
+let _seq = 0;
+
+/**
+ * UserFactory — creates realistic User profile objects for tests and seeders.
+ * Does NOT persist to the database — call UserRepository.create() for that.
+ *
+ * @example
+ * const user = makeUser({ identityId: identity.id, displayName: 'Alice' });
+ * const saved = await userRepo.create(user);
+ */
+export function makeUser(overrides: Partial<User> = {}): User {
+  const n = ++_seq;
+  return {
+    id:          randomUUID(),
+    identityId:  randomUUID(),
+    displayName: `User ${n}`,
+    avatarUrl:   null,
+    createdAt:   new Date(),
+    updatedAt:   new Date(),
+    ...overrides,
+  };
+}
+
+export const UserFactory = {
+  make: makeUser,
+  /** Creates N users with sequential display names. */
+  makeMany: (count: number, overrides: Partial<User> = {}): User[] =>
+    Array.from({ length: count }, () => makeUser(overrides)),
+};

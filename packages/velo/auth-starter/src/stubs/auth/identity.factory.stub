@@ -1,0 +1,31 @@
+import type { Identity } from '@/modules/Auth/contracts/models/identity.model';
+import { randomUUID }    from 'node:crypto';
+
+let _seq = 0;
+
+/**
+ * IdentityFactory — creates realistic Identity objects for tests and seeders.
+ * Does NOT persist to the database — call IdentityRepository.create() for that.
+ *
+ * @example
+ * const identity = makeIdentity({ email: 'alice@example.com' });
+ * const saved    = await identityRepo.create({ ...identity, passwordHash: hash });
+ */
+export function makeIdentity(overrides: Partial<Identity> = {}): Identity {
+  const n = ++_seq;
+  return {
+    id:           randomUUID(),
+    email:        `user${n}@example.com`,
+    passwordHash: '$argon2id$v=19$m=65536,t=3,p=4$stub-hash-for-testing-only',
+    createdAt:    new Date(),
+    updatedAt:    new Date(),
+    ...overrides,
+  };
+}
+
+export const IdentityFactory = {
+  make: makeIdentity,
+  /** Creates N identities with sequential e-mails. */
+  makeMany: (count: number, overrides: Partial<Identity> = {}): Identity[] =>
+    Array.from({ length: count }, () => makeIdentity(overrides)),
+};

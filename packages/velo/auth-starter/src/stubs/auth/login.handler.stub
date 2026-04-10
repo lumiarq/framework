@@ -1,0 +1,16 @@
+import { defineHandler, sanitizeObject } from '@lumiarq/framework';
+import { LoginValidator }                  from '@/modules/Auth/contracts/validators/login.validator';
+import { LoginAction }                     from '@/modules/Auth/logic/actions/login.action';
+
+export const LoginHandler = defineHandler(
+  async (req: Request): Promise<Response> => {
+    const body   = sanitizeObject((await req.json()) as Record<string, unknown>);
+    const input  = LoginValidator.parse(body);
+    const result = await LoginAction(input);
+
+    return Response.json(
+      { token: result.token, jwt: result.jwt },
+      { status: 200 },
+    );
+  },
+);

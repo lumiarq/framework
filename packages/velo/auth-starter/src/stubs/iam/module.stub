@@ -1,0 +1,5 @@
+import { defineModule } from '@lumiarq/framework';
+
+export default defineModule({
+  name: 'IAM',
+});

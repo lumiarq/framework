@@ -1,0 +1,9 @@
+import { defineHandler }    from '@lumiarq/framework';
+import { ResendVerificationEmailAction } from '@/modules/Auth/logic/actions/resend-verification-email.action';
+import type { HandlerContext } from '@lumiarq/framework';
+
+export const ResendVerificationHandler = defineHandler(async (c: HandlerContext) => {
+  const { identityId, email } = await c.req.json<{ identityId: string; email: string }>();
+  await ResendVerificationEmailAction({ identityId, email });
+  return c.json({ message: 'Verification email sent.' });
+});

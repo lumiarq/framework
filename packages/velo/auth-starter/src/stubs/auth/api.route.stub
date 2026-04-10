@@ -1,0 +1,18 @@
+import { Route } from '@lumiarq/framework';
+import { LoginHandler }          from '@/modules/Auth/http/handlers/login.handler';
+import { RegisterHandler }       from '@/modules/Auth/http/handlers/register.handler';
+import { LogoutHandler }         from '@/modules/Auth/http/handlers/logout.handler';
+import { ForgotPasswordHandler } from '@/modules/Auth/http/handlers/forgot-password.handler';
+import { ResetPasswordHandler }  from '@/modules/Auth/http/handlers/reset-password.handler';
+import { VerifyEmailHandler }    from '@/modules/Auth/http/handlers/verify-email.handler';
+import { ResendVerificationHandler } from '@/modules/Auth/http/handlers/resend-verification.handler';
+import { ConfirmPasswordHandler }    from '@/modules/Auth/http/handlers/confirm-password.handler';
+
+Route.post('/api/auth/login',              LoginHandler);
+Route.post('/api/auth/register',           RegisterHandler);
+Route.post('/api/auth/logout',             LogoutHandler,             { middleware: ['lumiarq.auth'] });
+Route.post('/api/auth/forgot-password',    ForgotPasswordHandler);
+Route.post('/api/auth/reset-password',     ResetPasswordHandler);
+Route.post('/api/auth/verify-email',       VerifyEmailHandler,        { middleware: ['lumiarq.auth'] });
+Route.post('/api/auth/resend-verification', ResendVerificationHandler, { middleware: ['lumiarq.auth'] });
+Route.post('/api/auth/confirm-password',   ConfirmPasswordHandler,    { middleware: ['lumiarq.auth'] });

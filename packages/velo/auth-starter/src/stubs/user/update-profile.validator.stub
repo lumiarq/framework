@@ -1,0 +1,8 @@
+import { z } from 'zod';
+
+export const UpdateProfileValidator = z.object({
+  displayName: z.string().min(1).max(100).optional(),
+  avatarUrl:   z.string().url().nullable().optional(),
+});
+
+export type UpdateProfileData = z.infer<typeof UpdateProfileValidator>;
