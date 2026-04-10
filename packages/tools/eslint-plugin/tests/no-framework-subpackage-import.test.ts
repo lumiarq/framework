@@ -17,7 +17,7 @@ const AUTH_ACTION_FILE = 'src/modules/Auth/actions/login.action.ts';
 // ─── Tests ─────────────────────────────────────────────────────────────────
 
 describe('no-framework-subpackage-import rule', () => {
-  it('allows @lumiarq/framework imports and flags direct @velo/* imports', () => {
+  it('allows @lumiarq/framework imports and flags direct @illumiarq/* imports', () => {
     expect(() =>
       tester.run('no-framework-subpackage-import', noFrameworkSubpackageImport, {
         valid: [

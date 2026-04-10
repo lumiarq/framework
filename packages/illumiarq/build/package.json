@@ -1,0 +1,38 @@
+{
+  "name": "@illumiarq/build",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ build layer \u2014 route scanning, strategy classification, SSG prerender, sitemap generation, Vite integration",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
+  },
+  "dependencies": {
+    "@illumiarq/core": "workspace:*",
+    "@illumiarq/http": "workspace:*"
+  }
+}

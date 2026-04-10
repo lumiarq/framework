@@ -1,0 +1,36 @@
+{
+  "name": "@illumiarq/testing",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiArq test utilities \u2014 withTestContext, HTTP test client, stubs",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@illumiarq/context": "workspace:*",
+    "@illumiarq/core": "workspace:*",
+    "@illumiarq/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@illumiarq/auth-starter",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ auth scaffold templates \u2014 consumed by lumis auth:install only. Never imported by application code.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && cp -r src/stubs dist/stubs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
+  },
+  "dependencies": {
+    "@illumiarq/support": "workspace:*"
+  }
+}

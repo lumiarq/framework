@@ -1,10 +1,9 @@
 packages:
-  - 'packages/velo/*'
-  - 'packages/framework'
+  - 'packages/illumiarq/*'
   - 'packages/tools/*'
-  # LOCAL DEV ONLY: links @traze/sdk so workspace:^ resolves without hitting npm.
+  # LOCAL DEV ONLY: links @trazze/sdk so workspace:^ resolves without hitting npm.
   # pnpm replaces workspace:^ with the real version (e.g. ^0.1.0) at publish time.
-  # Remove this line after @traze/sdk is published and you no longer need local linking.
+  # Remove this line after @trazze/sdk is published and you no longer need local linking.
   - '../traze/packages/*'
 allowBuilds:
   esbuild: true

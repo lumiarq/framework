@@ -1,0 +1,30 @@
+{
+  "name": "@illumiarq/contracts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ infrastructure contracts \u2014 TypeScript interfaces for Mail, Queue, Storage, Cache, EventBus, Logger. Zero dependencies.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

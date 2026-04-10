@@ -2,31 +2,31 @@ import type { Rule } from 'eslint';
 
 /**
  * ESLint rule: Application code must import from @lumiarq/framework, never from
- * internal @velo/* packages directly. Enforces Invariant 19.
+ * internal @illumiarq/* packages directly. Enforces Invariant 19.
  */
 
 const FORBIDDEN_PACKAGES = [
-  '@velo/core',
-  '@velo/runtime',
-  '@velo/database',
-  '@velo/migrations',
-  '@velo/adapters',
-  '@velo/build',
-  '@velo/auth',
-  '@velo/auth-starter',
-  '@velo/support',
-  '@velo/query',
-  '@velo/http',
-  '@velo/veil',
-  '@velo/contracts',
-  '@velo/security',
-  '@velo/search',
-  '@velo/context',
-  '@velo/modules',
-  '@velo/cache',
-  '@velo/testing',
-  '@velo/tinker',
-  '@velo/traze',
+  '@illumiarq/core',
+  '@illumiarq/runtime',
+  '@illumiarq/database',
+  '@illumiarq/migrations',
+  '@illumiarq/adapters',
+  '@illumiarq/build',
+  '@illumiarq/auth',
+  '@illumiarq/auth-starter',
+  '@illumiarq/support',
+  '@illumiarq/query',
+  '@illumiarq/http',
+  '@illumiarq/veil',
+  '@illumiarq/contracts',
+  '@illumiarq/security',
+  '@illumiarq/search',
+  '@illumiarq/context',
+  '@illumiarq/modules',
+  '@illumiarq/cache',
+  '@illumiarq/testing',
+  '@illumiarq/tinker',
+  '@illumiarq/traze',
 ];
 
 function isForbidden(source: string): boolean {
@@ -37,7 +37,7 @@ const noFrameworkSubpackageImport: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: "Import from '@lumiarq/framework' instead of internal @velo/* packages directly",
+      description: "Import from '@lumiarq/framework' instead of internal @illumiarq/* packages directly",
       recommended: true,
     },
     messages: {

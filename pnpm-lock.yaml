@@ -10,6 +10,61 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@illumiarq/adapters':
+        specifier: workspace:*
+        version: link:packages/illumiarq/adapters
+      '@illumiarq/auth':
+        specifier: workspace:*
+        version: link:packages/illumiarq/auth
+      '@illumiarq/build':
+        specifier: workspace:*
+        version: link:packages/illumiarq/build
+      '@illumiarq/cache':
+        specifier: workspace:*
+        version: link:packages/illumiarq/cache
+      '@illumiarq/context':
+        specifier: workspace:*
+        version: link:packages/illumiarq/context
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:packages/illumiarq/contracts
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:packages/illumiarq/core
+      '@illumiarq/database':
+        specifier: workspace:*
+        version: link:packages/illumiarq/database
+      '@illumiarq/http':
+        specifier: workspace:*
+        version: link:packages/illumiarq/http
+      '@illumiarq/migrations':
+        specifier: workspace:*
+        version: link:packages/illumiarq/migrations
+      '@illumiarq/modules':
+        specifier: workspace:*
+        version: link:packages/illumiarq/modules
+      '@illumiarq/query':
+        specifier: workspace:*
+        version: link:packages/illumiarq/query
+      '@illumiarq/runtime':
+        specifier: workspace:*
+        version: link:packages/illumiarq/runtime
+      '@illumiarq/testing':
+        specifier: workspace:*
+        version: link:packages/illumiarq/testing
+      '@illumiarq/tinker':
+        specifier: workspace:*
+        version: link:packages/illumiarq/tinker
+      '@illumiarq/veil':
+        specifier: workspace:*
+        version: link:packages/illumiarq/veil
+      '@lumiarq/lumis':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@trazze/sdk':
+        specifier: workspace:^
+        version: link:../traze/packages/sdk
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.0
@@ -42,8 +97,8 @@ importers:
   ../traze/packages/app:
     dependencies:
       '@lumiarq/framework':
-        specifier: file:../../../framework/packages/framework
-        version: file:packages/framework
+        specifier: file:../../../framework
+        version: 'file:'
       '@tanstack/react-query':
         specifier: ^5.83.0
         version: 5.90.21(react@19.2.4)
@@ -53,10 +108,10 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.83.0
         version: 5.92.9(vue@3.5.30(typescript@5.9.3))
-      '@traze/contracts':
+      '@trazze/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@traze/module-dashboard':
+      '@trazze/module-dashboard':
         specifier: file:./src/modules/Dashboard
         version: Dashboard@file:../traze/packages/app/src/modules/Dashboard
       drizzle-orm:
@@ -108,10 +163,10 @@ importers:
 
   ../traze/packages/cli:
     dependencies:
-      '@traze/contracts':
+      '@trazze/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@traze/sdk':
+      '@trazze/sdk':
         specifier: workspace:*
         version: link:../sdk
       chalk:
@@ -139,7 +194,7 @@ importers:
 
   ../traze/packages/sdk:
     dependencies:
-      '@traze/contracts':
+      '@trazze/contracts':
         specifier: workspace:*
         version: link:../contracts
       chalk:
@@ -156,66 +211,466 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@22.19.15)
 
-  packages/framework:
+  packages/illumiarq/adapters:
     dependencies:
-      '@lumiarq/lumis':
-        specifier: ^1.0.0
-        version: 1.0.0
-      '@traze/sdk':
-        specifier: workspace:^
-        version: link:../../../traze/packages/sdk
-      '@velo/adapters':
+      '@hono/node-server':
+        specifier: ^1.19.11
+        version: 1.19.11(hono@4.12.7)
+      '@illumiarq/build':
         specifier: workspace:*
-        version: link:../velo/adapters
-      '@velo/auth':
+        version: link:../build
+      '@illumiarq/core':
         specifier: workspace:*
-        version: link:../velo/auth
-      '@velo/build':
+        version: link:../core
+      '@illumiarq/runtime':
         specifier: workspace:*
-        version: link:../velo/build
-      '@velo/cache':
+        version: link:../runtime
+      hono:
+        specifier: ^4.12.7
+        version: 4.12.7
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/auth:
+    dependencies:
+      '@illumiarq/core':
         specifier: workspace:*
-        version: link:../velo/cache
-      '@velo/context':
+        version: link:../core
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      eslint:
+        specifier: ^9.17.0
+        version: 9.39.4
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/auth-starter:
+    dependencies:
+      '@illumiarq/support':
         specifier: workspace:*
-        version: link:../velo/context
-      '@velo/contracts':
+        version: link:../support
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/build:
+    dependencies:
+      '@illumiarq/core':
         specifier: workspace:*
-        version: link:../velo/contracts
-      '@velo/core':
+        version: link:../core
+      '@illumiarq/http':
         specifier: workspace:*
-        version: link:../velo/core
-      '@velo/database':
+        version: link:../http
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/cache:
+    dependencies:
+      '@illumiarq/contracts':
         specifier: workspace:*
-        version: link:../velo/database
-      '@velo/http':
-        specifier: workspace:*
-        version: link:../velo/http
-      '@velo/migrations':
-        specifier: workspace:*
-        version: link:../velo/migrations
-      '@velo/modules':
-        specifier: workspace:*
-        version: link:../velo/modules
-      '@velo/query':
-        specifier: workspace:*
-        version: link:../velo/query
-      '@velo/runtime':
-        specifier: workspace:*
-        version: link:../velo/runtime
-      '@velo/testing':
-        specifier: workspace:*
-        version: link:../velo/testing
-      '@velo/tinker':
-        specifier: workspace:*
-        version: link:../velo/tinker
-      '@velo/veil':
-        specifier: workspace:*
-        version: link:../velo/veil
+        version: link:../contracts
     devDependencies:
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/context:
+    dependencies:
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/contracts:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/illumiarq/core:
+    dependencies:
+      argon2:
+        specifier: ^0.44.0
+        version: 0.44.0
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
+      highlight.js:
+        specifier: ^11.11.1
+        version: 11.11.1
+      jose:
+        specifier: ^6.2.1
+        version: 6.2.1
+      marked:
+        specifier: ^17.0.4
+        version: 17.0.4
+      marked-highlight:
+        specifier: ^2.2.3
+        version: 2.2.3(marked@17.0.4)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      eslint:
+        specifier: ^9.17.0
+        version: 9.39.4
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/database:
+    dependencies:
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+      '@libsql/client':
+        specifier: ^0.17.0
+        version: 0.17.0
+      drizzle-orm:
+        specifier: ^0.38.3
+        version: 0.38.4(@libsql/client@0.17.0)(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      eslint:
+        specifier: ^9.17.0
+        version: 9.39.4
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/http:
+    dependencies:
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+      fast-json-stable-stringify:
+        specifier: ^2.1.0
+        version: 2.1.0
+      zod:
+        specifier: ^3.22.0
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.17)
+
+  packages/illumiarq/migrations:
+    dependencies:
+      '@illumiarq/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/modules:
+    dependencies:
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/query:
+    dependencies:
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+      '@illumiarq/http':
+        specifier: workspace:*
+        version: link:../http
+      '@tanstack/react-query':
+        specifier: '>=5.0.0'
+        version: 5.90.21(react@19.2.4)
+      '@tanstack/solid-query':
+        specifier: '>=5.0.0'
+        version: 5.90.23(solid-js@1.9.11)
+      '@tanstack/vue-query':
+        specifier: '>=5.0.0'
+        version: 5.92.9(vue@3.5.30(typescript@5.9.3))
+      react:
+        specifier: '>=18.0.0'
+        version: 19.2.4
+      svelte:
+        specifier: '>=4.0.0'
+        version: 5.53.11
+      vue:
+        specifier: '>=3.0.0'
+        version: 3.5.30(typescript@5.9.3)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      eslint:
+        specifier: ^9.17.0
+        version: 9.39.4
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/runtime:
+    dependencies:
+      '@illumiarq/context':
+        specifier: workspace:*
+        version: link:../context
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+      '@illumiarq/http':
+        specifier: workspace:*
+        version: link:../http
+      '@illumiarq/modules':
+        specifier: workspace:*
+        version: link:../modules
+      '@illumiarq/security':
+        specifier: workspace:*
+        version: link:../security
+      '@illumiarq/testing':
+        specifier: workspace:*
+        version: link:../testing
+      fast-json-stable-stringify:
+        specifier: ^2.1.0
+        version: 2.1.0
+      hono:
+        specifier: ^4.12.7
+        version: 4.12.7
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/search:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/security:
+    dependencies:
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/support:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/testing:
+    dependencies:
+      '@illumiarq/context':
+        specifier: workspace:*
+        version: link:../context
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/tinker:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/traze:
+    dependencies:
+      chalk:
+        specifier: ^5.4.1
+        version: 5.6.2
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.19.17)
+
+  packages/illumiarq/veil:
+    dependencies:
+      alpinejs:
+        specifier: ^3.13.0
+        version: 3.15.8
+    devDependencies:
+      '@types/node':
+        specifier: ^22.19.17
+        version: 22.19.17
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)
 
   packages/tools/create-lumiarq-app:
     dependencies:
@@ -277,467 +732,6 @@ importers:
       vitest:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/adapters:
-    dependencies:
-      '@hono/node-server':
-        specifier: ^1.19.11
-        version: 1.19.11(hono@4.12.7)
-      '@velo/build':
-        specifier: workspace:*
-        version: link:../build
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      '@velo/runtime':
-        specifier: workspace:*
-        version: link:../runtime
-      hono:
-        specifier: ^4.12.7
-        version: 4.12.7
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/auth:
-    dependencies:
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      eslint:
-        specifier: ^9.17.0
-        version: 9.39.4
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/auth-starter:
-    dependencies:
-      '@velo/support':
-        specifier: workspace:*
-        version: link:../support
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/build:
-    dependencies:
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      '@velo/http':
-        specifier: workspace:*
-        version: link:../http
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/cache:
-    dependencies:
-      '@velo/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.17)
-
-  packages/velo/context:
-    dependencies:
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.17)
-
-  packages/velo/contracts:
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  packages/velo/core:
-    dependencies:
-      argon2:
-        specifier: ^0.44.0
-        version: 0.44.0
-      gray-matter:
-        specifier: ^4.0.3
-        version: 4.0.3
-      highlight.js:
-        specifier: ^11.11.1
-        version: 11.11.1
-      jose:
-        specifier: ^6.2.1
-        version: 6.2.1
-      marked:
-        specifier: ^17.0.4
-        version: 17.0.4
-      marked-highlight:
-        specifier: ^2.2.3
-        version: 2.2.3(marked@17.0.4)
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      eslint:
-        specifier: ^9.17.0
-        version: 9.39.4
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/database:
-    dependencies:
-      '@libsql/client':
-        specifier: ^0.17.0
-        version: 0.17.0
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      drizzle-orm:
-        specifier: ^0.38.3
-        version: 0.38.4(@libsql/client@0.17.0)(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      eslint:
-        specifier: ^9.17.0
-        version: 9.39.4
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/http:
-    dependencies:
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      fast-json-stable-stringify:
-        specifier: ^2.1.0
-        version: 2.1.0
-      zod:
-        specifier: ^3.22.0
-        version: 3.25.76
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.0
-        version: 3.2.4(@types/node@22.19.17)
-
-  packages/velo/migrations:
-    dependencies:
-      '@velo/database':
-        specifier: workspace:*
-        version: link:../database
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/modules:
-    dependencies:
-      '@velo/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/query:
-    dependencies:
-      '@tanstack/react-query':
-        specifier: '>=5.0.0'
-        version: 5.90.21(react@19.2.4)
-      '@tanstack/solid-query':
-        specifier: '>=5.0.0'
-        version: 5.90.23(solid-js@1.9.11)
-      '@tanstack/vue-query':
-        specifier: '>=5.0.0'
-        version: 5.92.9(vue@3.5.30(typescript@5.9.3))
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      '@velo/http':
-        specifier: workspace:*
-        version: link:../http
-      react:
-        specifier: '>=18.0.0'
-        version: 19.2.4
-      svelte:
-        specifier: '>=4.0.0'
-        version: 5.53.11
-      vue:
-        specifier: '>=3.0.0'
-        version: 3.5.30(typescript@5.9.3)
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      eslint:
-        specifier: ^9.17.0
-        version: 9.39.4
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/runtime:
-    dependencies:
-      '@velo/context':
-        specifier: workspace:*
-        version: link:../context
-      '@velo/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-      '@velo/http':
-        specifier: workspace:*
-        version: link:../http
-      '@velo/modules':
-        specifier: workspace:*
-        version: link:../modules
-      '@velo/security':
-        specifier: workspace:*
-        version: link:../security
-      '@velo/testing':
-        specifier: workspace:*
-        version: link:../testing
-      fast-json-stable-stringify:
-        specifier: ^2.1.0
-        version: 2.1.0
-      hono:
-        specifier: ^4.12.7
-        version: 4.12.7
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/search:
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/security:
-    dependencies:
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/support:
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.15))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/testing:
-    dependencies:
-      '@velo/context':
-        specifier: workspace:*
-        version: link:../context
-      '@velo/contracts':
-        specifier: workspace:*
-        version: link:../contracts
-      '@velo/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.17)
-
-  packages/velo/tinker:
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/traze:
-    dependencies:
-      chalk:
-        specifier: ^5.4.1
-        version: 5.6.2
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.15
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.19.15)
-
-  packages/velo/veil:
-    dependencies:
-      alpinejs:
-        specifier: ^3.13.0
-        version: 3.15.8
-    devDependencies:
-      '@types/node':
-        specifier: ^22.19.17
-        version: 22.19.17
-      '@vitest/coverage-v8':
-        specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9(@types/node@22.19.17))
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.17)
 
 packages:
 
@@ -1620,8 +1614,9 @@ packages:
   '@lumiarq/context@1.0.0':
     resolution: {integrity: sha512-hWpQHveSpPAklH4FygP7uwZPEH5dmg1ac7HfabAF+g1ltnH9QnXhDc6dZLjQRhih/mR7Wq7NED8QGcv+cAM9PA==}
 
-  '@lumiarq/framework@file:packages/framework':
-    resolution: {directory: packages/framework, type: directory}
+  '@lumiarq/framework@file:':
+    resolution: {directory: '', type: directory}
+    engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
 
   '@lumiarq/generator@1.0.0':
     resolution: {integrity: sha512-IOoo/aVcfvlNSWkPhqri6Gq8cawPV2zquBcGLcWfJ+EHcRYfNTFk7RGniyUfKHX0CcISu+27TgoquyzMb4zJrA==}
@@ -4174,26 +4169,26 @@ snapshots:
 
   '@lumiarq/context@1.0.0': {}
 
-  '@lumiarq/framework@file:packages/framework':
+  '@lumiarq/framework@file:':
     dependencies:
+      '@illumiarq/adapters': link:packages/illumiarq/adapters
+      '@illumiarq/auth': link:packages/illumiarq/auth
+      '@illumiarq/build': link:packages/illumiarq/build
+      '@illumiarq/cache': link:packages/illumiarq/cache
+      '@illumiarq/context': link:packages/illumiarq/context
+      '@illumiarq/contracts': link:packages/illumiarq/contracts
+      '@illumiarq/core': link:packages/illumiarq/core
+      '@illumiarq/database': link:packages/illumiarq/database
+      '@illumiarq/http': link:packages/illumiarq/http
+      '@illumiarq/migrations': link:packages/illumiarq/migrations
+      '@illumiarq/modules': link:packages/illumiarq/modules
+      '@illumiarq/query': link:packages/illumiarq/query
+      '@illumiarq/runtime': link:packages/illumiarq/runtime
+      '@illumiarq/testing': link:packages/illumiarq/testing
+      '@illumiarq/tinker': link:packages/illumiarq/tinker
+      '@illumiarq/veil': link:packages/illumiarq/veil
       '@lumiarq/lumis': 1.0.0
-      '@traze/sdk': link:../traze/packages/sdk
-      '@velo/adapters': link:packages/velo/adapters
-      '@velo/auth': link:packages/velo/auth
-      '@velo/build': link:packages/velo/build
-      '@velo/cache': link:packages/velo/cache
-      '@velo/context': link:packages/velo/context
-      '@velo/contracts': link:packages/velo/contracts
-      '@velo/core': link:packages/velo/core
-      '@velo/database': link:packages/velo/database
-      '@velo/http': link:packages/velo/http
-      '@velo/migrations': link:packages/velo/migrations
-      '@velo/modules': link:packages/velo/modules
-      '@velo/query': link:packages/velo/query
-      '@velo/runtime': link:packages/velo/runtime
-      '@velo/testing': link:packages/velo/testing
-      '@velo/tinker': link:packages/velo/tinker
-      '@velo/veil': link:packages/velo/veil
+      '@trazze/sdk': link:../traze/packages/sdk
 
   '@lumiarq/generator@1.0.0':
     dependencies:
