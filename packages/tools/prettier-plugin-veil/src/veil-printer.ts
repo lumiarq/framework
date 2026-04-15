@@ -141,9 +141,7 @@ export function printVeil(nodes: VeilNode[], options: Partial<PrintOptions> = {}
   if (rest.length > 0) sections.push(rest.join('\n'));
 
   // Join hoisted and rest with a blank line separator when both exist
-  const output = seenHoistable && rest.length > 0
-    ? sections.join('\n\n')
-    : sections.join('\n');
+  const output = seenHoistable && rest.length > 0 ? sections.join('\n\n') : sections.join('\n');
 
   return output.trimEnd() + '\n';
 }

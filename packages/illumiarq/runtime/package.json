@@ -2,7 +2,7 @@
   "name": "@illumiarq/runtime",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ runtime \u2014 request lifecycle, loader orchestration (parallel + deduplication), middleware pipeline",
+  "description": "LumiARQ runtime — request lifecycle, loader orchestration (parallel + deduplication), middleware pipeline",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -34,12 +34,13 @@
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
     "hono": "^4.12.7",
-    "@illumiarq/contracts": "workspace:*",
-    "@illumiarq/http": "workspace:*",
-    "@illumiarq/testing": "workspace:*",
-    "@illumiarq/context": "workspace:*",
-    "@illumiarq/core": "workspace:*",
-    "@illumiarq/modules": "workspace:*",
-    "@illumiarq/security": "workspace:*"
+    "@illumiarq/contracts": "^1.0.0",
+    "@illumiarq/http": "^1.0.0",
+    "@illumiarq/testing": "^1.0.0",
+    "@illumiarq/context": "^1.0.0",
+    "@illumiarq/core": "^1.0.0",
+    "@illumiarq/modules": "^1.0.0",
+    "@illumiarq/security": "^1.0.0",
+    "@trazze/sdk": "^0.1.0"
   }
 }

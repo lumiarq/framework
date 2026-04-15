@@ -70,9 +70,7 @@ async function resolveListenPort(
   }
 
   const endPort = requestedPort + attempts - 1;
-  throw new Error(
-    `No available port found on ${hostname} in range ${requestedPort}-${endPort}.`,
-  );
+  throw new Error(`No available port found on ${hostname} in range ${requestedPort}-${endPort}.`);
 }
 
 function normalizeMaxPortAttempts(value: number): number {

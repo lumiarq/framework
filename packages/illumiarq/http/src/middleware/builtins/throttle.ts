@@ -24,7 +24,7 @@ interface WindowEntry {
 
 const _store = new Map<string, WindowEntry>();
 
-const WINDOW_MS = 60_000;  // 1 minute
+const WINDOW_MS = 60_000; // 1 minute
 const MAX_REQUESTS = 60;
 
 export const throttleMiddleware = defineMiddleware({
@@ -48,7 +48,10 @@ export const throttleMiddleware = defineMiddleware({
     if (entry.count >= MAX_REQUESTS) {
       const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
       return new Response(
-        JSON.stringify({ error: 'Too Many Requests', message: 'Rate limit exceeded. Try again later.' }),
+        JSON.stringify({
+          error: 'Too Many Requests',
+          message: 'Rate limit exceeded. Try again later.',
+        }),
         {
           status: 429,
           headers: {

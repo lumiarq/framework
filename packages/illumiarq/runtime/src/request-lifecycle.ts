@@ -23,6 +23,8 @@ import {
   type RateLimitOptions,
   type RouteRenderConfig,
 } from './middleware-pipeline.js';
+import type { RuntimeLogger } from './types.js';
+import { createContextLogger } from './logging/context-logger.js';
 
 export interface HandleRequestOptions {
   /**
@@ -34,6 +36,8 @@ export interface HandleRequestOptions {
   rateLimit?: RateLimitOptions;
   /** Passed through to createRequestContext. */
   context?: Omit<CreateRequestContextOptions, 'headers'>;
+  /** Optional runtime logger bridged into the request execution context. */
+  logger?: RuntimeLogger;
 }
 
 /**
@@ -68,7 +72,11 @@ export async function handleRequest(
   req.headers.forEach((value, key) => {
     headersMap[key] = value;
   });
-  const ctx = createRequestContext({ ...opts.context, headers: headersMap });
+  const ctx = createRequestContext({
+    ...opts.context,
+    ...(opts.logger ? { logger: createContextLogger(opts.logger) } : {}),
+    headers: headersMap,
+  });
 
   return runWithContext(ctx, () => dispatch(req, handler));
 }

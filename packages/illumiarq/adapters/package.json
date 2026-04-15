@@ -2,7 +2,7 @@
   "name": "@illumiarq/adapters",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ deployment adapters \u2014 Node.js, Cloudflare Workers, Static/shared-hosting",
+  "description": "LumiARQ deployment adapters — Node.js, Cloudflare Workers, Static/shared-hosting",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -46,8 +46,8 @@
   "dependencies": {
     "@hono/node-server": "^1.19.11",
     "hono": "^4.12.7",
-    "@illumiarq/build": "workspace:*",
-    "@illumiarq/core": "workspace:*",
-    "@illumiarq/runtime": "workspace:*"
+    "@illumiarq/build": "^1.0.0",
+    "@illumiarq/core": "^1.0.0",
+    "@illumiarq/runtime": "^1.0.0"
   }
 }

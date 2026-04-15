@@ -28,7 +28,8 @@ function reindentHtml(raw, depth, opts) {
 }
 
 function printNode(node, depth, opts) {
-  if (node.type === 'directive') return `${indent(depth, opts)}${formatDirectiveLine(node.name, node.args)}`;
+  if (node.type === 'directive')
+    return `${indent(depth, opts)}${formatDirectiveLine(node.name, node.args)}`;
   if (node.type === 'raw') {
     const trimmed = node.content.replace(/^\n+/, '').replace(/\n+$/, '');
     if (!trimmed) return '';

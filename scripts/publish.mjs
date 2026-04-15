@@ -60,8 +60,12 @@ function publish(pkg) {
         stdio: 'inherit',
       });
     } catch (err) {
-      if (err.stdout?.includes('E403') || err.stderr?.includes('E403') ||
-          err.stdout?.includes('previously published') || err.stderr?.includes('previously published')) {
+      if (
+        err.stdout?.includes('E403') ||
+        err.stderr?.includes('E403') ||
+        err.stdout?.includes('previously published') ||
+        err.stderr?.includes('previously published')
+      ) {
         console.log(`  (skipped — already at this version)`);
       } else {
         throw err;
@@ -76,8 +80,12 @@ function publish(pkg) {
     });
   } catch (err) {
     // E403 = already published at this version — skip gracefully
-    if (err.stdout?.includes('E403') || err.stderr?.includes('E403') ||
-        err.stdout?.includes('previously published') || err.stderr?.includes('previously published')) {
+    if (
+      err.stdout?.includes('E403') ||
+      err.stderr?.includes('E403') ||
+      err.stdout?.includes('previously published') ||
+      err.stderr?.includes('previously published')
+    ) {
       console.log(`  (skipped — already at this version)`);
     } else {
       throw err;

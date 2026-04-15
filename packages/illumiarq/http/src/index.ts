@@ -26,7 +26,14 @@ export type { BoundLoader, SitemapEntry } from './loader/types.js';
 export type { LoaderDefinition, SitemapLoaderFn } from './loader/define-loader.js';
 export type { RequestCache } from './loader/execute.js';
 
-export { defineMiddleware, getMiddleware, hasMiddleware, getAllMiddleware, clearMiddlewareRegistry, middleware } from './middleware/define-middleware.js';
+export {
+  defineMiddleware,
+  getMiddleware,
+  hasMiddleware,
+  getAllMiddleware,
+  clearMiddlewareRegistry,
+  middleware,
+} from './middleware/define-middleware.js';
 export { composeMiddleware } from './middleware/pipeline.js';
 export { MiddlewareStack } from './middleware/stack.js';
 export type { MiddlewareFn, MiddlewareDefinition, MiddlewareInput } from './middleware/types.js';
@@ -86,4 +93,4 @@ export type { GenerateParamsResult, StaticRoute } from './types/ssg.types.js';
 // ── Built-in middleware ───────────────────────────────────────────────────────
 // Importing this registers all framework built-in middleware into the global registry.
 // Called once by boot.ts — do not call in application code.
-export { authMiddleware, csrfMiddleware, throttleMiddleware } from './middleware/builtins/index.js';
+export { authMiddleware, csrfMiddleware, throttleMiddleware, trazeMiddleware, setTrazeLogger } from './middleware/builtins/index.js';

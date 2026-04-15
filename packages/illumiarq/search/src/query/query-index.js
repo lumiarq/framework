@@ -9,25 +9,28 @@
  *   +1   any keyword contains the query (substring, case-insensitive)
  */
 function score(doc, q) {
-  const lower = q.toLowerCase();
-  let s = 0;
-  const titleLower = doc.title.toLowerCase();
-  // Exact word boundary match in title
-  if (new RegExp(`\\b${lower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(titleLower)) {
-    s += 10;
-  } else if (titleLower.includes(lower)) {
-    // Substring match in title (no word boundary)
-    s += 5;
-  }
-  if (doc.section.toLowerCase().includes(lower)) s += 3;
-  if (doc.description.toLowerCase().includes(lower)) s += 1;
-  for (const kw of doc.keywords ?? []) {
-    if (kw.toLowerCase().includes(lower)) {
-      s += 1;
-      break; // count keywords bonus at most once
+    const lower = q.toLowerCase();
+    let s = 0;
+    const titleLower = doc.title.toLowerCase();
+    // Exact word boundary match in title
+    if (new RegExp(`\\b${lower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(titleLower)) {
+        s += 10;
     }
-  }
-  return s;
+    else if (titleLower.includes(lower)) {
+        // Substring match in title (no word boundary)
+        s += 5;
+    }
+    if (doc.section.toLowerCase().includes(lower))
+        s += 3;
+    if (doc.description.toLowerCase().includes(lower))
+        s += 1;
+    for (const kw of doc.keywords ?? []) {
+        if (kw.toLowerCase().includes(lower)) {
+            s += 1;
+            break; // count keywords bonus at most once
+        }
+    }
+    return s;
 }
 /**
  * Queries a SearchIndex with a plain-text search string.
@@ -44,23 +47,24 @@ function score(doc, q) {
  * @returns      Ranked SearchResult array, best match first
  */
 export function queryIndex(index, q, opts = {}) {
-  const trimmed = q.trim();
-  if (!trimmed) return [];
-  const limit = opts.limit ?? 8;
-  const results = [];
-  for (const doc of index.pages) {
-    const s = score(doc, trimmed);
-    if (s > 0) {
-      results.push({
-        slug: doc.slug,
-        title: doc.title,
-        section: doc.section,
-        description: doc.description,
-        score: s,
-      });
+    const trimmed = q.trim();
+    if (!trimmed)
+        return [];
+    const limit = opts.limit ?? 8;
+    const results = [];
+    for (const doc of index.pages) {
+        const s = score(doc, trimmed);
+        if (s > 0) {
+            results.push({
+                slug: doc.slug,
+                title: doc.title,
+                section: doc.section,
+                description: doc.description,
+                score: s,
+            });
+        }
     }
-  }
-  results.sort((a, b) => b.score - a.score);
-  return results.slice(0, limit);
+    results.sort((a, b) => b.score - a.score);
+    return results.slice(0, limit);
 }
 //# sourceMappingURL=query-index.js.map

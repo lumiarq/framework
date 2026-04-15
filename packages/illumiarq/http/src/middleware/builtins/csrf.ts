@@ -46,10 +46,10 @@ export const csrfMiddleware = defineMiddleware({
     const cookieToken = csrfCookie ? csrfCookie.slice(6) : null;
 
     if (!headerToken || !cookieToken || headerToken !== cookieToken) {
-      return new Response(
-        JSON.stringify({ error: 'Forbidden', message: 'CSRF token mismatch.' }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } },
-      );
+      return new Response(JSON.stringify({ error: 'Forbidden', message: 'CSRF token mismatch.' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return next();

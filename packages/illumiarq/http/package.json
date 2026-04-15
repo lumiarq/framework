@@ -2,7 +2,7 @@
   "name": "@illumiarq/http",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ HTTP layer \u2014 routing, handlers, loaders, middleware, request/response helpers",
+  "description": "LumiARQ HTTP layer — routing, handlers, loaders, middleware, request/response helpers",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
     "zod": "^3.22.0",
-    "@illumiarq/core": "workspace:*"
+    "@illumiarq/core": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

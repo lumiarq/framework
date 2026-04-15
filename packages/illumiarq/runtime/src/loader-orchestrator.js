@@ -1,5 +1,5 @@
 import stringify from 'fast-json-stable-stringify';
-import { LoaderDependencyError } from '@illumiarqhttp';
+import { LoaderDependencyError } from '@illumiarq/http';
 /**
  * Creates an empty request-scoped deduplication cache.
  * One cache per request; never shared across requests.

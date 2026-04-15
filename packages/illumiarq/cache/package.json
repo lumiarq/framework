@@ -2,7 +2,7 @@
   "name": "@illumiarq/cache",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiArq cache facade \u2014 session and in-memory drivers",
+  "description": "LumiArq cache facade — session and in-memory drivers",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/contracts": "workspace:*"
+    "@illumiarq/contracts": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

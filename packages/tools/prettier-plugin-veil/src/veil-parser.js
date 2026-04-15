@@ -61,7 +61,8 @@ function parseNodes(ctx, until) {
 
     if (token.type === 'raw') {
       ctx.pos++;
-      if (token.raw.trim() || token.raw.includes('\n')) nodes.push({ type: 'raw', content: token.raw });
+      if (token.raw.trim() || token.raw.includes('\n'))
+        nodes.push({ type: 'raw', content: token.raw });
       continue;
     }
 

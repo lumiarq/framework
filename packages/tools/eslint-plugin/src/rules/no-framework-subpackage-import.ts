@@ -37,7 +37,8 @@ const noFrameworkSubpackageImport: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: "Import from '@lumiarq/framework' instead of internal @illumiarq/* packages directly",
+      description:
+        "Import from '@lumiarq/framework' instead of internal @illumiarq/* packages directly",
       recommended: true,
     },
     messages: {

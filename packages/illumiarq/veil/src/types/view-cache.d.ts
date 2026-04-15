@@ -10,10 +10,7 @@
  */
 declare module '@/storage/framework/cache/views/*.veil' {
   export interface RenderVars {
-    [key: string]: unknown
+    [key: string]: unknown;
   }
-  export function render(
-    vars: Record<string, unknown>,
-    locale?: Record<string, string>,
-  ): string
+  export function render(vars: Record<string, unknown>, locale?: Record<string, string>): string;
 }

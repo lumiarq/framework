@@ -2,7 +2,7 @@
   "name": "@illumiarq/security",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ security middleware \u2014 CSRF, CORS, rate-limit, security-headers, trust-proxies, maintenance",
+  "description": "LumiARQ security middleware — CSRF, CORS, rate-limit, security-headers, trust-proxies, maintenance",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,6 +32,6 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
-    "@illumiarq/core": "workspace:*"
+    "@illumiarq/core": "^1.0.0"
   }
 }

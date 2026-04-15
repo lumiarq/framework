@@ -2,7 +2,7 @@
   "name": "@illumiarq/core",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ core primitives \u2014 defineRoute, defineHandler, defineAction, defineTask, defineLoader, defineModule, definePolicy, defineEvent, defineConfig, EventBus, Gate, error types",
+  "description": "LumiARQ core primitives — defineRoute, defineHandler, defineAction, defineTask, defineLoader, defineModule, definePolicy, defineEvent, defineConfig, EventBus, Gate, error types",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

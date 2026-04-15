@@ -2,7 +2,7 @@
   "name": "@illumiarq/testing",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiArq test utilities \u2014 withTestContext, HTTP test client, stubs",
+  "description": "LumiArq test utilities — withTestContext, HTTP test client, stubs",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,9 +22,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/context": "workspace:*",
-    "@illumiarq/core": "workspace:*",
-    "@illumiarq/contracts": "workspace:*"
+    "@illumiarq/context": "^1.0.0",
+    "@illumiarq/core": "^1.0.0",
+    "@illumiarq/contracts": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

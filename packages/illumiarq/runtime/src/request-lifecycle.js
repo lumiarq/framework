@@ -10,6 +10,7 @@
  * middleware pipeline has prepared the request context.
  */
 import { createRequestContext, runWithContext } from './context/index.js';
+import { createContextLogger } from './logging/context-logger.js';
 import {
   composeMiddleware,
   securityHeadersMiddleware,
@@ -43,7 +44,11 @@ export async function handleRequest(req, handler, opts = {}) {
   req.headers.forEach((value, key) => {
     headersMap[key] = value;
   });
-  const ctx = createRequestContext({ ...opts.context, headers: headersMap });
+  const ctx = createRequestContext({
+    ...opts.context,
+    ...(opts.logger ? { logger: createContextLogger(opts.logger) } : {}),
+    headers: headersMap,
+  });
   return runWithContext(ctx, () => dispatch(req, handler));
 }
 //# sourceMappingURL=request-lifecycle.js.map

@@ -2,7 +2,7 @@
   "name": "@illumiarq/database",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ database layer \u2014 connection factory, BaseRepository, BaseSeeder, BaseFactory",
+  "description": "LumiARQ database layer — connection factory, BaseRepository, BaseSeeder, BaseFactory",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,6 +37,6 @@
     "drizzle-orm": "^0.38.3",
     "@libsql/client": "^0.17.0",
     "zod": "^3.24.1",
-    "@illumiarq/core": "workspace:*"
+    "@illumiarq/core": "^1.0.0"
   }
 }

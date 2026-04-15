@@ -202,3 +202,38 @@ describe('handleRequest — request ID propagation', () => {
     expect(res.headers.get('X-Request-Id')).toMatch(/^[0-9a-f-]{36}$/);
   });
 });
+
+describe('handleRequest — runtime logger bridge', () => {
+  it('injects the provided runtime logger into the request context logger', async () => {
+    const calls: Array<{ level: string; message: string; meta?: Record<string, unknown> }> = [];
+    const logger = {
+      debug: async (message: string, meta?: Record<string, unknown>) => {
+        calls.push({ level: 'debug', message, ...(meta ? { meta } : {}) });
+      },
+      info: async (message: string, meta?: Record<string, unknown>) => {
+        calls.push({ level: 'info', message, ...(meta ? { meta } : {}) });
+      },
+      warn: async (message: string, meta?: Record<string, unknown>) => {
+        calls.push({ level: 'warn', message, ...(meta ? { meta } : {}) });
+      },
+      error: async (message: string, meta?: Record<string, unknown>) => {
+        calls.push({ level: 'error', message, ...(meta ? { meta } : {}) });
+      },
+    };
+
+    await handleRequest(
+      makeReq('GET', { 'x-request-id': 'logger-bridge-id' }),
+      async () => {
+        getContext().logger.info('inside-handler', { feature: 'request-lifecycle-test' });
+        return new Response('ok');
+      },
+      { logger },
+    );
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.level).toBe('info');
+    expect(calls[0]?.message).toBe('inside-handler');
+    expect(calls[0]?.meta?.contextId).toBe('logger-bridge-id');
+    expect(calls[0]?.meta?.feature).toBe('request-lifecycle-test');
+  });
+});

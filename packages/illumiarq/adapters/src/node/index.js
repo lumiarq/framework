@@ -6,7 +6,11 @@ async function assertPortAvailable(port, hostname) {
     probe.once('error', (error) => {
       probe.close();
       if (error.code === 'EADDRINUSE') {
-        reject(new Error(`Port ${port} is already in use on ${hostname}. Stop the existing process or choose a different port.`));
+        reject(
+          new Error(
+            `Port ${port} is already in use on ${hostname}. Stop the existing process or choose a different port.`,
+          ),
+        );
         return;
       }
       reject(error);

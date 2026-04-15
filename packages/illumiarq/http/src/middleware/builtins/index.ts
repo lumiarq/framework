@@ -17,3 +17,4 @@
 export { authMiddleware } from './auth.js';
 export { csrfMiddleware } from './csrf.js';
 export { throttleMiddleware } from './throttle.js';
+export { trazeMiddleware, setTrazeLogger } from './traze.js';

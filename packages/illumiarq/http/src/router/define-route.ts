@@ -1,4 +1,5 @@
-import type { MetaData, RenderMode, HandlerType, MiddlewareInput } from './types.js';import type { BindingDefinition } from './define-binding.js';
+import type { MetaData, RenderMode, HandlerType, MiddlewareInput } from './types.js';
+import type { BindingDefinition } from './define-binding.js';
 
 /** The shape of a route definition produced by defineRoute. */
 export interface RouteDefinition {

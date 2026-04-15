@@ -1,17 +1,17 @@
 /**
  * Middleware pipeline — composes and executes route middleware.
  * Security middleware (CORS, rate-limit, security-headers) is now owned by
- * @velo/security and re-exported here for backward compatibility.
+ * @illumiarq/security and re-exported here for backward compatibility.
  */
-import { generateRequestId } from '@illumiarqcore';
+import { generateRequestId } from '@illumiarq/core';
 export {
   withHeaders,
   securityHeadersMiddleware,
   corsMiddleware,
   rateLimitMiddleware,
-} from '@illumiarqsecurity';
+} from '@illumiarq/security';
 // ─── Pure utilities ──────────────────────────────────────────────────────────
-import { withHeaders } from '@illumiarqsecurity';
+import { withHeaders } from '@illumiarq/security';
 /** Derives the correct Cache-Control header value per the rendering strategy table. */
 export function deriveCacheControl(config) {
   if (config.render === 'dynamic') return 'no-store';

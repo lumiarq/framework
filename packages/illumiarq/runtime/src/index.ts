@@ -100,6 +100,9 @@ export type { ConfirmedOptions } from './middleware/confirmed.js';
 
 // ─── Stub Scheduler (v1) ─────────────────────────────────────────────────────
 export { StubScheduler, schedule } from './stub-scheduler.js';
+export { initializeRuntimeLogger } from './logging/init-logger.js';
+export { loadLoggingConfig, getDefaultLoggingConfig } from './config/load-logging.js';
+export type { RuntimeLoggingConfig, RuntimeLoggingChannel, RuntimeLogLevel } from './config/load-logging.js';
 
 // ─── Test utilities ───────────────────────────────────────────────────────────
 export { withTestContext } from './with-test-context.js';

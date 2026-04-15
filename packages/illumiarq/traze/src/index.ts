@@ -1,9 +1,7 @@
 /**
  * @deprecated Use `@trazze/sdk` instead. This package will be removed in a future release.
  */
-console.warn(
-  '[@illumiarq/traze] This package is deprecated. Migrate to @trazze/sdk.',
-);
+console.warn('[@illumiarq/traze] This package is deprecated. Migrate to @trazze/sdk.');
 
 import { dd, dump, trace } from './helpers/index.js';
 

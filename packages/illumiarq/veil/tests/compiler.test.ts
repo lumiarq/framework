@@ -91,17 +91,26 @@ describe('compileTemplate — EJS output tags', () => {
 
 describe('Alpine.js passthrough', () => {
   it('passes x-data attribute through unchanged', () => {
-    const out = compileTemplate('<div x-data="{ count: 0 }">hi</div>', { assetDirs: [], templatesDir: tmpdir() });
+    const out = compileTemplate('<div x-data="{ count: 0 }">hi</div>', {
+      assetDirs: [],
+      templatesDir: tmpdir(),
+    });
     expect(out).toContain('x-data="{ count: 0 }"');
   });
 
   it('passes x-bind attribute through unchanged', () => {
-    const out = compileTemplate('<button x-bind:disabled="isLoading">Go</button>', { assetDirs: [], templatesDir: tmpdir() });
+    const out = compileTemplate('<button x-bind:disabled="isLoading">Go</button>', {
+      assetDirs: [],
+      templatesDir: tmpdir(),
+    });
     expect(out).toContain('x-bind:disabled="isLoading"');
   });
 
   it('passes @click Alpine shorthand through unchanged', () => {
-    const out = compileTemplate('<button @click="count++">+</button>', { assetDirs: [], templatesDir: tmpdir() });
+    const out = compileTemplate('<button @click="count++">+</button>', {
+      assetDirs: [],
+      templatesDir: tmpdir(),
+    });
     expect(out).toContain('@click="count++"');
   });
 

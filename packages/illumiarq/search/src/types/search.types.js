@@ -1,5 +1,5 @@
 /**
- * Core types for @velo/search.
+ * Core types for @illumiarq/search.
  *
  * SearchableDoc  — the document shape expected by buildSearchIndex()
  * SearchIndex    — the serialisable index written to bootstrap/cache/search.index.json

@@ -135,7 +135,12 @@ function minifyHtml(html: string): string {
         const t = tag.toLowerCase();
         if (t === 'style' && content !== undefined) {
           processed = `<style${attrs}>` + minifyCss(content) + '</style>';
-        } else if (t === 'script' && content !== undefined && attrs !== undefined && !/src\s*=/i.test(attrs)) {
+        } else if (
+          t === 'script' &&
+          content !== undefined &&
+          attrs !== undefined &&
+          !/src\s*=/i.test(attrs)
+        ) {
           processed = `<script${attrs}>` + minifyJs(content) + '</script>';
         }
       }
@@ -157,7 +162,10 @@ function minifyHtml(html: string): string {
   result = result.trim();
 
   // Restore protected blocks
-  result = result.replace(new RegExp(`${placeholder}(\\d+)\x00`, 'g'), (_, i: string) => blocks[Number(i)] ?? '');
+  result = result.replace(
+    new RegExp(`${placeholder}(\\d+)\x00`, 'g'),
+    (_, i: string) => blocks[Number(i)] ?? '',
+  );
 
   return result;
 }
@@ -195,7 +203,11 @@ function parseVars(raw: string): VarsEntry[] {
 /**
  * Resolves an asset file path: module-local first, then each shared dir in order.
  */
-function resolveAsset(file: string, assetDirs: string[], sharedAssetDirs?: string[]): string | null {
+function resolveAsset(
+  file: string,
+  assetDirs: string[],
+  sharedAssetDirs?: string[],
+): string | null {
   for (const dir of assetDirs) {
     const local = join(dir, file.trim());
     if (existsSync(local)) return local;
@@ -253,7 +265,10 @@ function resolveExtends(
   if (!layoutPath && sharedTemplatesDirs) {
     for (const dir of sharedTemplatesDirs) {
       const candidate = tryExtensions(join(dir, layoutName));
-      if (candidate) { layoutPath = candidate; break; }
+      if (candidate) {
+        layoutPath = candidate;
+        break;
+      }
     }
   }
 
@@ -276,11 +291,18 @@ function resolveExtends(
   // Handles both `@import { Foo } from 'bar'` (single-line) and
   // the legacy split form `@import\n{ Foo } from 'bar'` (two-line).
   const importLines: string[] = [];
-  child = child.replace(/^@import([^\n]*)\n?(?:([^\n@][^\n]*)\n?)?/gm, (match, inline: string, continuation: string | undefined) => {
-    const stmt = inline.trim() ? `@import ${inline.trim()}` : continuation ? `@import ${continuation.trim()}` : '@import';
-    if (stmt !== '@import') importLines.push(stmt);
-    return '';
-  });
+  child = child.replace(
+    /^@import([^\n]*)\n?(?:([^\n@][^\n]*)\n?)?/gm,
+    (match, inline: string, continuation: string | undefined) => {
+      const stmt = inline.trim()
+        ? `@import ${inline.trim()}`
+        : continuation
+          ? `@import ${continuation.trim()}`
+          : '@import';
+      if (stmt !== '@import') importLines.push(stmt);
+      return '';
+    },
+  );
 
   // 4. Collect @section('name') ... @endsection blocks from child
   const sections: Record<string, string> = {};
@@ -324,7 +346,10 @@ function resolveIncludes(
     if (!resolved && sharedTemplatesDirs) {
       for (const dir of sharedTemplatesDirs) {
         const candidate = tryExtensions(join(dir, includePath));
-        if (candidate) { resolved = candidate; break; }
+        if (candidate) {
+          resolved = candidate;
+          break;
+        }
       }
     }
 
@@ -362,11 +387,14 @@ export function compileTemplate(
   // Handles both `@import { Foo } from 'bar'` (single-line) and
   // legacy split form `@import\n{ Foo } from 'bar'` (two-line).
   const importLines: string[] = [];
-  template = template.replace(/^@import([^\n]*)\n?(?:([^\n@][^\n]*)\n?)?/gm, (_, inline: string, continuation: string | undefined) => {
-    const rest = inline.trim() || continuation?.trim() || '';
-    if (rest) importLines.push(`import ${rest}`);
-    return '';
-  });
+  template = template.replace(
+    /^@import([^\n]*)\n?(?:([^\n@][^\n]*)\n?)?/gm,
+    (_, inline: string, continuation: string | undefined) => {
+      const rest = inline.trim() || continuation?.trim() || '';
+      if (rest) importLines.push(`import ${rest}`);
+      return '';
+    },
+  );
 
   // ── 2. Extract @vars declaration ─────────────────────────────────────────
   let varsEntries: VarsEntry[] = [];
@@ -520,14 +548,14 @@ export async function viewCache(
   // Each is an ordered fallback; first match wins.
   const candidateTemplateDirs = [
     join(modulesDir, 'Shared', 'ui', 'web', 'templates'), // 1. full:    Shared/ui/web/templates/layouts/x.html
-    join(modulesDir, 'Shared'),                            // 2. simple:  Shared/layouts/x.html
-    join(cwd, 'src', 'shared', 'ui'),                     // 3. app-lvl: src/shared/ui/layouts/x.html
+    join(modulesDir, 'Shared'), // 2. simple:  Shared/layouts/x.html
+    join(cwd, 'src', 'shared', 'ui'), // 3. app-lvl: src/shared/ui/layouts/x.html
   ];
   // Candidate shared asset dirs — @styles('x.css') resolves to {dir}/x.css.
   const candidateAssetDirs = [
-    join(modulesDir, 'Shared', 'ui', 'web', 'assets'),    // 1. full:    Shared/ui/web/assets/x.css
-    join(modulesDir, 'Shared', 'assets'),                  // 2. simple:  Shared/assets/x.css
-    join(cwd, 'src', 'shared', 'ui', 'assets'),            // 3. app-lvl: src/shared/ui/assets/x.css
+    join(modulesDir, 'Shared', 'ui', 'web', 'assets'), // 1. full:    Shared/ui/web/assets/x.css
+    join(modulesDir, 'Shared', 'assets'), // 2. simple:  Shared/assets/x.css
+    join(cwd, 'src', 'shared', 'ui', 'assets'), // 3. app-lvl: src/shared/ui/assets/x.css
   ];
   const sharedTemplatesDirs = candidateTemplateDirs.filter(existsSync);
   const sharedAssetDirs = candidateAssetDirs.filter(existsSync);
@@ -552,7 +580,7 @@ export async function viewCache(
 
     const assetDirs = [
       join(modulesDir, modName, 'ui', 'web', 'assets'), // ui/web/assets (standard)
-      join(modulesDir, modName, 'ui', 'assets'),         // ui/assets (flat convention)
+      join(modulesDir, modName, 'ui', 'assets'), // ui/assets (flat convention)
     ].filter(existsSync);
     const htmlFiles = readdirSync(templatesDir).filter((f: string) => f.endsWith('.html'));
 

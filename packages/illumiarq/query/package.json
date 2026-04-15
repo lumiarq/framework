@@ -2,7 +2,7 @@
   "name": "@illumiarq/query",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ query bridge \u2014 framework-agnostic loader bridge. TanStack Query is the default adapter, not a required dependency. Use SWR, Apollo, or plain fetch via @lumiarq/query/core.",
+  "description": "LumiARQ query bridge — framework-agnostic loader bridge. TanStack Query is the default adapter, not a required dependency. Use SWR, Apollo, or plain fetch via @lumiarq/query/core.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -55,8 +55,8 @@
   },
   "dependencies": {
     "zod": "^3.24.1",
-    "@illumiarq/core": "workspace:*",
-    "@illumiarq/http": "workspace:*"
+    "@illumiarq/core": "^1.0.0",
+    "@illumiarq/http": "^1.0.0"
   },
   "peerDependencies": {
     "@tanstack/react-query": ">=5.0.0",

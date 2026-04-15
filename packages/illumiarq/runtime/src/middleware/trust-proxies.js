@@ -1,3 +1,3 @@
-// Moved to @velo/security — re-exported here for backward compatibility.
-export { trustProxiesMiddleware } from '@illumiarqsecurity';
+// Moved to @illumiarq/security — re-exported here for backward compatibility.
+export { trustProxiesMiddleware } from '@illumiarq/security';
 //# sourceMappingURL=trust-proxies.js.map

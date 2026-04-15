@@ -2,7 +2,7 @@
   "name": "@illumiarq/migrations",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ migrations \u2014 BaseSeeder, BaseFactory, seeder runner",
+  "description": "LumiARQ migrations — BaseSeeder, BaseFactory, seeder runner",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,6 +32,6 @@
     "@vitest/coverage-v8": "^2.1.8"
   },
   "dependencies": {
-    "@illumiarq/database": "workspace:*"
+    "@illumiarq/database": "^1.0.0"
   }
 }

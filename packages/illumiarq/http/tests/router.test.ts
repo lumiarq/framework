@@ -137,12 +137,16 @@ describe('Route.apiResource()', () => {
     Route.apiResource('/photos', handlers);
     const routes = getRegisteredRoutes();
     expect(routes).toHaveLength(5);
-    expect(routes.every((r) => !r.name?.endsWith('.create') && !r.name?.endsWith('.edit'))).toBe(true);
+    expect(routes.every((r) => !r.name?.endsWith('.create') && !r.name?.endsWith('.edit'))).toBe(
+      true,
+    );
   });
 
   it('generates correct paths and names', () => {
     Route.apiResource('/photos', handlers);
-    const map = Object.fromEntries(getRegisteredRoutes().map((r) => [r.name, `${r.method} ${r.path}`]));
+    const map = Object.fromEntries(
+      getRegisteredRoutes().map((r) => [r.name, `${r.method} ${r.path}`]),
+    );
     expect(map['photos.index']).toBe('GET /photos');
     expect(map['photos.store']).toBe('POST /photos');
     expect(map['photos.show']).toBe('GET /photos/:id');

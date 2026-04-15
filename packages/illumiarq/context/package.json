@@ -2,7 +2,7 @@
   "name": "@illumiarq/context",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiArq execution context \u2014 AsyncLocalStorage + context factories",
+  "description": "LumiArq execution context — AsyncLocalStorage + context factories",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/core": "workspace:*"
+    "@illumiarq/core": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

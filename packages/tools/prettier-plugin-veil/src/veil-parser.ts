@@ -21,10 +21,7 @@
 
 // ── Node types ────────────────────────────────────────────────────────────────
 
-export type VeilNode =
-  | VeilDirectiveNode
-  | VeilBlockNode
-  | VeilRawNode;
+export type VeilNode = VeilDirectiveNode | VeilBlockNode | VeilRawNode;
 
 /** A self-closing directive: @vars, @extends, @include, @styles, @scripts */
 export interface VeilDirectiveNode {
@@ -129,11 +126,12 @@ function tokenize(source: string): Token[] {
       const rest = (nameMatch[2] ?? '').trim();
       // @import: rest of line is the import statement verbatim (no parens).
       // Other directives: strip surrounding parens, preserving inner content.
-      const args = name === 'import'
-        ? rest
-        : rest.startsWith('(') && rest.endsWith(')')
-          ? rest.slice(1, -1).trim()
-          : rest;
+      const args =
+        name === 'import'
+          ? rest
+          : rest.startsWith('(') && rest.endsWith(')')
+            ? rest.slice(1, -1).trim()
+            : rest;
       // Only known Veil directives become directive tokens.
       // Unknown @xxx patterns (Alpine.js @click, @keydown, etc.) stay raw.
       if (ALL_KNOWN_DIRECTIVES.has(name)) {

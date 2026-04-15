@@ -9,5 +9,5 @@
  * eventBus.emit(UserCreated, { userId: '123', email: 'user@example.com' });
  * eventBus.listen(UserCreated, async (payload) => { ... });
  */
-export { EventBus as eventBus } from '@illumiarqcore';
+export { EventBus as eventBus } from '@illumiarq/core';
 //# sourceMappingURL=event-bus-instance.js.map

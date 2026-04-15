@@ -231,7 +231,16 @@ function registerResource(
   options: ResourceOptions,
   apiOnly: boolean,
 ): void {
-  const { only, except, names = {}, middleware, render = 'dynamic', bind, deprecated, sunset } = options;
+  const {
+    only,
+    except,
+    names = {},
+    middleware,
+    render = 'dynamic',
+    bind,
+    deprecated,
+    sunset,
+  } = options;
 
   const shouldInclude = (action: ResourceAction): boolean => {
     if (only) return only.includes(action);

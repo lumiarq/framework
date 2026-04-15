@@ -26,7 +26,10 @@ export const authMiddleware = defineMiddleware({
 
     if (!authorization || !authorization.startsWith('Bearer ')) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized', message: 'Missing or invalid Authorization header.' }),
+        JSON.stringify({
+          error: 'Unauthorized',
+          message: 'Missing or invalid Authorization header.',
+        }),
         { status: 401, headers: { 'Content-Type': 'application/json' } },
       );
     }

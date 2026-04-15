@@ -2,7 +2,7 @@
   "name": "@illumiarq/contracts",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "LumiARQ infrastructure contracts \u2014 TypeScript interfaces for Mail, Queue, Storage, Cache, EventBus, Logger. Zero dependencies.",
+  "description": "LumiARQ infrastructure contracts — TypeScript interfaces for Mail, Queue, Storage, Cache, EventBus, Logger. Zero dependencies.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

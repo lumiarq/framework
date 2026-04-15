@@ -1,0 +1,44 @@
+{
+  "name": "@illumiarq/lumis",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "LumiARQ dev CLI — extends @lumiarq/lumis with serve / build / preview commands",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "lumis": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@illumiarq/adapters": "^1.0.0",
+    "@illumiarq/auth-starter": "^1.0.0",
+    "@illumiarq/search": "^1.0.0",
+    "@illumiarq/veil": "^1.0.0",
+    "@lumiarq/lumis": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,4 +1,4 @@
-// Context is now provided by @velo/context — re-exported here for backward compatibility
+// Context is now provided by @illumiarq/context — re-exported here for backward compatibility
 export {
   runWithContext,
   getContext,
@@ -7,5 +7,5 @@ export {
   createJobContext,
   createCommandContext,
   createTestContext,
-} from '@illumiarqcontext';
+} from '@illumiarq/context';
 //# sourceMappingURL=index.js.map
