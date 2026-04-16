@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/runtime",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "LumiARQ runtime — request lifecycle, loader orchestration (parallel + deduplication), middleware pipeline",
   "type": "module",

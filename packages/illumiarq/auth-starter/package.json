@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/auth-starter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "LumiARQ auth scaffold templates — consumed by lumis auth:install only. Never imported by application code.",
   "type": "module",

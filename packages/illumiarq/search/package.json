@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "LumiARQ docs search — build-time index construction and client-side query engine.",
   "type": "module",
