@@ -38,14 +38,18 @@ describe('boot', () => {
   });
 
   it('creates request ALS context for booted routes and bridges logger calls', async () => {
-    Route.get('/boot-test', async () => {
-      const context = getContext();
-      context.logger.info('boot-handler', { feature: 'boot-test' });
-      return new Response(JSON.stringify({ contextId: context.contextId }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }, { render: 'dynamic' });
+    Route.get(
+      '/boot-test',
+      async () => {
+        const context = getContext();
+        context.logger.info('boot-handler', { feature: 'boot-test' });
+        return new Response(JSON.stringify({ contextId: context.contextId }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      },
+      { render: 'dynamic' },
+    );
 
     const app = await boot();
     const response = await app.router.fetch(

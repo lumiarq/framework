@@ -93,4 +93,14 @@ export type { GenerateParamsResult, StaticRoute } from './types/ssg.types.js';
 // ── Built-in middleware ───────────────────────────────────────────────────────
 // Importing this registers all framework built-in middleware into the global registry.
 // Called once by boot.ts — do not call in application code.
-export { authMiddleware, csrfMiddleware, throttleMiddleware, trazeMiddleware, setTrazeLogger } from './middleware/builtins/index.js';
+export {
+  authMiddleware,
+  csrfMiddleware,
+  throttleMiddleware,
+  trazeMiddleware,
+  setTrazeLogger,
+} from './middleware/builtins/index.js';
+
+// ─── Form request validation ──────────────────────────────────────────────────
+export { parseBody, parseQuery } from './request/form-request.js';
+export type { ValidationErrors } from './request/form-request.js';

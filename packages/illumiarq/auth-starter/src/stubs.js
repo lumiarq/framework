@@ -14,13 +14,12 @@ import { readFileSync, existsSync, mkdirSync, copyFileSync, readdirSync } from '
 import { join, dirname } from 'node:path';
 const PKG_STUBS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'stubs');
 export function loadAuthStub(name) {
-    // name is like 'auth/login.action.stub' or 'user/user.model.stub'
-    const [group] = name.split('/');
-    const file = name.slice(group.length + 1);
-    const userStub = join(process.cwd(), 'stubs', group, file);
-    if (existsSync(userStub))
-        return readFileSync(userStub, 'utf-8');
-    return readFileSync(join(PKG_STUBS_DIR, name), 'utf-8');
+  // name is like 'auth/login.action.stub' or 'user/user.model.stub'
+  const [group] = name.split('/');
+  const file = name.slice(group.length + 1);
+  const userStub = join(process.cwd(), 'stubs', group, file);
+  if (existsSync(userStub)) return readFileSync(userStub, 'utf-8');
+  return readFileSync(join(PKG_STUBS_DIR, name), 'utf-8');
 }
 /**
  * Loads an IAM stub by name (e.g. 'iam/module.stub').
@@ -29,41 +28,38 @@ export function loadAuthStub(name) {
  *   2. {packageDir}/stubs/iam/{file}  ← package default
  */
 export function loadIAMStub(name) {
-    // name is like 'iam/login.action.stub'
-    const [group] = name.split('/');
-    const file = name.slice(group.length + 1);
-    const userStub = join(process.cwd(), 'stubs', group, file);
-    if (existsSync(userStub))
-        return readFileSync(userStub, 'utf-8');
-    return readFileSync(join(PKG_STUBS_DIR, name), 'utf-8');
+  // name is like 'iam/login.action.stub'
+  const [group] = name.split('/');
+  const file = name.slice(group.length + 1);
+  const userStub = join(process.cwd(), 'stubs', group, file);
+  if (existsSync(userStub)) return readFileSync(userStub, 'utf-8');
+  return readFileSync(join(PKG_STUBS_DIR, name), 'utf-8');
 }
 /** Returns the package stubs root (used by lumis stub:publish --auth). */
 export function getAuthStarterStubsDir() {
-    return PKG_STUBS_DIR;
+  return PKG_STUBS_DIR;
 }
 /** Copies all auth-starter stubs to {project}/stubs/{auth|user}/ for user customisation. */
 export function publishAuthStubs(projectRoot) {
-    for (const group of ['auth', 'user']) {
-        const src = join(PKG_STUBS_DIR, group);
-        const dest = join(projectRoot, 'stubs', group);
-        mkdirSync(dest, { recursive: true });
-        for (const file of readdirSync(src)) {
-            const dst = join(dest, file);
-            if (!existsSync(dst))
-                copyFileSync(join(src, file), dst);
-        }
+  for (const group of ['auth', 'user']) {
+    const src = join(PKG_STUBS_DIR, group);
+    const dest = join(projectRoot, 'stubs', group);
+    mkdirSync(dest, { recursive: true });
+    for (const file of readdirSync(src)) {
+      const dst = join(dest, file);
+      if (!existsSync(dst)) copyFileSync(join(src, file), dst);
     }
+  }
 }
 /** Copies all IAM stubs to {project}/stubs/iam/ for user customisation. */
 export function publishIAMStubs(projectRoot) {
-    const src = join(PKG_STUBS_DIR, 'iam');
-    const dest = join(projectRoot, 'stubs', 'iam');
-    mkdirSync(dest, { recursive: true });
-    for (const file of readdirSync(src)) {
-        const dst = join(dest, file);
-        if (!existsSync(dst))
-            copyFileSync(join(src, file), dst);
-    }
+  const src = join(PKG_STUBS_DIR, 'iam');
+  const dest = join(projectRoot, 'stubs', 'iam');
+  mkdirSync(dest, { recursive: true });
+  for (const file of readdirSync(src)) {
+    const dst = join(dest, file);
+    if (!existsSync(dst)) copyFileSync(join(src, file), dst);
+  }
 }
 /**
  * Loads a UI stub for the given framework and stub name.
@@ -73,12 +69,10 @@ export function publishIAMStubs(projectRoot) {
  *   3. Placeholder comment if no stub exists for this framework yet
  */
 export function loadUiStub(framework, name) {
-    const userStub = join(process.cwd(), 'stubs', 'ui', framework, name);
-    if (existsSync(userStub))
-        return readFileSync(userStub, 'utf-8');
-    const pkgStub = join(PKG_STUBS_DIR, 'ui', framework, name);
-    if (existsSync(pkgStub))
-        return readFileSync(pkgStub, 'utf-8');
-    return `// TODO: ${framework} UI stub for ${name}\n// Run: lumis auth:install --ui ${framework}\n`;
+  const userStub = join(process.cwd(), 'stubs', 'ui', framework, name);
+  if (existsSync(userStub)) return readFileSync(userStub, 'utf-8');
+  const pkgStub = join(PKG_STUBS_DIR, 'ui', framework, name);
+  if (existsSync(pkgStub)) return readFileSync(pkgStub, 'utf-8');
+  return `// TODO: ${framework} UI stub for ${name}\n// Run: lumis auth:install --ui ${framework}\n`;
 }
 //# sourceMappingURL=stubs.js.map

@@ -6,5 +6,7 @@ import type { GeneratedFile } from '@illumiarq/support';
  * React stubs are fully implemented. Vue/Svelte/Solid stubs return
  * placeholder TODO files — run `lumis stub:publish --auth` to customise.
  */
-export declare function generateAuthUI(uiFramework: 'react' | 'vue' | 'svelte' | 'solid'): GeneratedFile[];
+export declare function generateAuthUI(
+  uiFramework: 'react' | 'vue' | 'svelte' | 'solid',
+): GeneratedFile[];
 //# sourceMappingURL=ui-module.d.ts.map

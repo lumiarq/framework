@@ -5,11 +5,11 @@
  * components and graceful fallback when alpinejs is not installed.
  */
 export interface AlpineLike {
-    start(): void;
-    data(name: string, callback: () => Record<string, unknown>): void;
+  start(): void;
+  data(name: string, callback: () => Record<string, unknown>): void;
 }
 type AlpineLoader = () => Promise<{
-    default: AlpineLike;
+  default: AlpineLike;
 }>;
 export declare function registerComponents(defs: Record<string, unknown>): void;
 export declare function start(): Promise<AlpineLike | null>;

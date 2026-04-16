@@ -44,32 +44,32 @@
  *   --min   Minify the compiled HTML output (whitespace + comment stripping)
  */
 export interface ViewCacheResult {
-    compiled: number;
-    paths: string[];
+  compiled: number;
+  paths: string[];
 }
 export interface ViewClearResult {
-    cleared: boolean;
-    dir: string;
+  cleared: boolean;
+  dir: string;
 }
 /** Options for the viewCache compiler pass. */
 export interface ViewCacheOptions {
-    /**
-     * When true, strips HTML comments and collapses whitespace between tags
-     * in the compiled output. <style> and <script> blocks are preserved as-is.
-     * Activate with: lumis view:cache --min
-     */
-    minify?: boolean;
+  /**
+   * When true, strips HTML comments and collapses whitespace between tags
+   * in the compiled output. <style> and <script> blocks are preserved as-is.
+   * Activate with: lumis view:cache --min
+   */
+  minify?: boolean;
 }
 /** Internal context passed through the compile pipeline. */
 interface CompileContext {
-    /** Ordered list of module-local asset directories to check (first match wins). */
-    assetDirs: string[];
-    /** Ordered list of fallback asset directories (first match wins). */
-    sharedAssetDirs?: string[];
-    templatesDir: string;
-    /** Ordered list of fallback template directories (first match wins). */
-    sharedTemplatesDirs?: string[];
-    minify?: boolean;
+  /** Ordered list of module-local asset directories to check (first match wins). */
+  assetDirs: string[];
+  /** Ordered list of fallback asset directories (first match wins). */
+  sharedAssetDirs?: string[];
+  templatesDir: string;
+  /** Ordered list of fallback template directories (first match wins). */
+  sharedTemplatesDirs?: string[];
+  minify?: boolean;
 }
 /**
  * Compiles a single `.html` template into a TypeScript render-function module.
@@ -78,8 +78,15 @@ interface CompileContext {
  * @param ctx       Compile context: asset dirs, templates dir, options
  * @param lang      Optional lang map for @t() substitution hint (runtime-resolved)
  */
-export declare function compileTemplate(template: string, ctx: CompileContext, lang?: Record<string, string>): string;
-export declare function viewCache(cwd?: string, options?: ViewCacheOptions): Promise<ViewCacheResult>;
+export declare function compileTemplate(
+  template: string,
+  ctx: CompileContext,
+  lang?: Record<string, string>,
+): string;
+export declare function viewCache(
+  cwd?: string,
+  options?: ViewCacheOptions,
+): Promise<ViewCacheResult>;
 /**
  * Removes the `storage/framework/cache/views/` directory entirely.
  */

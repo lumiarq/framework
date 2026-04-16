@@ -1,11 +1,11 @@
-import { spawn, spawnSync } from 'node:child_process'
-import { existsSync }       from 'node:fs'
-import { writeServerWrapper } from '../server-wrapper.js'
-import { arcNodeApp, appEnvFile } from '../paths.js'
+import { spawn, spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { writeServerWrapper } from '../server-wrapper.js';
+import { arcNodeApp, appEnvFile } from '../paths.js';
 
 export interface ServeOptions {
-  port?: number
-  host?: string
+  port?: number;
+  host?: string;
 }
 
 /**
@@ -19,11 +19,11 @@ export interface ServeOptions {
  * @returns Exit code (0 on clean shutdown, non-zero on error).
  */
 export async function serveApp(options: ServeOptions = {}, cwd = process.cwd()): Promise<number> {
-  const port = options.port ?? parseInt(process.env['PORT'] ?? '4000', 10)
-  const host = options.host ?? '0.0.0.0'
+  const port = options.port ?? parseInt(process.env['PORT'] ?? '4000', 10);
+  const host = options.host ?? '0.0.0.0';
 
   // ── Step 1: Build node bundle ──────────────────────────────────────────────
-  process.stdout.write('\n  Bundling app...')
+  process.stdout.write('\n  Bundling app...');
   const build = spawnSync('pnpm', ['run', 'build:node'], {
     cwd,
     stdio: 'pipe',
@@ -33,25 +33,25 @@ export async function serveApp(options: ServeOptions = {}, cwd = process.cwd()):
       NODE_ENV: 'development',
       APP_ENV: process.env['APP_ENV'] ?? 'local',
     },
-  })
+  });
 
   if (build.status !== 0) {
-    console.error(' failed.\n')
-    if (build.stdout) process.stdout.write(build.stdout)
-    if (build.stderr) process.stderr.write(build.stderr)
-    return 1
+    console.error(' failed.\n');
+    if (build.stdout) process.stdout.write(build.stdout);
+    if (build.stderr) process.stderr.write(build.stderr);
+    return 1;
   }
-  console.log(' done.')
+  console.log(' done.');
 
   // ── Step 2: Write server wrapper ───────────────────────────────────────────
-  const wrapperPath = writeServerWrapper(port, cwd)
+  const wrapperPath = writeServerWrapper(port, cwd);
 
   // ── Step 3: Start with --watch ─────────────────────────────────────────────
-  console.log(`\n  LumiARQ  http://${host}:${port}`)
-  console.log(`  Watching .arc/ for changes...\n`)
+  console.log(`\n  LumiARQ  http://${host}:${port}`);
+  console.log(`  Watching .arc/ for changes...\n`);
 
-  const envPath    = appEnvFile(cwd)
-  const envFileArg = existsSync(envPath) ? [`--env-file=${envPath}`] : []
+  const envPath = appEnvFile(cwd);
+  const envFileArg = existsSync(envPath) ? [`--env-file=${envPath}`] : [];
 
   const server = spawn('node', [...envFileArg, '--watch', wrapperPath], {
     cwd,
@@ -63,9 +63,9 @@ export async function serveApp(options: ServeOptions = {}, cwd = process.cwd()):
       HOST: host,
       PORT: String(port),
     },
-  })
+  });
 
   return new Promise<number>((resolve) => {
-    server.on('close', (code) => resolve(code ?? 0))
-  })
+    server.on('close', (code) => resolve(code ?? 0));
+  });
 }

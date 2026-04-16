@@ -25,6 +25,8 @@
     "@illumiarq/contracts": "^1.0.0"
   },
   "devDependencies": {
+    "@types/ioredis": "^5.0.0",
+    "ioredis": "^5.10.1",
     "typescript": "^5.7.2",
     "vitest": "^2.1.9"
   },

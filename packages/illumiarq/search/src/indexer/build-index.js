@@ -9,9 +9,9 @@
  * @returns     SearchIndex ready to pass to queryIndex() or serialise as JSON
  */
 export function buildSearchIndex(docs) {
-    return {
-        pages: docs,
-        createdAt: new Date().toISOString(),
-    };
+  return {
+    pages: docs,
+    createdAt: new Date().toISOString(),
+  };
 }
 //# sourceMappingURL=build-index.js.map

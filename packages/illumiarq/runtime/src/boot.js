@@ -115,11 +115,7 @@ export async function boot(hooks) {
 
     const handler =
       middlewareFns.length > 0
-        ? (req) =>
-            composeMiddleware(middlewareFns)(
-              req,
-              baseHandler,
-            )
+        ? (req) => composeMiddleware(middlewareFns)(req, baseHandler)
         : baseHandler;
 
     const requestScopedHandler = async (input) => {
@@ -155,7 +151,9 @@ export async function boot(hooks) {
 
   if (hooks?.onError) {
     const onError = hooks.onError;
-    router.onError((err, c) => onError(err instanceof Error ? err : new Error(String(err)), c.req.raw));
+    router.onError((err, c) =>
+      onError(err instanceof Error ? err : new Error(String(err)), c.req.raw),
+    );
   }
 
   // Run post-boot hook if provided

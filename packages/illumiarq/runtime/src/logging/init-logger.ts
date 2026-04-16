@@ -1,5 +1,14 @@
-import { createConsoleChannel, createFileChannel, createHttpChannel, createLogger } from '@trazze/sdk';
-import { getDefaultLoggingConfig, type RuntimeLoggingChannel, type RuntimeLoggingConfig } from '../config/load-logging.js';
+import {
+  createConsoleChannel,
+  createFileChannel,
+  createHttpChannel,
+  createLogger,
+} from '@trazze/sdk';
+import {
+  getDefaultLoggingConfig,
+  type RuntimeLoggingChannel,
+  type RuntimeLoggingConfig,
+} from '../config/load-logging.js';
 
 /**
  * Initialize the runtime logger used by built-in observability middleware.

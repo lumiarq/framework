@@ -119,3 +119,11 @@ export type {
   ContentLoader,
 } from './content/define-content-loader.js';
 export { clearCache as clearContentCache } from './content/content-cache.js';
+
+// ─── API Resource transformers ────────────────────────────────────────────────
+export { defineResource } from './http/resource.js';
+export type {
+  ResourceDefinition,
+  PaginatedResourceResponse,
+  PaginationMeta,
+} from './http/resource.js';

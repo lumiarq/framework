@@ -1,5 +1,9 @@
 export interface ViewHelper {
-    view(name: string, vars?: Record<string, unknown>, locale?: Record<string, string>): Promise<string>;
+  view(
+    name: string,
+    vars?: Record<string, unknown>,
+    locale?: Record<string, string>,
+  ): Promise<string>;
 }
 /** Singleton helper bound to process.cwd() */
 export declare const ctx: ViewHelper;

@@ -101,6 +101,48 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
     const middlewareFns: MiddlewareFn[] = routeMiddleware
       .map((mw): MiddlewareFn | undefined => {
         if (typeof mw === 'function') return mw as MiddlewareFn;
+
+        // Handle parameterized throttle: 'lumiarq.throttle:<maxReqs>,<windowMin>'
+        // e.g. 'lumiarq.throttle:5,1' → max 5 requests per 1-minute window
+        if (typeof mw === 'string' && mw.startsWith('lumiarq.throttle:')) {
+          const params = mw.slice('lumiarq.throttle:'.length).split(',');
+          const maxReqs = parseInt(params[0] ?? '60', 10);
+          const windowMin = parseFloat(params[1] ?? '1');
+          const windowMs = Math.round(windowMin * 60_000);
+          const routeStore = new Map<string, { count: number; resetAt: number }>();
+          return async (req: Request, next: () => Promise<Response>): Promise<Response> => {
+            const ip =
+              req.headers.get('CF-Connecting-IP') ??
+              req.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() ??
+              req.headers.get('X-Real-IP') ??
+              'unknown';
+            const now = Date.now();
+            const entry = routeStore.get(ip);
+            if (!entry || now >= entry.resetAt) {
+              routeStore.set(ip, { count: 1, resetAt: now + windowMs });
+              return next();
+            }
+            if (entry.count >= maxReqs) {
+              const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
+              return new Response(
+                JSON.stringify({ error: 'Too Many Requests', message: 'Rate limit exceeded.' }),
+                {
+                  status: 429,
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Retry-After': String(retryAfter),
+                    'X-RateLimit-Limit': String(maxReqs),
+                    'X-RateLimit-Remaining': '0',
+                    'X-RateLimit-Reset': String(Math.ceil(entry.resetAt / 1000)),
+                  },
+                },
+              );
+            }
+            entry.count++;
+            return next();
+          };
+        }
+
         const def = getMiddleware(mw);
         if (!def) {
           console.warn(
@@ -123,14 +165,32 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
       });
 
     // Compose middleware pipeline → wrap base handler
-    const handler =
+    let handler: (req: Request) => Promise<Response> =
       middlewareFns.length > 0
         ? (req: Request) =>
             composeMiddleware(middlewareFns)(
               req,
               baseHandler as (req: Request) => Promise<Response>,
             )
-        : baseHandler;
+        : (baseHandler as (req: Request) => Promise<Response>);
+
+    // Inject Deprecation / Sunset headers for deprecated routes
+    if (routeDef.deprecated) {
+      const innerHandler = handler;
+      handler = async (req: Request) => {
+        const response = await innerHandler(req);
+        const headers = new Headers(response.headers);
+        headers.set('Deprecation', 'true');
+        if (routeDef.sunset) {
+          headers.set('Sunset', routeDef.sunset);
+        }
+        return new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers,
+        });
+      };
+    }
 
     const requestScopedHandler = async (input: { req?: { raw?: Request } } | Request) => {
       const req = input instanceof Request ? input : input.req?.raw;
@@ -166,7 +226,9 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
   // Wire global error handler if provided (e.g. @trazze/ignite in development)
   if (hooks?.onError) {
     const onError = hooks.onError;
-    router.onError((err, c) => onError(err instanceof Error ? err : new Error(String(err)), c.req.raw));
+    router.onError((err, c) =>
+      onError(err instanceof Error ? err : new Error(String(err)), c.req.raw),
+    );
   }
 
   // Run post-boot hook if provided

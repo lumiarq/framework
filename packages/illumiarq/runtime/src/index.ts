@@ -102,7 +102,11 @@ export type { ConfirmedOptions } from './middleware/confirmed.js';
 export { StubScheduler, schedule } from './stub-scheduler.js';
 export { initializeRuntimeLogger } from './logging/init-logger.js';
 export { loadLoggingConfig, getDefaultLoggingConfig } from './config/load-logging.js';
-export type { RuntimeLoggingConfig, RuntimeLoggingChannel, RuntimeLogLevel } from './config/load-logging.js';
+export type {
+  RuntimeLoggingConfig,
+  RuntimeLoggingChannel,
+  RuntimeLogLevel,
+} from './config/load-logging.js';
 
 // ─── Test utilities ───────────────────────────────────────────────────────────
 export { withTestContext } from './with-test-context.js';
@@ -124,3 +128,44 @@ export type {
   StubStorageOptions,
   StubAuditOptions,
 } from './stubs/index.js';
+
+// ─── Mail drivers ─────────────────────────────────────────────────────────────
+export { SMTPMailer, ResendMailer } from './mail/index.js';
+export type { SMTPMailerOptions, SmtpConfig, ResendMailerOptions } from './mail/index.js';
+
+// ─── Queue drivers ────────────────────────────────────────────────────────────
+export { BullMQQueue, BullMQWorker } from './queue/index.js';
+export type {
+  BullMQQueueOptions,
+  BullMQWorkerOptions,
+  JobHandler,
+  RedisConnectionOptions,
+} from './queue/index.js';
+
+// ─── Storage drivers ──────────────────────────────────────────────────────────
+export { LocalStorage, S3Storage } from './storage/index.js';
+export type { LocalStorageOptions, S3StorageOptions } from './storage/index.js';
+
+// ─── Scheduler (real cron driver) ────────────────────────────────────────────
+export { CronScheduler } from './scheduler/index.js';
+
+// ─── Audit drivers ────────────────────────────────────────────────────────────
+export { DatabaseAudit } from './audit/index.js';
+export type { DatabaseAuditOptions } from './audit/index.js';
+
+// ─── Notification system ──────────────────────────────────────────────────────
+export { NotificationService } from './notification/index.js';
+export type { NotificationServiceOptions, Notification } from './notification/index.js';
+
+// ─── Exception handler ────────────────────────────────────────────────────────
+export {
+  defineExceptionHandler,
+  HttpException,
+  ValidationError,
+  NotFoundError,
+  UnauthorizedError,
+  ForbiddenError,
+  BadRequestError,
+  ConflictError,
+} from './exception-handler.js';
+export type { ExceptionHandlerFn, ExceptionHandlerDefinition } from './exception-handler.js';

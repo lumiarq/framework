@@ -1,4 +1,9 @@
-import { createConsoleChannel, createFileChannel, createHttpChannel, createLogger } from '@trazze/sdk';
+import {
+  createConsoleChannel,
+  createFileChannel,
+  createHttpChannel,
+  createLogger,
+} from '@trazze/sdk';
 import { getDefaultLoggingConfig } from '../config/load-logging.js';
 
 function createChannel(channel, globalPrettify) {

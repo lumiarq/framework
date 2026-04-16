@@ -10,22 +10,22 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 function buildViewHelper(cwd) {
-    return {
-        async view(name, vars = {}, locale = {}) {
-            const viewPath = resolve(cwd, 'bootstrap', 'cache', 'views', `${name}.js`);
-            if (!existsSync(viewPath)) {
-                throw new Error(`View "${name}" not found. Run: lumis view:cache`);
-            }
-            // Dynamic import of the compiled render module
-            const mod = (await import(viewPath));
-            return mod.render(vars, locale);
-        },
-    };
+  return {
+    async view(name, vars = {}, locale = {}) {
+      const viewPath = resolve(cwd, 'bootstrap', 'cache', 'views', `${name}.js`);
+      if (!existsSync(viewPath)) {
+        throw new Error(`View "${name}" not found. Run: lumis view:cache`);
+      }
+      // Dynamic import of the compiled render module
+      const mod = await import(viewPath);
+      return mod.render(vars, locale);
+    },
+  };
 }
 /** Singleton helper bound to process.cwd() */
 export const ctx = buildViewHelper(process.cwd());
 /** Factory for custom cwd (useful in tests) */
 export function createCtx(cwd = process.cwd()) {
-    return buildViewHelper(cwd);
+  return buildViewHelper(cwd);
 }
 //# sourceMappingURL=ctx.js.map

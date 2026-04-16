@@ -1,7 +1,7 @@
 import type { SearchIndex, SearchResult } from '../types/search.types.js';
 export interface QueryOptions {
-    /** Maximum number of results to return (default: 8) */
-    limit?: number;
+  /** Maximum number of results to return (default: 8) */
+  limit?: number;
 }
 /**
  * Queries a SearchIndex with a plain-text search string.
@@ -17,5 +17,9 @@ export interface QueryOptions {
  * @param opts   Optional query options (limit, etc.)
  * @returns      Ranked SearchResult array, best match first
  */
-export declare function queryIndex(index: SearchIndex, q: string, opts?: QueryOptions): SearchResult[];
+export declare function queryIndex(
+  index: SearchIndex,
+  q: string,
+  opts?: QueryOptions,
+): SearchResult[];
 //# sourceMappingURL=query-index.d.ts.map

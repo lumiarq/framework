@@ -26,21 +26,29 @@
     "clean": "rm -rf dist coverage"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1030.0",
+    "@aws-sdk/s3-request-presigner": "^3.1030.0",
     "@types/node": "^22.10.2",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^8.0.0",
     "@vitest/coverage-v8": "^2.1.8",
+    "bullmq": "^5.74.1",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.5",
+    "resend": "^6.12.0",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   },
   "dependencies": {
-    "fast-json-stable-stringify": "^2.1.0",
-    "hono": "^4.12.7",
-    "@illumiarq/contracts": "^1.0.0",
-    "@illumiarq/http": "^1.0.0",
-    "@illumiarq/testing": "^1.0.0",
     "@illumiarq/context": "^1.0.0",
+    "@illumiarq/contracts": "^1.0.0",
     "@illumiarq/core": "^1.0.0",
+    "@illumiarq/http": "^1.0.0",
     "@illumiarq/modules": "^1.0.0",
     "@illumiarq/security": "^1.0.0",
-    "@trazze/sdk": "^0.1.0"
+    "@illumiarq/testing": "^1.0.0",
+    "@trazze/sdk": "^0.1.0",
+    "fast-json-stable-stringify": "^2.1.0",
+    "hono": "^4.12.7"
   }
 }
