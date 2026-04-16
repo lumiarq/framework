@@ -5,6 +5,9 @@
  * Intercepts LumiARQ-specific commands (serve / build / preview) and
  * delegates everything else to the base @lumiarq/lumis runCli().
  */
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { ui, writeError, writeLine } from './console.js';
 import { serveApp } from './commands/serve.js';
 import { buildApp } from './commands/build.js';
@@ -23,9 +26,14 @@ import {
   clearViews,
   installAuth,
   listRoutes,
+  publishConfig,
   publishStubs,
   runDatabaseCommand,
+  scheduleList,
+  scheduleRun,
   showResolvedConfig,
+  workerList,
+  workerStart,
 } from './commands/app-commands.js';
 
 const argv = process.argv.slice(2);
@@ -60,6 +68,7 @@ async function main(): Promise<number> {
   }
 
   if (cmd === 'health') {
+    runHealthPreChecks();
     const { runCli } = await import('@lumiarq/lumis');
     return runCli(['doctor', ...argv.slice(1)]);
   }
@@ -153,6 +162,35 @@ async function main(): Promise<number> {
     });
   }
 
+  if (cmd === 'publish') {
+    const subCmd = argv[1];
+    if (subCmd === 'config') {
+      const configName = argv[2] ?? 'list';
+      return publishConfig(configName, argv.includes('--force'));
+    }
+    if (subCmd === 'stub' || subCmd === 'stubs') {
+      return publishStubs({ all: argv.includes('--all'), iam: argv.includes('--iam') });
+    }
+    writeError(ui.fail(`Unknown publish subcommand: "${subCmd}". Try: publish config <name>`));
+    return 1;
+  }
+
+  if (cmd === 'worker:start') {
+    return workerStart(argv.includes('--dev'));
+  }
+
+  if (cmd === 'worker:list') {
+    return workerList();
+  }
+
+  if (cmd === 'schedule:list') {
+    return scheduleList();
+  }
+
+  if (cmd === 'schedule:run') {
+    return scheduleRun(argv[1] ?? '');
+  }
+
   // ── Delegate to base @lumiarq/lumis (lazy import avoids auto-run side effect)
   const { runCli } = await import('@lumiarq/lumis');
   return runCli(argv);
@@ -183,11 +221,116 @@ function renderWrapperHelp(): void {
   writeLine('    lumis up');
   writeLine('    lumis auth:install [--iam] [--ui react]');
   writeLine('    lumis stub:publish [--all|--iam]');
+  writeLine();
+  writeLine(`  ${ui.bold('Database')}`);
   writeLine('    lumis db:generate | db:migrate');
+  writeLine('    lumis db:seed');
+  writeLine('    lumis db:fresh       — migrate + seed (destructive)');
+  writeLine('    lumis db:reset       — drop all tables + migrate');
+  writeLine('    lumis db:studio      — open drizzle-kit studio');
+  writeLine();
+  writeLine(`  ${ui.bold('Config')}`);
+  writeLine(
+    '    lumis publish config <name>  — mail | queue | cache | storage | session | security | logging | auth',
+  );
+  writeLine('    lumis publish config all     — publish every config file');
+  writeLine('    lumis publish config list    — show available configs');
+  writeLine();
+  writeLine(`  ${ui.bold('Workers & Scheduling')}`);
+  writeLine('    lumis worker:start [--dev]   — start background worker process');
+  writeLine('    lumis worker:list            — list registered workers + scheduled jobs');
+  writeLine('    lumis schedule:list          — list all cron jobs');
+  writeLine('    lumis schedule:run <name>    — run a specific cron job immediately');
   writeLine();
   writeLine(`  ${ui.bold('Core Lumis')}`);
   writeLine('    lumis doctor | init | make | intent | ir:* | runtime:* | tinker');
   writeLine();
+}
+
+function runHealthPreChecks(): void {
+  const cwd = process.cwd();
+  const checks: Array<{ label: string; pass: boolean; fix?: string }> = [];
+
+  // Required bootstrap files
+  checks.push({
+    label: 'bootstrap/entry.ts present',
+    pass: existsSync(join(cwd, 'bootstrap', 'entry.ts')),
+    fix: 'bootstrap/entry.ts is missing — this is the HTTP server entrypoint.',
+  });
+  checks.push({
+    label: 'bootstrap/providers.ts present',
+    pass: existsSync(join(cwd, 'bootstrap', 'providers.ts')),
+    fix: "bootstrap/providers.ts is missing — service container won't boot.",
+  });
+  checks.push({
+    label: 'config/app.ts present',
+    pass: existsSync(join(cwd, 'config', 'app.ts')),
+    fix: 'config/app.ts is missing — run: lumis publish config app',
+  });
+  checks.push({
+    label: '@types/node installed',
+    pass:
+      existsSync(join(cwd, 'node_modules', '@types', 'node')) ||
+      existsSync(join(cwd, '..', 'node_modules', '@types', 'node')),
+    fix: 'Install @types/node: pnpm add -D @types/node',
+  });
+
+  // Warn if queue driver isn't stub but worker.ts is missing
+  const queueConfigPath = join(cwd, 'config', 'queue.ts');
+  if (existsSync(queueConfigPath)) {
+    const queueSrc = readFileSync(queueConfigPath, 'utf8');
+    const usesBullmq = queueSrc.includes("'bullmq'") || queueSrc.includes('"bullmq"');
+    if (usesBullmq) {
+      checks.push({
+        label: 'bootstrap/worker.ts present (queue driver: bullmq)',
+        pass: existsSync(join(cwd, 'bootstrap', 'worker.ts')),
+        fix: "Queue driver is 'bullmq' but bootstrap/worker.ts is missing. Create it to process queued jobs.",
+      });
+    }
+  }
+
+  // Stale route loader warning
+  const routesLoader = join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts');
+  if (existsSync(routesLoader)) {
+    const loaderMtime = statSync(routesLoader).mtimeMs;
+    const routesRoot = join(cwd, 'src', 'modules');
+    let stale = false;
+    if (existsSync(routesRoot)) {
+      const stack = [routesRoot];
+      while (stack.length > 0) {
+        const dir = stack.pop()!;
+        for (const entry of readdirSync(dir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            stack.push(join(dir, entry.name));
+            continue;
+          }
+          if (/\/http\/routes\/.+\.(ts|js)$/.test(join(dir, entry.name))) {
+            if (statSync(join(dir, entry.name)).mtimeMs > loaderMtime) {
+              stale = true;
+              break;
+            }
+          }
+        }
+        if (stale) break;
+      }
+    }
+    checks.push({
+      label: 'route cache is fresh',
+      pass: !stale,
+      fix: 'Route files have changed since last cache. Run: lumis route:cache',
+    });
+  }
+
+  const warnings = checks.filter((c) => !c.pass);
+  if (warnings.length > 0) {
+    writeLine();
+    writeLine(ui.section('Health Pre-checks'));
+    for (const w of warnings) {
+      writeLine(`  ${ui.warn(w.label)}`);
+      if (w.fix) writeLine(`    ${ui.dim(w.fix)}`);
+    }
+    writeLine();
+  }
 }
 
 function parsePort(args: string[]): number | undefined {

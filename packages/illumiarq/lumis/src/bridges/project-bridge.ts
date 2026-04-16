@@ -90,6 +90,86 @@ async function showConfig(projectRoot: string, configName: string): Promise<void
   process.stdout.write(`${JSON.stringify({ config: redact(resolved) }, null, 2)}\n`);
 }
 
+async function listScheduledJobs(projectRoot: string): Promise<void> {
+  // Load the bootstrap/schedule.ts so all jobs are registered
+  const scheduleFile = [
+    join(projectRoot, 'bootstrap', 'schedule.ts'),
+    join(projectRoot, 'bootstrap', 'schedule.js'),
+  ].find((f) => existsSync(f));
+
+  // Import providers to get the scheduler instance
+  const providersFile = [
+    join(projectRoot, 'bootstrap', 'providers.ts'),
+    join(projectRoot, 'bootstrap', 'providers.js'),
+  ].find((f) => existsSync(f));
+
+  if (!providersFile) {
+    throw new Error('bootstrap/providers.ts not found');
+  }
+
+  const providers = await import(pathToFileURL(providersFile).href);
+
+  if (scheduleFile) {
+    await import(pathToFileURL(scheduleFile).href);
+  }
+
+  const scheduler = providers.schedule;
+  if (!scheduler || typeof scheduler.jobs !== 'function') {
+    process.stdout.write(`${JSON.stringify({ jobs: [] }, null, 2)}\n`);
+    return;
+  }
+
+  const jobs = scheduler.jobs();
+  process.stdout.write(`${JSON.stringify({ jobs }, null, 2)}\n`);
+}
+
+async function runScheduledJob(projectRoot: string, jobName: string): Promise<void> {
+  const providersFile = [
+    join(projectRoot, 'bootstrap', 'providers.ts'),
+    join(projectRoot, 'bootstrap', 'providers.js'),
+  ].find((f) => existsSync(f));
+
+  if (!providersFile) {
+    throw new Error('bootstrap/providers.ts not found');
+  }
+
+  const providers = await import(pathToFileURL(providersFile).href);
+
+  const scheduleFile = [
+    join(projectRoot, 'bootstrap', 'schedule.ts'),
+    join(projectRoot, 'bootstrap', 'schedule.js'),
+  ].find((f) => existsSync(f));
+
+  if (scheduleFile) {
+    await import(pathToFileURL(scheduleFile).href);
+  }
+
+  const scheduler = providers.schedule;
+  if (!scheduler) {
+    throw new Error('No scheduler found in bootstrap/providers.ts — export const schedule = ...');
+  }
+
+  // Support both StubScheduler (executes action directly) and CronScheduler (runByName)
+  if (typeof (scheduler as { runByName?: unknown }).runByName === 'function') {
+    await (scheduler as { runByName: (name: string) => Promise<void> }).runByName(jobName);
+  } else {
+    // StubScheduler fallback: find matching job and call action
+    const jobs = scheduler.jobs() as Array<{ action: string }>;
+    const match = jobs.find((j) => j.action === jobName);
+    if (!match) {
+      throw new Error(`No scheduled job found with name "${jobName}"`);
+    }
+    // Re-import providers to get the raw action
+    const entries = (scheduler as { _jobs?: Array<{ name: string; action: unknown }> })._jobs;
+    const entry = entries?.find((e) => e.name === jobName);
+    if (entry?.action && typeof entry.action === 'function') {
+      await (entry.action as () => Promise<void>)();
+    }
+  }
+
+  process.stdout.write(`${JSON.stringify({ ran: jobName, success: true }, null, 2)}\n`);
+}
+
 async function main(): Promise<void> {
   const [command, ...rest] = process.argv.slice(2);
   const projectRoot = resolve(rest[0] ?? process.cwd());
@@ -110,6 +190,20 @@ async function main(): Promise<void> {
       throw new Error('Missing config name');
     }
     await showConfig(projectRoot, configName);
+    return;
+  }
+
+  if (command === 'schedule:list') {
+    await listScheduledJobs(projectRoot);
+    return;
+  }
+
+  if (command === 'schedule:run') {
+    const jobName = rest[1];
+    if (!jobName) {
+      throw new Error('Missing job name. Usage: schedule:run <JobName>');
+    }
+    await runScheduledJob(projectRoot, jobName);
     return;
   }
 
