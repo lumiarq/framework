@@ -29,7 +29,7 @@
     "@illumiarq/auth-starter": "^1.0.0",
     "@illumiarq/search": "^1.0.0",
     "@illumiarq/veil": "^1.0.0",
-    "@lumiarq/lumis": "1.0.0"
+    "@lumiarq/lumis": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
