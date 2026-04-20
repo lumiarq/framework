@@ -40,7 +40,7 @@ const argv = process.argv.slice(2);
 const cmd = argv[0];
 
 async function main(): Promise<number> {
-  if (argv.includes('--help') || argv.length === 0) {
+  if (argv.includes('--help')) {
     renderWrapperHelp();
     return 0;
   }
