@@ -1,5 +1,6 @@
 export { serveApp } from './commands/serve.js';
 export { buildApp } from './commands/build.js';
+export { buildVercelFunction } from './commands/build-vercel-fn.js';
 export { previewApp } from './commands/preview.js';
 export { showInfo } from './commands/info.js';
 export { listModules } from './commands/module-list.js';
@@ -20,6 +21,7 @@ export {
   runDatabaseCommand,
 } from './commands/app-commands.js';
 export { writeServerWrapper } from './server-wrapper.js';
+export { writeVercelFunctionWrapper } from './vercel-wrapper.js';
 export * from './paths.js';
 
 export type { ServeOptions } from './commands/serve.js';
