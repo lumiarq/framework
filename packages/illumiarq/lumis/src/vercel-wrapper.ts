@@ -13,7 +13,7 @@ function wrapperSource(): string {
     `  throw new Error('LumiARQ Vercel adapter expected a Hono app at app.router.');`,
     `}`,
     '',
-    `export const config = { runtime: 'nodejs20.x' };`,
+    `export const config = { runtime: 'nodejs' };`,
     `export default handle(router);`,
     '',
   ].join('\n');
