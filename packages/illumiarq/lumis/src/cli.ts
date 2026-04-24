@@ -17,15 +17,19 @@ import { listModules } from './commands/module-list.js';
 import { generateKeys, rotateKeys } from './commands/keys.js';
 import { enableMaintenanceMode, disableMaintenanceMode } from './commands/maintenance.js';
 import {
+  cacheConfig,
   cacheRoutes,
   cacheSearchIndex,
   cacheViews,
   checkRoutes,
+  clearConfigCache,
+  clearOptimizationCaches,
   clearRouteCache,
   clearSearchIndex,
   clearViews,
   installAuth,
   listRoutes,
+  optimizeForProduction,
   publishConfig,
   publishStubs,
   runDatabaseCommand,
@@ -40,9 +44,8 @@ const argv = process.argv.slice(2);
 const cmd = argv[0];
 
 async function main(): Promise<number> {
-  if (argv.includes('--help')) {
-    renderWrapperHelp();
-    return 0;
+  if (argv.includes('--help') || cmd === 'help') {
+    return renderCombinedHelp();
   }
 
   // ── LumiARQ-specific commands ──────────────────────────────────────────────
@@ -94,8 +97,16 @@ async function main(): Promise<number> {
     return showResolvedConfig(configName);
   }
 
+  if (cmd === 'config:cache') {
+    return cacheConfig();
+  }
+
+  if (cmd === 'config:clear') {
+    return clearConfigCache();
+  }
+
   if (cmd?.startsWith('db:')) {
-    return runDatabaseCommand(cmd, argv.slice(1));
+    return await runDatabaseCommand(cmd, argv.slice(1));
   }
 
   if (cmd === 'route:list') {
@@ -128,6 +139,14 @@ async function main(): Promise<number> {
 
   if (cmd === 'search:clear') {
     return clearSearchIndex();
+  }
+
+  if (cmd === 'optimize') {
+    return optimizeForProduction();
+  }
+
+  if (cmd === 'optimize:clear') {
+    return clearOptimizationCaches();
   }
 
   if (cmd === 'down') {
@@ -191,9 +210,21 @@ async function main(): Promise<number> {
     return scheduleRun(argv[1] ?? '');
   }
 
+  const projectCommandExit = await runProjectCommandDirect(argv);
+  if (projectCommandExit !== null) {
+    return projectCommandExit;
+  }
+
   // ── Delegate to base @lumiarq/lumis (lazy import avoids auto-run side effect)
   const { runCli } = await import('@lumiarq/lumis');
   return runCli(argv);
+}
+
+async function renderCombinedHelp(): Promise<number> {
+  renderWrapperHelp();
+  writeLine(ui.section('Base Lumis Commands'));
+  const { runCli } = await import('@lumiarq/lumis');
+  return runCli(['--help']);
 }
 
 function renderWrapperHelp(): void {
@@ -213,9 +244,11 @@ function renderWrapperHelp(): void {
   writeLine('    lumis health');
   writeLine('    lumis module:list');
   writeLine('    lumis config:show <name>');
+  writeLine('    lumis config:cache | config:clear');
   writeLine('    lumis route:list | route:check | route:cache | route:clear');
   writeLine('    lumis view:cache | view:clear');
   writeLine('    lumis search:index | search:clear');
+  writeLine('    lumis optimize | optimize:clear');
   writeLine('    lumis key:generate | key:rotate');
   writeLine('    lumis down [--message <text>] [--secret <token>] [--allow <ip>]');
   writeLine('    lumis up');
@@ -224,6 +257,7 @@ function renderWrapperHelp(): void {
   writeLine();
   writeLine(`  ${ui.bold('Database')}`);
   writeLine('    lumis db:generate | db:migrate');
+  writeLine('    lumis db:ping        — verify DB connection and diagnose failures');
   writeLine('    lumis db:seed');
   writeLine('    lumis db:fresh       — migrate + seed (destructive)');
   writeLine('    lumis db:reset       — drop all tables + migrate');
@@ -245,6 +279,69 @@ function renderWrapperHelp(): void {
   writeLine(`  ${ui.bold('Core Lumis')}`);
   writeLine('    lumis doctor | init | make | intent | ir:* | runtime:* | tinker');
   writeLine();
+  writeLine(`  ${ui.bold('Project Commands')}`);
+  writeLine('    lumis <your:command>          — run projectCommands entries directly');
+  writeLine('    lumis commands run project <name>');
+  writeLine();
+}
+
+type NormalizedCommandEntry = {
+  source: 'pack' | 'project';
+  name: string;
+};
+
+const BASE_COMMAND_ROOTS = new Set([
+  'use',
+  'pack',
+  'commands',
+  'doctor',
+  'init',
+  'make',
+  'intent',
+  'ir',
+  'runtime',
+  'tinker',
+]);
+
+async function runProjectCommandDirect(args: string[]): Promise<number | null> {
+  const candidate = args[0];
+  if (!candidate) {
+    return null;
+  }
+  if (BASE_COMMAND_ROOTS.has(candidate)) {
+    return null;
+  }
+
+  const { runCli } = await import('@lumiarq/lumis');
+
+  let stdout = '';
+  let stderr = '';
+  const listExit = await runCli(['commands', 'list', '--json'], {
+    write: (chunk: string) => {
+      stdout += chunk;
+    },
+    writeError: (chunk: string) => {
+      stderr += chunk;
+    },
+  });
+
+  if (listExit !== 0 || stderr.trim().length > 0) {
+    return null;
+  }
+
+  let commands: NormalizedCommandEntry[] = [];
+  try {
+    commands = JSON.parse(stdout) as NormalizedCommandEntry[];
+  } catch {
+    return null;
+  }
+
+  const exists = commands.some((entry) => entry.source === 'project' && entry.name === candidate);
+  if (!exists) {
+    return null;
+  }
+
+  return runCli(['commands', 'run', 'project', candidate, ...args.slice(1)]);
 }
 
 function runHealthPreChecks(): void {
