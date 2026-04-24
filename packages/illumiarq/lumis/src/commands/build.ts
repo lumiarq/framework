@@ -1,8 +1,9 @@
 import { spawnSync } from 'node:child_process';
+import { buildVercelFunction } from './build-vercel-fn.js';
 
 export interface BuildOptions {
   /** Target to build. Omit for full project build script. */
-  target?: 'node' | 'static' | 'cloudflare';
+  target?: 'node' | 'static' | 'cloudflare' | 'vercel';
 }
 
 /**
@@ -15,6 +16,11 @@ export interface BuildOptions {
  */
 export function buildApp(options: BuildOptions = {}, cwd = process.cwd()): number {
   const target = options.target;
+
+  if (target === 'vercel') {
+    return buildVercelFunction(cwd);
+  }
+
   const script = target ? `build:${target}` : 'build';
 
   const result = spawnSync('pnpm', ['run', script], {

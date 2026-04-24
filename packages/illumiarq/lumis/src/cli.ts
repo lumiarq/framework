@@ -64,10 +64,11 @@ async function main(): Promise<number> {
 
   if (cmd === 'build') {
     const target = parseTarget(argv);
-    if (target === 'vercel-fn') {
-      return buildVercelFunction();
-    }
     return buildApp(target !== undefined ? { target } : {});
+  }
+
+  if (cmd === 'build:vercel') {
+    return buildApp({ target: 'vercel' });
   }
 
   if (cmd === 'build:vercel-fn') {
@@ -244,8 +245,8 @@ function renderWrapperHelp(): void {
   writeLine();
   writeLine(`  ${ui.bold('Runtime')}`);
   writeLine('    lumis serve [--port|-p <port>] [--host|-H <host>]');
-  writeLine('    lumis build [--target|--to|--t|-t <node|static|cloudflare|vercel-fn>]');
-  writeLine('    lumis build:vercel-fn');
+  writeLine('    lumis build [--target|--to|--t|-t <node|static|cloudflare|vercel>]');
+  writeLine('    lumis build:vercel');
   writeLine('    lumis preview [--target|--to|--t|-t <node|static|cloudflare>]');
   writeLine();
   writeLine(`  ${ui.bold('App')}`);
@@ -455,29 +456,27 @@ function parseHost(args: string[]): string | undefined {
   return undefined;
 }
 
-function parseTarget(args: string[]): 'node' | 'static' | 'cloudflare' | 'vercel-fn' | undefined {
+function parseTarget(args: string[]): 'node' | 'static' | 'cloudflare' | 'vercel' | undefined {
   const idx = args.findIndex((a) => a === '--target' || a === '--to' || a === '--t' || a === '-t');
   const inline = args.find(
     (a) => a.startsWith('--target=') || a.startsWith('--to=') || a.startsWith('--t='),
   );
   if (inline) {
     const val = inline.slice(inline.indexOf('=') + 1);
-    if (val === 'node' || val === 'static' || val === 'cloudflare' || val === 'vercel-fn')
-      return val;
+    if (val === 'node' || val === 'static' || val === 'cloudflare' || val === 'vercel') return val;
   }
   if (idx !== -1) {
     const val = args[idx + 1];
-    if (val === 'node' || val === 'static' || val === 'cloudflare' || val === 'vercel-fn')
-      return val;
+    if (val === 'node' || val === 'static' || val === 'cloudflare' || val === 'vercel') return val;
   }
   return undefined;
 }
 
 function parsePreviewTarget(args: string[]): 'node' | 'static' | 'cloudflare' | undefined {
   const target = parseTarget(args);
-  if (target === 'vercel-fn') {
+  if (target === 'vercel') {
     writeError(
-      ui.fail('`preview` does not support target "vercel-fn". Use: lumis build:vercel-fn'),
+      ui.fail('`preview` does not support target "vercel". Use: lumis build --target vercel'),
     );
     return undefined;
   }
