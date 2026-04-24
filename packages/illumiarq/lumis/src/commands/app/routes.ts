@@ -38,7 +38,7 @@ export function cacheRoutes(cwd = process.cwd()): number {
       join(cwd, 'storage', 'framework', 'cache'),
       filePath,
     ).replaceAll('\\', '/');
-    return `import '../../../${relativeImport.replace(/^\.\.\//, '')}'`;
+    return `import '${relativeImport}'`;
   });
 
   const content = [
