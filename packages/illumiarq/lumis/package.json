@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/lumis",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "license": "MIT",
   "description": "LumiARQ dev CLI \u2014 extends @lumiarq/lumis with serve / build / preview commands",
   "type": "module",

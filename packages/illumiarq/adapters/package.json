@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/adapters",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "description": "LumiARQ deployment adapters — Node.js, Cloudflare Workers, Static/shared-hosting",
   "type": "module",
