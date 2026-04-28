@@ -9,6 +9,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { ui, writeError, writeLine } from './console.js';
+import { readStorageRoot } from './paths.js';
 import { serveApp } from './commands/serve.js';
 import { buildApp } from './commands/build.js';
 import { buildVercelFunction } from './commands/build-vercel-fn.js';
@@ -397,7 +398,7 @@ function runHealthPreChecks(): void {
   }
 
   // Stale route loader warning
-  const routesLoader = join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts');
+  const routesLoader = join(cwd, readStorageRoot(cwd), 'framework', 'cache', 'routes.loader.ts');
   if (existsSync(routesLoader)) {
     const loaderMtime = statSync(routesLoader).mtimeMs;
     const routesRoot = join(cwd, 'src', 'modules');

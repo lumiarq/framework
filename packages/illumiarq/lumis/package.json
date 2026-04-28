@@ -1,8 +1,8 @@
 {
   "name": "@illumiarq/lumis",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "license": "MIT",
-  "description": "LumiARQ dev CLI — extends @lumiarq/lumis with serve / build / preview commands",
+  "description": "LumiARQ dev CLI \u2014 extends @lumiarq/lumis with serve / build / preview commands",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,7 +28,7 @@
     "@illumiarq/adapters": "^1.0.0",
     "@illumiarq/auth-starter": "^1.0.0",
     "@illumiarq/search": "^1.0.0",
-    "@illumiarq/veil": "^1.0.0",
+    "@illumiarq/veil": "^1.0.2",
     "@lumiarq/lumis": "^1.2.0"
   },
   "devDependencies": {

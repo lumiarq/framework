@@ -1,14 +1,44 @@
-import type { Hono } from 'hono';
+import type { LumiARQApp } from '@illumiarq/runtime';
+
+export interface CloudflareAdapterOptions {
+  /**
+   * Called when an unhandled error escapes the router.
+   * Default: returns a plain 500 response.
+   */
+  onError?: (err: unknown) => Response | Promise<Response>;
+}
 
 /**
- * Returns a Cloudflare Workers-compatible export object from a Hono app.
- * Assign the return value to `export default` in your Worker entry point.
+ * Creates a Cloudflare Workers-compatible export from a LumiARQ application.
+ *
+ * Accepts the `Promise<LumiARQApp>` returned by `boot()` directly.
+ * Initialization is lazy — the app is resolved on the first request.
  *
  * @example
- * // entrypoints/worker.ts
- * import { app } from '@/bootstrap/app'
- * export default buildCloudflareAdapter(app)
+ * // bootstrap/worker.ts
+ * import appPromise from '@/bootstrap/entry'
+ * import { createCloudflareAdapter } from '@illumiarq/adapters/cloudflare'
+ * export default createCloudflareAdapter(appPromise)
  */
-export function buildCloudflareAdapter(app: Hono): { fetch: typeof app.fetch } {
-  return { fetch: app.fetch.bind(app) };
+export function createCloudflareAdapter(
+  app: LumiARQApp | Promise<LumiARQApp>,
+  options: CloudflareAdapterOptions = {},
+): { fetch: (req: Request) => Promise<Response> } {
+  let router: LumiARQApp['router'] | undefined;
+
+  const fetch = async (req: Request): Promise<Response> => {
+    if (!router) {
+      const resolved = await Promise.resolve(app);
+      router = resolved.router;
+    }
+    try {
+      return await router.fetch(req);
+    } catch (err) {
+      if (options.onError) return options.onError(err);
+      console.error('[lumiarq/cloudflare] Unhandled error:', err);
+      return new Response('Internal Server Error', { status: 500 });
+    }
+  };
+
+  return { fetch };
 }

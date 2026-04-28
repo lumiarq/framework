@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/adapters",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "LumiARQ deployment adapters — Node.js, Cloudflare Workers, Static/shared-hosting",
   "type": "module",
@@ -15,9 +15,21 @@
       "import": "./dist/node/index.js",
       "types": "./dist/node/index.d.ts"
     },
+    "./vercel": {
+      "import": "./dist/vercel/index.js",
+      "types": "./dist/vercel/index.d.ts"
+    },
     "./cloudflare": {
       "import": "./dist/cloudflare/index.js",
       "types": "./dist/cloudflare/index.d.ts"
+    },
+    "./fetch": {
+      "import": "./dist/fetch/index.js",
+      "types": "./dist/fetch/index.d.ts"
+    },
+    "./aws-lambda": {
+      "import": "./dist/aws-lambda/index.js",
+      "types": "./dist/aws-lambda/index.d.ts"
     },
     "./static": {
       "import": "./dist/static/index.js",

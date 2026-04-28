@@ -72,6 +72,13 @@ export interface ViewCacheOptions {
    * Activate with: lumis view:cache --min
    */
   minify?: boolean;
+  /**
+   * Override the output directory for compiled view files.
+   * Defaults to `storage/framework/cache/views`.
+   * Set this to match your app's configured storage root, e.g.
+   * `src/storage/framework/cache/views` when storage lives under `src/`.
+   */
+  viewsCacheDir?: string;
 }
 
 // Parsed entry from @vars({ name: Type, ... })
@@ -567,7 +574,7 @@ export async function viewCache(
     ? (JSON.parse(readFileSync(langPath, 'utf8')) as Record<string, string>)
     : {};
 
-  const outDir = resolve(cwd, APP_PATHS.viewsCache);
+  const outDir = resolve(cwd, options.viewsCacheDir ?? APP_PATHS.viewsCache);
   const paths: string[] = [];
 
   for (const modName of readdirSync(modulesDir)) {
@@ -606,10 +613,10 @@ export async function viewCache(
 }
 
 /**
- * Removes the `storage/framework/cache/views/` directory entirely.
+ * Removes the compiled views cache directory entirely.
  */
-export async function viewClear(cwd = process.cwd()): Promise<ViewClearResult> {
-  const dir = resolve(cwd, APP_PATHS.viewsCache);
+export async function viewClear(cwd = process.cwd(), options: Pick<ViewCacheOptions, 'viewsCacheDir'> = {}): Promise<ViewClearResult> {
+  const dir = resolve(cwd, options.viewsCacheDir ?? APP_PATHS.viewsCache);
   if (!existsSync(dir)) return { cleared: false, dir };
   rmSync(dir, { recursive: true, force: true });
   return { cleared: true, dir };

@@ -1,6 +1,8 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { readStorageRoot } from '../../paths.js';
+
 export function parseFrontmatter(raw: string): { data: Record<string, unknown>; body: string } {
   if (!raw.startsWith('---\n')) {
     return { data: {}, body: raw };
@@ -55,10 +57,11 @@ export function walkMarkdownFiles(dir: string, bucket: string[] = []): string[] 
 }
 
 export function findDocsRoots(cwd: string): string[] {
+  const storageRoot = readStorageRoot(cwd);
   return [
     join(cwd, 'content', 'docs'),
     join(cwd, 'src', 'content', 'docs'),
     join(cwd, 'src', 'shared', 'database', 'content', 'docs'),
-    join(cwd, 'storage', 'docs-cache'),
+    join(cwd, storageRoot, 'docs-cache'),
   ].filter((candidate, index, all) => existsSync(candidate) && all.indexOf(candidate) === index);
 }

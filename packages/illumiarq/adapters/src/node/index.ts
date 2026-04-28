@@ -1,12 +1,12 @@
 import { createServer } from 'node:net';
-import type { Hono } from 'hono';
+import type { LumiARQApp } from '@illumiarq/runtime';
 
 const DEFAULT_PORT = 4000;
 const DEFAULT_HOSTNAME = '0.0.0.0';
 const DEFAULT_MAX_PORT_ATTEMPTS = 20;
 
 export interface NodeAdapterOptions {
-  /** Port to listen on (default: 3000) */
+  /** Port to listen on (default: 4000) */
   port?: number;
   /** Hostname to bind (default: '0.0.0.0') */
   hostname?: string;
@@ -82,14 +82,26 @@ function normalizeMaxPortAttempts(value: number): number {
 }
 
 /**
- * Starts a Node.js HTTP server from a Hono app.
- * Uses Node's built-in http module — no additional server dependency.
+ * Starts a Node.js HTTP server from a LumiARQ application.
  *
- * @param app     - The Hono application instance
+ * Accepts the `Promise<LumiARQApp>` returned by `boot()` directly — no
+ * `.router` extraction required in the calling code.
+ *
+ * @param app     - The LumiARQ application (or promise of one) from `boot()`
  * @param options - Server configuration
+ *
+ * @example
+ * // bootstrap/entry.ts
+ * import appPromise from '@/bootstrap/entry'
+ * import { startNodeServer } from '@illumiarq/adapters/node'
+ * startNodeServer(appPromise)
  */
-export async function startNodeServer(app: Hono, options: NodeAdapterOptions = {}): Promise<void> {
+export async function startNodeServer(
+  app: LumiARQApp | Promise<LumiARQApp>,
+  options: NodeAdapterOptions = {},
+): Promise<void> {
   const { serve } = await import('@hono/node-server');
+  const resolved = await Promise.resolve(app);
   const {
     port = DEFAULT_PORT,
     hostname = DEFAULT_HOSTNAME,
@@ -109,6 +121,6 @@ export async function startNodeServer(app: Hono, options: NodeAdapterOptions = {
     );
   }
 
-  serve({ fetch: app.fetch, port: resolvedPort, hostname });
+  serve({ fetch: resolved.router.fetch, port: resolvedPort, hostname });
   console.info(`[lumiarq] Server started on http://${hostname}:${resolvedPort}`);
 }

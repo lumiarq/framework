@@ -5,12 +5,14 @@ import { buildSearchIndex } from '@illumiarq/search';
 import { viewCache, viewClear } from '@illumiarq/veil';
 
 import { ui, writeError, writeLine } from '../../console.js';
+import { readStorageRoot } from '../../paths.js';
 import { findDocsRoots, parseFrontmatter, walkMarkdownFiles } from './docs.js';
 import { cacheConfig, clearConfigCache } from './config-cache.js';
 import { cacheRoutes, clearRouteCache } from './routes.js';
 
 export async function cacheViews(cwd = process.cwd()): Promise<number> {
-  const result = await viewCache(cwd);
+  const storageRoot = readStorageRoot(cwd);
+  const result = await viewCache(cwd, { viewsCacheDir: `${storageRoot}/framework/cache/views` });
   writeLine();
   writeLine(ui.section('View Cache'));
   writeLine(`  ${ui.ok(`Compiled ${result.compiled} views`)}`);
@@ -25,7 +27,8 @@ export async function cacheViews(cwd = process.cwd()): Promise<number> {
 }
 
 export async function clearViews(cwd = process.cwd()): Promise<number> {
-  const result = await viewClear(cwd);
+  const storageRoot = readStorageRoot(cwd);
+  const result = await viewClear(cwd, { viewsCacheDir: `${storageRoot}/framework/cache/views` });
   writeLine();
   writeLine(ui.section('View Clear'));
   writeLine(
@@ -56,7 +59,8 @@ export function cacheSearchIndex(cwd = process.cwd()): number {
     .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
 
   const index = buildSearchIndex(pages);
-  const outputPath = join(cwd, 'bootstrap', 'cache', 'search.index.json');
+  const storageRoot = readStorageRoot(cwd);
+  const outputPath = join(cwd, storageRoot, 'framework', 'cache', 'search.index.json');
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(index, null, 2)}\n`, 'utf8');
 
@@ -69,7 +73,8 @@ export function cacheSearchIndex(cwd = process.cwd()): number {
 }
 
 export function clearSearchIndex(cwd = process.cwd()): number {
-  const outputPath = join(cwd, 'bootstrap', 'cache', 'search.index.json');
+  const storageRoot = readStorageRoot(cwd);
+  const outputPath = join(cwd, storageRoot, 'framework', 'cache', 'search.index.json');
   if (existsSync(outputPath)) {
     rmSync(outputPath, { force: true });
   }
