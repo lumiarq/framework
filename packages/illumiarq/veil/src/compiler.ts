@@ -44,7 +44,15 @@
  *   --min   Minify the compiled HTML output (whitespace + comment stripping)
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import {
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from 'node:fs';
 import { resolve, join, basename, dirname } from 'node:path';
 // Path constants inlined from @lumiarq/lumis paths.ts
 const APP_PATHS = {
@@ -567,16 +575,44 @@ export async function viewCache(
   const sharedTemplatesDirs = candidateTemplateDirs.filter(existsSync);
   const sharedAssetDirs = candidateAssetDirs.filter(existsSync);
 
-  // Load lang/en.json — retained for future tooling (e.g. missing-key lint).
+  // Load lang/en.json or src/lang/ — retained for future tooling (e.g. missing-key lint).
   // v1.0.0+: @t() is runtime-resolved; the locale is passed to render() by the caller.
-  // Supports both lang/ and src/lang/ layouts.
+  // Supports both lang/ and src/lang/ layouts (both single file and directory-based).
+  const lang: Record<string, string> = {};
+
+  // Try single-file layout first
   let langPath = resolve(cwd, 'lang', 'en.json');
-  if (!existsSync(langPath)) {
+  if (existsSync(langPath)) {
+    Object.assign(lang, JSON.parse(readFileSync(langPath, 'utf8')) as Record<string, string>);
+  } else {
+    // Try src/lang/en.json (single file)
     langPath = resolve(cwd, 'src', 'lang', 'en.json');
+    if (existsSync(langPath)) {
+      Object.assign(lang, JSON.parse(readFileSync(langPath, 'utf8')) as Record<string, string>);
+    } else {
+      // Try directory-based lang structure: src/lang/en/ or lang/en/
+      langPath = resolve(cwd, 'src', 'lang', 'en');
+      if (!existsSync(langPath)) {
+        langPath = resolve(cwd, 'lang', 'en');
+      }
+      if (existsSync(langPath) && statSync(langPath).isDirectory()) {
+        // Merge all .json files in the directory
+        for (const file of readdirSync(langPath)) {
+          if (file.endsWith('.json')) {
+            const filePath = join(langPath, file);
+            try {
+              Object.assign(
+                lang,
+                JSON.parse(readFileSync(filePath, 'utf8')) as Record<string, string>,
+              );
+            } catch {
+              // Skip malformed JSON files
+            }
+          }
+        }
+      }
+    }
   }
-  const lang: Record<string, string> = existsSync(langPath)
-    ? (JSON.parse(readFileSync(langPath, 'utf8')) as Record<string, string>)
-    : {};
 
   const outDir = resolve(cwd, options.viewsCacheDir ?? APP_PATHS.viewsCache);
   const paths: string[] = [];
@@ -619,7 +655,10 @@ export async function viewCache(
 /**
  * Removes the compiled views cache directory entirely.
  */
-export async function viewClear(cwd = process.cwd(), options: Pick<ViewCacheOptions, 'viewsCacheDir'> = {}): Promise<ViewClearResult> {
+export async function viewClear(
+  cwd = process.cwd(),
+  options: Pick<ViewCacheOptions, 'viewsCacheDir'> = {},
+): Promise<ViewClearResult> {
   const dir = resolve(cwd, options.viewsCacheDir ?? APP_PATHS.viewsCache);
   if (!existsSync(dir)) return { cleared: false, dir };
   rmSync(dir, { recursive: true, force: true });
