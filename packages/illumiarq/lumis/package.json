@@ -2,7 +2,7 @@
   "name": "@illumiarq/lumis",
   "version": "1.2.8",
   "license": "MIT",
-  "description": "LumiARQ dev CLI \u2014 extends @lumiarq/lumis with serve / build / preview commands",
+  "description": "LumiARQ dev CLI — extends @lumiarq/lumis with serve / build / preview commands",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

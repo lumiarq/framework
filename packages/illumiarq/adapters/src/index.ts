@@ -25,7 +25,12 @@ export { createFetchAdapter } from './fetch/index.js';
 export { createLambdaAdapter } from './aws-lambda/index.js';
 export type { LambdaEvent, LambdaContext, LambdaResponse } from './aws-lambda/index.js';
 
-export { planStaticBuild, generateHtaccess, generateNginxConf, generateBffScaffold } from './static/index.js';
+export {
+  planStaticBuild,
+  generateHtaccess,
+  generateNginxConf,
+  generateBffScaffold,
+} from './static/index.js';
 export type {
   StaticBuildOptions,
   StaticBuildResult,

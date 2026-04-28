@@ -24,9 +24,9 @@ import type { LumiARQApp } from '@illumiarq/runtime';
  * const { fetch } = createFetchAdapter(appPromise)
  * Deno.serve(fetch)
  */
-export function createFetchAdapter(
-  app: LumiARQApp | Promise<LumiARQApp>,
-): { fetch: (req: Request) => Promise<Response> } {
+export function createFetchAdapter(app: LumiARQApp | Promise<LumiARQApp>): {
+  fetch: (req: Request) => Promise<Response>;
+} {
   let router: LumiARQApp['router'] | undefined;
 
   const fetch = async (req: Request): Promise<Response> => {
