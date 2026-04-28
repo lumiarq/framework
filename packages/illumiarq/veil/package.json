@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/veil",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "description": "LumiArq Veil template  compiler and runtime",
   "type": "module",
