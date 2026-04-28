@@ -18,7 +18,7 @@ function wrapperSource(port: number): string {
     `import appPromise from './node/app.js';`,
     `import { startNodeServer } from '@illumiarq/adapters/node';`,
     `const app = await appPromise;`,
-    `await startNodeServer(app.router, { port: ${port} });`,
+    `await startNodeServer(app, { port: ${port} });`,
     '',
   ].join('\n');
 }
