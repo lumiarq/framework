@@ -77,6 +77,12 @@ export async function loadLoggingConfig(projectRoot?: string): Promise<RuntimeLo
     path.join(root, 'config', 'logging.js'),
     path.join(root, 'config', 'logging.cjs'),
     path.join(root, 'config', 'logging.json'),
+    // src/config/ layout (used by apps that nest config under src/)
+    path.join(root, 'src', 'config', 'logging.ts'),
+    path.join(root, 'src', 'config', 'logging.mjs'),
+    path.join(root, 'src', 'config', 'logging.js'),
+    path.join(root, 'src', 'config', 'logging.cjs'),
+    path.join(root, 'src', 'config', 'logging.json'),
   ];
 
   for (const candidate of candidates) {

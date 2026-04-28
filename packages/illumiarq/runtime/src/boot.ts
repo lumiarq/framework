@@ -165,20 +165,28 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
       });
 
     // Compose middleware pipeline → wrap base handler
-    let handler: (req: Request) => Promise<Response> =
-      middlewareFns.length > 0
-        ? (req: Request) =>
-            composeMiddleware(middlewareFns)(
-              req,
-              baseHandler as (req: Request) => Promise<Response>,
-            )
-        : (baseHandler as (req: Request) => Promise<Response>);
+    let handler: (ctx: any) => Promise<Response>;
+
+    if (middlewareFns.length > 0) {
+      handler = async (ctx: any) => {
+        const req = ctx.req.raw;
+        // Create a wrapped handler that passes the Hono context to the baseHandler
+        const wrappedHandler = async () => baseHandler(ctx);
+        // Execute middleware pipeline with raw request, but the final handler gets the context
+        return composeMiddleware(middlewareFns)(
+          req,
+          wrappedHandler as (req: Request) => Promise<Response>,
+        );
+      };
+    } else {
+      handler = baseHandler as (ctx: any) => Promise<Response>;
+    }
 
     // Inject Deprecation / Sunset headers for deprecated routes
     if (routeDef.deprecated) {
       const innerHandler = handler;
-      handler = async (req: Request) => {
-        const response = await innerHandler(req);
+      handler = async (ctx: any) => {
+        const response = await innerHandler(ctx);
         const headers = new Headers(response.headers);
         headers.set('Deprecation', 'true');
         if (routeDef.sunset) {
@@ -192,14 +200,14 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
       };
     }
 
-    const requestScopedHandler = async (input: { req?: { raw?: Request } } | Request) => {
-      const req = input instanceof Request ? input : input.req?.raw;
+    const requestScopedHandler = async (honoCtx: any) => {
+      const req = honoCtx.req.raw;
       if (!req) {
         return new Response('Invalid request context', { status: 500 });
       }
 
       const headersMap: Record<string, string> = {};
-      req.headers.forEach((value, key) => {
+      req.headers.forEach((value: string, key: string) => {
         headersMap[key] = value;
       });
 
@@ -208,7 +216,7 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
         logger: createContextLogger(logger),
       });
 
-      return runWithContext(context, () => handler(req));
+      return runWithContext(context, () => handler(honoCtx));
     };
 
     // Register the route on the Hono app
