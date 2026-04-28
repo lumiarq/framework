@@ -569,7 +569,11 @@ export async function viewCache(
 
   // Load lang/en.json — retained for future tooling (e.g. missing-key lint).
   // v1.0.0+: @t() is runtime-resolved; the locale is passed to render() by the caller.
-  const langPath = resolve(cwd, 'lang', 'en.json');
+  // Supports both lang/ and src/lang/ layouts.
+  let langPath = resolve(cwd, 'lang', 'en.json');
+  if (!existsSync(langPath)) {
+    langPath = resolve(cwd, 'src', 'lang', 'en.json');
+  }
   const lang: Record<string, string> = existsSync(langPath)
     ? (JSON.parse(readFileSync(langPath, 'utf8')) as Record<string, string>)
     : {};

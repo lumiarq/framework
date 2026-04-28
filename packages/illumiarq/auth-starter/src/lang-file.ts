@@ -15,9 +15,16 @@ export function generateLangFile(cwd = process.cwd()): GeneratedFile {
   const stubPath = join(STUB_DIR, 'lang.en.json.stub');
   const defaults = JSON.parse(readFileSync(stubPath, 'utf-8')) as Record<string, string>;
 
-  // If the project already has lang/en.json, merge: existing wins.
+  // Check for existing lang file in either lang/ or src/lang/ (src/lang/ preferred)
   const existing: Record<string, string> = {};
-  const projectPath = join(cwd, 'lang', 'en.json');
+  let projectPath = join(cwd, 'src', 'lang', 'en.json');
+  let targetPath = 'src/lang/en.json';
+
+  if (!existsSync(projectPath)) {
+    projectPath = join(cwd, 'lang', 'en.json');
+    targetPath = 'lang/en.json';
+  }
+
   if (existsSync(projectPath)) {
     try {
       Object.assign(existing, JSON.parse(readFileSync(projectPath, 'utf-8')));
@@ -29,7 +36,7 @@ export function generateLangFile(cwd = process.cwd()): GeneratedFile {
   const merged = { ...defaults, ...existing }; // existing keys win (additive)
 
   return {
-    path: 'lang/en.json',
+    path: targetPath,
     content: JSON.stringify(merged, null, 2) + '\n',
   };
 }
