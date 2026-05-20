@@ -207,16 +207,35 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
       }
 
       const headersMap: Record<string, string> = {};
-      req.headers.forEach((value: string, key: string) => {
-        headersMap[key] = value;
-      });
+      const requestHeaders = req.headers as Headers | Record<string, string | string[] | undefined>;
+
+      if (typeof (requestHeaders as Headers).forEach === 'function') {
+        (requestHeaders as Headers).forEach((value, key) => {
+          headersMap[key] = value;
+        });
+      } else {
+        Object.entries(requestHeaders).forEach(([key, value]) => {
+          if (Array.isArray(value)) {
+            headersMap[key] = value.join(', ');
+          } else if (typeof value === 'string') {
+            headersMap[key] = value;
+          }
+        });
+      }
 
       const context = createRequestContext({
         headers: headersMap,
         logger: createContextLogger(logger),
       });
 
-      return runWithContext(context, () => handler(honoCtx));
+      try {
+        return await runWithContext(context, () => handler(honoCtx));
+      } catch (err) {
+        if (hooks?.onError) {
+          await hooks.onError(err instanceof Error ? err : new Error(String(err)), req);
+        }
+        throw err;
+      }
     };
 
     // Register the route on the Hono app
@@ -230,14 +249,6 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
     scheduler,
     logger,
   };
-
-  // Wire global error handler if provided (e.g. @trazze/ignite in development)
-  if (hooks?.onError) {
-    const onError = hooks.onError;
-    router.onError((err, c) =>
-      onError(err instanceof Error ? err : new Error(String(err)), c.req.raw),
-    );
-  }
 
   // Run post-boot hook if provided
   if (hooks?.afterBoot) {

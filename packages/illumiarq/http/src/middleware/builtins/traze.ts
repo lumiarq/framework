@@ -24,7 +24,7 @@ export const trazeMiddleware = defineMiddleware({
   handler: async (req, next) => {
     const startedAt = Date.now();
     const method = req.method;
-    const path = new URL(req.url).pathname;
+    const path = new URL(req.url, 'http://localhost').pathname;
 
     try {
       const response = await next();
