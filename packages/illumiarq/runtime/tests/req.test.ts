@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { getClientIp, isRequestSecure, getRequestHost, expectsJson } from '../src/helpers/req.js';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

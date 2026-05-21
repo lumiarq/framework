@@ -23,7 +23,7 @@ export interface FlashMiddlewareOptions {
  * its presence to determine whether flash data was available.
  */
 export function flashMiddleware(options: FlashMiddlewareOptions): MiddlewareFn {
-  return async (req, next) => {
+  return async (req: Request, next: () => Promise<Response>) => {
     const sessionId = deriveSessionId(req);
 
     if (!sessionId) return next();

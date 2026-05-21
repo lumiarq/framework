@@ -34,7 +34,7 @@ export function sessionMiddleware(options: SessionOptions): MiddlewareFn {
   const cookieName = options.cookieName ?? DEFAULT_COOKIE;
   const ttl = options.ttl ?? DEFAULT_TTL;
 
-  return async (req, next) => {
+  return async (req: Request, next: () => Promise<Response>) => {
     const cookieHeader = req.headers.get('cookie') ?? '';
     const rawCookie = extractCookie(cookieHeader, cookieName);
 

@@ -4,7 +4,7 @@
  *   2. Middleware pipeline (security headers, request ID, CORS, rate limit, Cache-Control)
  *   3. Handler execution
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import { handleRequest } from '../src/request-lifecycle.js';
 import { getContext } from '../src/context/index.js';
 

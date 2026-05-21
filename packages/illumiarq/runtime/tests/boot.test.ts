@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 
 import { Route, clearRegisteredRoutes } from '@illumiarq/http';
 import { getContext } from '../src/context/index.js';
@@ -52,7 +52,10 @@ describe('boot', () => {
     );
 
     const app = await boot();
-    const response = await app.router.fetch(
+    const routerFetch = app.router as unknown as {
+      fetch: (req: Request) => Promise<Response>;
+    };
+    const response = await routerFetch.fetch(
       new Request('http://localhost/boot-test', {
         method: 'GET',
         headers: { 'x-request-id': 'boot-request-id' },

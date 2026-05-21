@@ -43,7 +43,7 @@ export function confirmedMiddleware(options: ConfirmedOptions): MiddlewareFn {
   const redirectTo = options.redirectTo ?? DEFAULT_REDIRECT;
   const apiPrefix = options.apiPrefix ?? DEFAULT_API_PREFIX;
 
-  return async (req, next) => {
+  return async (req: Request, next: () => Promise<Response>) => {
     const sessionId = deriveSessionId(req);
 
     if (!sessionId) return deny(req.url, apiPrefix, redirectTo);

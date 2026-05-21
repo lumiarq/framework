@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { trustProxiesMiddleware } from '../src/middleware/trust-proxies.js';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

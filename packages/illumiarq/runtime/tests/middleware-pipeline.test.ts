@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, vi, beforeEach, afterEach } from 'vitest';
 import {
   deriveCacheControl,
   withHeaders,
@@ -329,7 +329,7 @@ describe('rateLimitMiddleware', () => {
     const mw = rateLimitMiddleware({
       windowMs: 60_000,
       max: 1,
-      keyFn: (req) => req.headers.get('Authorization') ?? 'anon',
+      keyFn: (req: Request) => req.headers.get('Authorization') ?? 'anon',
     });
     const authReq = makeReq('GET', { Authorization: 'Bearer tok' });
 

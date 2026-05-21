@@ -1,6 +1,10 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@illumiarq/contracts": ["../contracts/src/index.ts"]
+    },
     "noEmit": true
   },
   "include": ["src/**/*", "tests/**/*"]

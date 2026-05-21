@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, beforeEach } from 'vitest';
 import { writeFlash, writeOld, readAndClearFlash, getOld } from '../src/helpers/flash.js';
 import { flashMiddleware } from '../src/middleware/flash.js';
 import { InMemorySessionStore } from '../src/session/store.js';

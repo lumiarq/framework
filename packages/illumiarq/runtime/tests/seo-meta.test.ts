@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { orchestrateLoaders, createRequestCache } from '../src/loader-orchestrator.js';
 import { defineRoute } from '@illumiarq/http';
 import type { BoundLoader } from '@illumiarq/http';

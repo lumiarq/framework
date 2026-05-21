@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, beforeEach } from 'vitest';
 import { csrfMiddleware } from '../src/middleware/csrf.js';
 import { InMemorySessionStore } from '../src/session/store.js';
 

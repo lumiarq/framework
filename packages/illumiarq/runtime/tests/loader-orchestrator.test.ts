@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import { orchestrateLoaders, createRequestCache } from '../src/loader-orchestrator.js';
 import type { BoundLoader } from '@illumiarq/http';
 import { LoaderDependencyError } from '@illumiarq/core';

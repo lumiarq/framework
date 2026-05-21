@@ -16,7 +16,7 @@ export interface LocaleOptions {
  * createRequestContext() can read it when building the RequestContext.
  */
 export function localeMiddleware(options: LocaleOptions): MiddlewareFn {
-  return async (req, next) => {
+  return async (req: Request, next: () => Promise<Response>) => {
     const resolved = resolveLocale(req, options);
     const res = await next();
     return withHeaders(res, { 'x-resolved-locale': resolved });

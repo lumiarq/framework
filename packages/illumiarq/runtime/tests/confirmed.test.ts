@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, beforeEach } from 'vitest';
 import { confirmedMiddleware, writeConfirmedAt } from '../src/middleware/confirmed.js';
 import { InMemorySessionStore } from '../src/session/store.js';
 

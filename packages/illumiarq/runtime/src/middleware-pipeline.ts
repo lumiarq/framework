@@ -44,9 +44,9 @@ export function deriveCacheControl(config: RouteRenderConfig): string {
 
 /** Reads or generates X-Request-Id and echoes it in the response. */
 export function requestIdMiddleware(): MiddlewareFn {
-  return async (req, next) => {
+  return async (req: Request, next: () => Promise<Response>) => {
     const headers: Record<string, string> = {};
-    req.headers.forEach((value, key) => {
+    req.headers.forEach((value: string, key: string) => {
       headers[key] = value;
     });
     const id = generateRequestId(headers);
@@ -57,7 +57,8 @@ export function requestIdMiddleware(): MiddlewareFn {
 /** Emits the correct Cache-Control header for the given render config. */
 export function cacheControlMiddleware(config: RouteRenderConfig): MiddlewareFn {
   const value = deriveCacheControl(config);
-  return async (_req, next) => withHeaders(await next(), { 'Cache-Control': value });
+  return async (_req: Request, next: () => Promise<Response>) =>
+    withHeaders(await next(), { 'Cache-Control': value });
 }
 
 // ─── Pipeline composer ───────────────────────────────────────────────────────

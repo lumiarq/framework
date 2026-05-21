@@ -3,16 +3,16 @@ import type { RuntimeLogger } from '../types.js';
 
 export function createContextLogger(logger: RuntimeLogger): (contextId: string) => RequestLogger {
   return (contextId: string) => ({
-    info: (message, meta) => {
+    info: (message: string, meta?: Record<string, unknown>) => {
       void logger.info(message, { contextId, ...(meta ?? {}) });
     },
-    warn: (message, meta) => {
+    warn: (message: string, meta?: Record<string, unknown>) => {
       void logger.warn(message, { contextId, ...(meta ?? {}) });
     },
-    error: (message, meta) => {
+    error: (message: string, meta?: Record<string, unknown>) => {
       void logger.error(message, { contextId, ...(meta ?? {}) });
     },
-    debug: (message, meta) => {
+    debug: (message: string, meta?: Record<string, unknown>) => {
       void logger.debug(message, { contextId, ...(meta ?? {}) });
     },
   });

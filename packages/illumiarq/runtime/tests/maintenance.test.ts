@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, beforeEach, afterEach } from 'vitest';
 import { writeFileSync, unlinkSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { maintenanceMiddleware } from '../src/middleware/maintenance.js';

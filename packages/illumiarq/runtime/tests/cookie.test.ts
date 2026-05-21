@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { buildSetCookieHeader, buildClearCookieHeader } from '../src/helpers/cookie.js';
 
 // ─── buildSetCookieHeader ─────────────────────────────────────────────────────
