@@ -1,5 +1,5 @@
 export const CONFIG_STUBS: Record<string, string> = {
-  mail: `import { env } from '../bootstrap/env.js';
+  mail: `import { env } from '../../bootstrap/env.js';
 
 const mail = {
   driver: env.MAIL_DRIVER ?? 'stub',
@@ -25,7 +25,7 @@ const mail = {
 export default mail;
 `,
 
-  queue: `import { env } from '../bootstrap/env.js';
+  queue: `import { env } from '../../bootstrap/env.js';
 
 const queue = {
   driver: env.QUEUE_DRIVER ?? 'stub',
@@ -43,7 +43,7 @@ const queue = {
 export default queue;
 `,
 
-  cache: `import { env } from '../bootstrap/env.js';
+  cache: `import { env } from '../../bootstrap/env.js';
 
 const cache = {
   driver: env.CACHE_DRIVER ?? 'memory',
@@ -62,7 +62,7 @@ const cache = {
 export default cache;
 `,
 
-  storage: `import { env } from '../bootstrap/env.js';
+  storage: `import { env } from '../../bootstrap/env.js';
 
 const storage = {
   disks: {
@@ -85,7 +85,7 @@ const storage = {
 export default storage;
 `,
 
-  session: `import { env } from '../bootstrap/env.js';
+  session: `import { env } from '../../bootstrap/env.js';
 
 const session = {
   driver: env.SESSION_DRIVER ?? 'cookie',
@@ -99,7 +99,7 @@ const session = {
 export default session;
 `,
 
-  security: `import { env } from '../bootstrap/env.js';
+  security: `import { env } from '../../bootstrap/env.js';
 
 const security = {
   jwtSecret: env.JWT_SECRET ?? 'change-me-in-production',
@@ -121,7 +121,7 @@ const security = {
 export default security;
 `,
 
-  logging: `import { env } from '../bootstrap/env.js';
+  logging: `import { env } from '../../bootstrap/env.js';
 
 const logging = {
   level: (env.LOG_LEVEL ?? 'info') as 'debug' | 'info' | 'warn' | 'error',
@@ -137,7 +137,7 @@ const logging = {
 export default logging;
 `,
 
-  auth: `import { env } from '../bootstrap/env.js';
+  auth: `import { env } from '../../bootstrap/env.js';
 
 const auth = {
   guard: (env.AUTH_GUARD ?? 'jwt') as 'jwt' | 'session',

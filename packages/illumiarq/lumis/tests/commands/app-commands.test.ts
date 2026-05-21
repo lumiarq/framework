@@ -1,7 +1,7 @@
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({
   spawnSync: vi.fn(),
@@ -41,9 +41,9 @@ describe('app command extensions', () => {
   });
 
   it('caches resolved config into bootstrap cache', () => {
-    mkdirSync(join(cwd, 'config'), { recursive: true });
-    writeFileSync(join(cwd, 'config', 'app.ts'), 'export default {}\n', 'utf8');
-    writeFileSync(join(cwd, 'config', 'database.ts'), 'export default {}\n', 'utf8');
+    mkdirSync(join(cwd, 'src', 'config'), { recursive: true });
+    writeFileSync(join(cwd, 'src', 'config', 'app.ts'), 'export default {}\n', 'utf8');
+    writeFileSync(join(cwd, 'src', 'config', 'database.ts'), 'export default {}\n', 'utf8');
 
     vi.mocked(spawnSync).mockImplementation((_cmd, args) => {
       const argv = args as string[];
@@ -122,8 +122,8 @@ describe('app command extensions', () => {
   });
 
   it('optimize builds caches including config cache and clear removes artifacts', async () => {
-    mkdirSync(join(cwd, 'config'), { recursive: true });
-    writeFileSync(join(cwd, 'config', 'app.ts'), 'export default {}\n', 'utf8');
+    mkdirSync(join(cwd, 'src', 'config'), { recursive: true });
+    writeFileSync(join(cwd, 'src', 'config', 'app.ts'), 'export default {}\n', 'utf8');
 
     mkdirSync(join(cwd, 'src', 'modules', 'Docs', 'http', 'routes'), { recursive: true });
     writeFileSync(
@@ -166,13 +166,13 @@ describe('app command extensions', () => {
     expect(optimizeStatus).toBe(0);
     expect(existsSync(join(cwd, 'bootstrap', 'cache', 'config.cache.json'))).toBe(true);
     expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(true);
-    expect(existsSync(join(cwd, 'bootstrap', 'cache', 'search.index.json'))).toBe(true);
+    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'search.index.json'))).toBe(true);
 
     const clearStatus = await clearOptimizationCaches(cwd);
     expect(clearStatus).toBe(0);
     expect(existsSync(join(cwd, 'bootstrap', 'cache', 'config.cache.json'))).toBe(false);
     expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(false);
-    expect(existsSync(join(cwd, 'bootstrap', 'cache', 'search.index.json'))).toBe(false);
+    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'search.index.json'))).toBe(false);
   });
 
   it('rejects path traversal outside project root', () => {

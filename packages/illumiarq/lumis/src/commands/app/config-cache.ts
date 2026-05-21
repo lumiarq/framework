@@ -14,7 +14,7 @@ function configCachePath(cwd: string): string {
 }
 
 function listConfigNames(cwd: string): string[] {
-  const configDir = join(cwd, 'config');
+  const configDir = join(cwd, 'src', 'config');
   if (!existsSync(configDir)) {
     return [];
   }
@@ -28,7 +28,7 @@ function listConfigNames(cwd: string): string[] {
 export function cacheConfig(cwd = process.cwd()): number {
   const names = listConfigNames(cwd);
   if (names.length === 0) {
-    writeError(ui.fail('No config files found in config/.'));
+    writeError(ui.fail('No config files found in src/config/.'));
     return 1;
   }
 

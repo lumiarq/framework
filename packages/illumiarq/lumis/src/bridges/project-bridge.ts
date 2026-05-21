@@ -75,14 +75,17 @@ async function listRoutes(projectRoot: string): Promise<void> {
 
 async function showConfig(projectRoot: string, configName: string): Promise<void> {
   const candidates = [
+    join(projectRoot, 'src', 'config', `${configName}.ts`),
+    join(projectRoot, 'src', 'config', `${configName}.js`),
+    join(projectRoot, 'src', 'config', `${configName}.mjs`),
+    join(projectRoot, 'src', 'config', `${configName}.cjs`),
+    // Legacy: root config/ (backward compat during migration)
     join(projectRoot, 'config', `${configName}.ts`),
     join(projectRoot, 'config', `${configName}.js`),
-    join(projectRoot, 'config', `${configName}.mjs`),
-    join(projectRoot, 'config', `${configName}.cjs`),
   ];
   const target = candidates.find((candidate) => existsSync(candidate));
   if (!target) {
-    throw new Error(`Config file not found for ${configName}`);
+    throw new Error(`Config file not found for ${configName} (looked in src/config/ and config/)`);
   }
 
   const mod = await import(pathToFileURL(target).href);

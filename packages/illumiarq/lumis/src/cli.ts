@@ -371,9 +371,9 @@ function runHealthPreChecks(): void {
     fix: "bootstrap/providers.ts is missing — service container won't boot.",
   });
   checks.push({
-    label: 'config/app.ts present',
-    pass: existsSync(join(cwd, 'config', 'app.ts')),
-    fix: 'config/app.ts is missing — run: lumis publish config app',
+    label: 'src/config/app.ts present',
+    pass: existsSync(join(cwd, 'src', 'config', 'app.ts')),
+    fix: 'src/config/app.ts is missing — run: lumis publish config app',
   });
   checks.push({
     label: '@types/node installed',
@@ -384,7 +384,9 @@ function runHealthPreChecks(): void {
   });
 
   // Warn if queue driver isn't stub but worker.ts is missing
-  const queueConfigPath = join(cwd, 'config', 'queue.ts');
+  const queueConfigPath = existsSync(join(cwd, 'src', 'config', 'queue.ts'))
+    ? join(cwd, 'src', 'config', 'queue.ts')
+    : join(cwd, 'config', 'queue.ts'); // legacy fallback
   if (existsSync(queueConfigPath)) {
     const queueSrc = readFileSync(queueConfigPath, 'utf8');
     const usesBullmq = queueSrc.includes("'bullmq'") || queueSrc.includes('"bullmq"');

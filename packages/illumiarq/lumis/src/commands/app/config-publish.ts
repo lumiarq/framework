@@ -10,7 +10,7 @@ export function publishConfig(configName: string, force = false, cwd = process.c
     writeLine();
     writeLine(ui.section('Available Configs'));
     for (const name of KNOWN_CONFIG_NAMES) {
-      const exists = existsSync(join(cwd, 'config', `${name}.ts`));
+      const exists = existsSync(join(cwd, 'src', 'config', `${name}.ts`));
       writeLine(
         `  ${exists ? ui.ok(name) : ui.bullet(name)}${exists ? ui.dim(' (already published)') : ''}`,
       );
@@ -53,9 +53,11 @@ export function publishConfig(configName: string, force = false, cwd = process.c
   writeLine();
   writeLine(ui.section('Config Publish'));
   if (action === 'created') {
-    writeLine(`  ${ui.ok(`Published config/${configName}.ts`)}`);
+    writeLine(`  ${ui.ok(`Published src/config/${configName}.ts`)}`);
   } else {
-    writeLine(`  ${ui.warn(`config/${configName}.ts already exists - use --force to overwrite`)}`);
+    writeLine(
+      `  ${ui.warn(`src/config/${configName}.ts already exists - use --force to overwrite`)}`,
+    );
   }
   writeLine(`  ${ui.bullet(relative(cwd, filePath))}`);
   writeLine();
@@ -67,7 +69,7 @@ function publishSingleConfig(
   force: boolean,
   cwd: string,
 ): { action: 'created' | 'skipped'; filePath: string } {
-  const filePath = join(cwd, 'config', `${name}.ts`);
+  const filePath = join(cwd, 'src', 'config', `${name}.ts`);
   const stub = CONFIG_STUBS[name];
   if (!stub) return { action: 'skipped', filePath };
 
