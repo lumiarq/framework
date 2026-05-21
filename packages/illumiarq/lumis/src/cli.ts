@@ -399,8 +399,17 @@ function runHealthPreChecks(): void {
     }
   }
 
-  // Stale route loader warning
+  // Route loader cache path checks (Wave 2 canonical layout)
   const routesLoader = join(cwd, readStorageRoot(cwd), 'framework', 'cache', 'routes.loader.ts');
+  const bootstrapRoutesLoader = join(cwd, 'bootstrap', 'cache', 'routes.loader.ts');
+
+  checks.push({
+    label: 'route loader cache path is canonical',
+    pass: !(existsSync(routesLoader) && existsSync(bootstrapRoutesLoader)),
+    fix: `Duplicate route cache detected. Keep only ${readStorageRoot(cwd)}/framework/cache/routes.loader.ts and remove bootstrap/cache/routes.loader.ts`,
+  });
+
+  // Stale route loader warning
   if (existsSync(routesLoader)) {
     const loaderMtime = statSync(routesLoader).mtimeMs;
     const routesRoot = join(cwd, 'src', 'modules');
