@@ -107,4 +107,37 @@ describe('cli doctor pre-checks', () => {
     expect(output).not.toContain('route loader cache path is canonical');
     expect(output).not.toContain('Duplicate route cache detected.');
   });
+
+  it('emits both duplicate-path and stale-route warnings when both conditions are true', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-duplicate-and-stale-'));
+    tmpPaths.push(cwd);
+
+    mkdirSync(join(cwd, 'bootstrap', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'bootstrap', 'cache', 'routes.loader.ts'),
+      '// bootstrap cache\n',
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      '// storage cache\n',
+      'utf8',
+    );
+
+    // Make route files newer than the cached loader to trigger stale-route warning.
+    mkdirSync(join(cwd, 'src', 'modules', 'Docs', 'http', 'routes'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'src', 'modules', 'Docs', 'http', 'routes', 'docs.web.ts'),
+      'export {}\n',
+      'utf8',
+    );
+
+    const output = runDoctor(cwd);
+    expect(output).toContain('route loader cache path is canonical');
+    expect(output).toContain('Duplicate route cache detected.');
+    expect(output).toContain('route cache is fresh');
+    expect(output).toContain('Route files have changed since last cache. Run: lumis route:cache');
+  });
 });
