@@ -64,4 +64,26 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('route loader cache path is canonical');
     expect(output).toContain('Duplicate route cache detected.');
   });
+
+  it('does not warn for duplicate route loader when only canonical storage path exists', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-canonical-routes-loader-'));
+    tmpPaths.push(cwd);
+
+    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      '// storage cache\n',
+      'utf8',
+    );
+
+    const result = spawnSync(tsxBin, [cliPath, 'doctor'], {
+      encoding: 'utf8',
+      timeout: 20_000,
+      cwd,
+    });
+
+    const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+    expect(output).not.toContain('route loader cache path is canonical');
+    expect(output).not.toContain('Duplicate route cache detected.');
+  });
 });
