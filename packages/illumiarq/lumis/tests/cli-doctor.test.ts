@@ -11,6 +11,16 @@ const packageRoot = resolve(testDir, '..');
 const cliPath = resolve(packageRoot, 'src', 'cli.ts');
 const tsxBin = resolve(packageRoot, 'node_modules', '.bin', 'tsx');
 
+function runDoctor(cwd: string): string {
+  const result = spawnSync(tsxBin, [cliPath, 'doctor'], {
+    encoding: 'utf8',
+    timeout: 20_000,
+    cwd,
+  });
+
+  return `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+}
+
 describe('cli doctor pre-checks', () => {
   const tmpPaths: string[] = [];
 
@@ -25,13 +35,7 @@ describe('cli doctor pre-checks', () => {
     const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-check-'));
     tmpPaths.push(cwd);
 
-    const result = spawnSync(tsxBin, [cliPath, 'doctor'], {
-      encoding: 'utf8',
-      timeout: 20_000,
-      cwd,
-    });
-
-    const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+    const output = runDoctor(cwd);
     expect(output).toContain('Health Pre-checks');
     expect(output).toContain('bootstrap/entry.ts present');
   });
@@ -54,13 +58,7 @@ describe('cli doctor pre-checks', () => {
       'utf8',
     );
 
-    const result = spawnSync(tsxBin, [cliPath, 'doctor'], {
-      encoding: 'utf8',
-      timeout: 20_000,
-      cwd,
-    });
-
-    const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+    const output = runDoctor(cwd);
     expect(output).toContain('route loader cache path is canonical');
     expect(output).toContain('Duplicate route cache detected.');
   });
@@ -76,13 +74,7 @@ describe('cli doctor pre-checks', () => {
       'utf8',
     );
 
-    const result = spawnSync(tsxBin, [cliPath, 'doctor'], {
-      encoding: 'utf8',
-      timeout: 20_000,
-      cwd,
-    });
-
-    const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+    const output = runDoctor(cwd);
     expect(output).not.toContain('route loader cache path is canonical');
     expect(output).not.toContain('Duplicate route cache detected.');
   });
