@@ -250,9 +250,9 @@ describe('cli doctor pre-checks', () => {
 
     const output = runDoctor(cwd);
     expect(output).toContain('drizzle config uses canonical pkg path');
-    expect(output).toContain('Move Drizzle config to pkg/drizzle/config.ts');
+    expect(output).toContain('Move Drizzle config to pkg/drizzle.config.ts');
     expect(output).toContain('vitest config uses canonical pkg path');
-    expect(output).toContain('Move Vitest config to pkg/vitest/config.ts');
+    expect(output).toContain('Move Vitest config to pkg/vitest.config.ts');
   });
 
   it('does not warn for root tool shims when canonical pkg configs exist', () => {
@@ -270,8 +270,8 @@ describe('cli doctor pre-checks', () => {
 
     const output = runDoctor(cwd);
     expect(output).not.toContain('drizzle config uses canonical pkg path');
-    expect(output).not.toContain('Move Drizzle config to pkg/drizzle/config.ts');
+    expect(output).not.toContain('Move Drizzle config to pkg/drizzle.config.ts');
     expect(output).not.toContain('vitest config uses canonical pkg path');
-    expect(output).not.toContain('Move Vitest config to pkg/vitest/config.ts');
+    expect(output).not.toContain('Move Vitest config to pkg/vitest.config.ts');
   });
 });

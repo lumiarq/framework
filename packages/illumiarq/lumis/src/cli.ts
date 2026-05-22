@@ -96,6 +96,10 @@ async function main(): Promise<number> {
     return listModules();
   }
 
+  if (cmd === 'test') {
+    return runTest(argv.slice(1));
+  }
+
   if (cmd === 'key:generate') {
     return generateKeys();
   }
@@ -361,6 +365,30 @@ async function runProjectCommandDirect(args: string[]): Promise<number | null> {
   return runCli(['commands', 'run', 'project', candidate, ...args.slice(1)]);
 }
 
+async function runTest(extraArgs: string[]): Promise<number> {
+  const cwd = process.cwd();
+  const { execSync } = await import('node:child_process');
+
+  // Prefer flat pkg/vitest.config.ts; fall back to legacy pkg/vitest/config.ts
+  const flatConfig = join(cwd, 'pkg', 'vitest.config.ts');
+  const subdirConfig = join(cwd, 'pkg', 'vitest', 'config.ts');
+  const configPath = existsSync(flatConfig)
+    ? flatConfig
+    : existsSync(subdirConfig)
+      ? subdirConfig
+      : null;
+
+  const configFlag = configPath ? ['--config', configPath] : [];
+  const vitestArgs = ['vitest', 'run', ...configFlag, ...extraArgs].join(' ');
+
+  try {
+    execSync(`pnpm exec ${vitestArgs}`, { stdio: 'inherit', cwd });
+    return 0;
+  } catch {
+    return 1;
+  }
+}
+
 function runHealthPreChecks(): void {
   const cwd = process.cwd();
   const checks: Array<{ label: string; pass: boolean; fix?: string }> = [];
@@ -393,24 +421,27 @@ function runHealthPreChecks(): void {
     label: 'drizzle config uses canonical pkg path',
     pass:
       !existsSync(join(cwd, 'drizzle.config.ts')) ||
-      existsSync(join(cwd, 'pkg', 'drizzle', 'config.ts')),
-    fix: 'Move Drizzle config to pkg/drizzle/config.ts and keep drizzle.config.ts as a thin shim only.',
+      existsSync(join(cwd, 'pkg', 'drizzle.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'drizzle', 'config.ts')), // legacy subdir — migrate to flat
+    fix: 'Move Drizzle config to pkg/drizzle.config.ts. No root shim needed — lumis db:* reads pkg/ directly.',
   });
 
   checks.push({
     label: 'vitest config uses canonical pkg path',
     pass:
       !existsSync(join(cwd, 'vitest.config.ts')) ||
-      existsSync(join(cwd, 'pkg', 'vitest', 'config.ts')),
-    fix: 'Move Vitest config to pkg/vitest/config.ts and keep vitest.config.ts as a thin shim only.',
+      existsSync(join(cwd, 'pkg', 'vitest.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'vitest', 'config.ts')), // legacy subdir — migrate to flat
+    fix: 'Move Vitest config to pkg/vitest.config.ts. No root shim needed — lumis test reads pkg/ directly.',
   });
 
   checks.push({
     label: 'lumis config uses canonical pkg path',
     pass:
       (!existsSync(join(cwd, 'lumis.config.ts')) && !existsSync(join(cwd, 'lumis.config.json'))) ||
-      existsSync(join(cwd, 'pkg', 'lumis', 'config.ts')),
-    fix: 'Move lumis config to pkg/lumis/config.ts and remove the root lumis.config.* file.',
+      existsSync(join(cwd, 'pkg', 'lumis.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'lumis', 'config.ts')), // legacy subdir — migrate to flat
+    fix: 'Move lumis config to pkg/lumis.config.ts and remove the root lumis.config.* file.',
   });
 
   // Warn if queue driver isn't stub but worker.ts is missing
