@@ -405,6 +405,14 @@ function runHealthPreChecks(): void {
     fix: 'Move Vitest config to pkg/vitest/config.ts and keep vitest.config.ts as a thin shim only.',
   });
 
+  checks.push({
+    label: 'lumis config uses canonical pkg path',
+    pass:
+      (!existsSync(join(cwd, 'lumis.config.ts')) && !existsSync(join(cwd, 'lumis.config.json'))) ||
+      existsSync(join(cwd, 'pkg', 'lumis', 'config.ts')),
+    fix: 'Move lumis config to pkg/lumis/config.ts and remove the root lumis.config.* file.',
+  });
+
   // Warn if queue driver isn't stub but worker.ts is missing
   const queueConfigPath = existsSync(join(cwd, 'src', 'config', 'queue.ts'))
     ? join(cwd, 'src', 'config', 'queue.ts')
