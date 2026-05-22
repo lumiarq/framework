@@ -217,4 +217,24 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('vitest config uses canonical pkg path');
     expect(output).toContain('Move Vitest config to pkg/vitest/config.ts');
   });
+
+  it('does not warn for root tool shims when canonical pkg configs exist', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-root-tool-config-canonical-'));
+    tmpPaths.push(cwd);
+
+    writeFileSync(join(cwd, 'drizzle.config.ts'), 'export default {}\n', 'utf8');
+    writeFileSync(join(cwd, 'vitest.config.ts'), 'export default {}\n', 'utf8');
+
+    mkdirSync(join(cwd, 'pkg', 'drizzle'), { recursive: true });
+    writeFileSync(join(cwd, 'pkg', 'drizzle', 'config.ts'), 'export default {}\n', 'utf8');
+
+    mkdirSync(join(cwd, 'pkg', 'vitest'), { recursive: true });
+    writeFileSync(join(cwd, 'pkg', 'vitest', 'config.ts'), 'export default {}\n', 'utf8');
+
+    const output = runDoctor(cwd);
+    expect(output).not.toContain('drizzle config uses canonical pkg path');
+    expect(output).not.toContain('Move Drizzle config to pkg/drizzle/config.ts');
+    expect(output).not.toContain('vitest config uses canonical pkg path');
+    expect(output).not.toContain('Move Vitest config to pkg/vitest/config.ts');
+  });
 });
