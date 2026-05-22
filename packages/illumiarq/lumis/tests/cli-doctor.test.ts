@@ -174,4 +174,33 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('route loader cache path is canonical');
     expect(output).toContain('Duplicate route cache detected.');
   });
+
+  it('health alias uses configured storage root in duplicate warning text', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-health-custom-storage-root-'));
+    tmpPaths.push(cwd);
+
+    writeFileSync(
+      join(cwd, 'lumis.config.json'),
+      JSON.stringify({ paths: { storage: 'src/storage' } }, null, 2),
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'bootstrap', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'bootstrap', 'cache', 'routes.loader.ts'),
+      '// bootstrap cache\n',
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      '// storage cache\n',
+      'utf8',
+    );
+
+    const output = runHealth(cwd);
+    expect(output).toContain('Duplicate route cache detected.');
+    expect(output).toContain('Keep only src/storage/framework/cache/routes.loader.ts');
+  });
 });
