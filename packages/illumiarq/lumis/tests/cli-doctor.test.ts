@@ -21,6 +21,16 @@ function runDoctor(cwd: string): string {
   return `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
 }
 
+function runHealth(cwd: string): string {
+  const result = spawnSync(tsxBin, [cliPath, 'health'], {
+    encoding: 'utf8',
+    timeout: 20_000,
+    cwd,
+  });
+
+  return `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+}
+
 describe('cli doctor pre-checks', () => {
   const tmpPaths: string[] = [];
 
@@ -139,5 +149,29 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('Duplicate route cache detected.');
     expect(output).toContain('route cache is fresh');
     expect(output).toContain('Route files have changed since last cache. Run: lumis route:cache');
+  });
+
+  it('health alias surfaces duplicate route-cache warning just like doctor', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-health-alias-parity-'));
+    tmpPaths.push(cwd);
+
+    mkdirSync(join(cwd, 'bootstrap', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'bootstrap', 'cache', 'routes.loader.ts'),
+      '// bootstrap cache\n',
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      '// storage cache\n',
+      'utf8',
+    );
+
+    const output = runHealth(cwd);
+    expect(output).toContain('Health Pre-checks');
+    expect(output).toContain('route loader cache path is canonical');
+    expect(output).toContain('Duplicate route cache detected.');
   });
 });
