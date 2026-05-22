@@ -86,6 +86,12 @@ async function main(): Promise<number> {
     return runCli(['doctor', ...argv.slice(1)]);
   }
 
+  if (cmd === 'doctor') {
+    runHealthPreChecks();
+    const { runCli } = await import('@lumiarq/lumis');
+    return runCli(argv);
+  }
+
   if (cmd === 'module:list') {
     return listModules();
   }
