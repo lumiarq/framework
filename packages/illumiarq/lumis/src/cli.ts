@@ -389,6 +389,22 @@ function runHealthPreChecks(): void {
     fix: 'Install @types/node: pnpm add -D @types/node',
   });
 
+  checks.push({
+    label: 'drizzle config uses canonical pkg path',
+    pass:
+      !existsSync(join(cwd, 'drizzle.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'drizzle', 'config.ts')),
+    fix: 'Move Drizzle config to pkg/drizzle/config.ts and keep drizzle.config.ts as a thin shim only.',
+  });
+
+  checks.push({
+    label: 'vitest config uses canonical pkg path',
+    pass:
+      !existsSync(join(cwd, 'vitest.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'vitest', 'config.ts')),
+    fix: 'Move Vitest config to pkg/vitest/config.ts and keep vitest.config.ts as a thin shim only.',
+  });
+
   // Warn if queue driver isn't stub but worker.ts is missing
   const queueConfigPath = existsSync(join(cwd, 'src', 'config', 'queue.ts'))
     ? join(cwd, 'src', 'config', 'queue.ts')

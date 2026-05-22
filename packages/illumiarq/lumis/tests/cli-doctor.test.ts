@@ -203,4 +203,18 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('Duplicate route cache detected.');
     expect(output).toContain('Keep only src/storage/framework/cache/routes.loader.ts');
   });
+
+  it('warns when absorbed tool configs live at root without canonical pkg configs', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-root-tool-config-warning-'));
+    tmpPaths.push(cwd);
+
+    writeFileSync(join(cwd, 'drizzle.config.ts'), 'export default {}\n', 'utf8');
+    writeFileSync(join(cwd, 'vitest.config.ts'), 'export default {}\n', 'utf8');
+
+    const output = runDoctor(cwd);
+    expect(output).toContain('drizzle config uses canonical pkg path');
+    expect(output).toContain('Move Drizzle config to pkg/drizzle/config.ts');
+    expect(output).toContain('vitest config uses canonical pkg path');
+    expect(output).toContain('Move Vitest config to pkg/vitest/config.ts');
+  });
 });
