@@ -25,10 +25,10 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/adapters": "^1.0.0",
-    "@illumiarq/auth-starter": "^1.0.0",
-    "@illumiarq/search": "^1.0.0",
-    "@illumiarq/veil": "^1.0.2",
+    "@illumiarq/adapters": "workspace:*",
+    "@illumiarq/auth-starter": "workspace:*",
+    "@illumiarq/search": "workspace:*",
+    "@illumiarq/veil": "workspace:*",
     "@lumiarq/lumis": "^1.2.0"
   },
   "devDependencies": {

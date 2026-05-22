@@ -58,8 +58,8 @@
   "dependencies": {
     "@hono/node-server": "^1.19.11",
     "hono": "^4.12.7",
-    "@illumiarq/build": "^1.0.0",
-    "@illumiarq/core": "^1.0.0",
-    "@illumiarq/runtime": "^1.0.0"
+    "@illumiarq/build": "workspace:*",
+    "@illumiarq/core": "workspace:*",
+    "@illumiarq/runtime": "workspace:*"
   }
 }

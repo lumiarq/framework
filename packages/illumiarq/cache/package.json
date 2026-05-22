@@ -22,7 +22,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/contracts": "^1.0.0"
+    "@illumiarq/contracts": "workspace:*"
   },
   "devDependencies": {
     "@types/ioredis": "^5.0.0",

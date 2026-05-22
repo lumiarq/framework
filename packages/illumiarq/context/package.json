@@ -22,7 +22,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@illumiarq/core": "^1.0.0"
+    "@illumiarq/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

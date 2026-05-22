@@ -158,7 +158,19 @@
   },
   "pnpm": {
     "overrides": {
-      "glob": "^13.0.0"
+      "glob": "^13.0.0",
+      "@lumiarq/agent": "1.1.0",
+      "@lumiarq/context": "1.0.1",
+      "@lumiarq/generator": "1.0.1",
+      "@lumiarq/planner": "1.0.1",
+      "@lumiarq/verifier": "1.0.1",
+      "@lumiarq/tinker": "1.0.1",
+      "@lumiarq/rag": "0.1.0",
+      "@lumiarq/pack-lumiarq": "1.0.1",
+      "@lumiarq/pack-nextjs": "1.0.1",
+      "@lumiarq/pack-django": "1.0.1",
+      "@lumiarq/pack-laravel": "1.0.1",
+      "@lumiarq/ai": "1.2.0"
     },
     "allowedDeprecatedVersions": {
       "node-domexception": "1"
