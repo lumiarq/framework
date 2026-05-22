@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { createSign, createVerify } from 'node:crypto';
 import { generateRs256KeyPair, generateSessionSecret } from '../src/keygen.js';
 

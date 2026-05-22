@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const DEFAULT_LOGGING_CONFIG_PATH = 'config/logging.ts';
+export const DEFAULT_LOGGING_CONFIG_PATH = 'src/config/logging.ts';
 export const MIDDLEWARE_BOOTSTRAP_PATH = 'bootstrap/middleware.ts';
 export const WORKER_BOOTSTRAP_PATH = 'bootstrap/worker.ts';
 
@@ -59,7 +59,7 @@ export function createMiddlewareBootstrapSource(): string {
  * Start with: lumis worker:start  (production) or lumis dev (development — auto-started)
  *
  * Uncomment the relevant sections once you have installed bullmq / node-cron
- * and configured config/queue.ts / config/schedule.ts.
+ * and configured src/config/queue.ts / src/config/schedule.ts.
  */
 export function createWorkerBootstrapSource(): string {
   return `// Background worker entrypoint — BullMQ workers + CronScheduler.
@@ -73,7 +73,7 @@ import './env.js';
 
 // ─── Queue workers (BullMQ) ──────────────────────────────────────────────────
 // Requires: pnpm add bullmq ioredis
-// Configure: config/queue.ts  (driver: 'bullmq')
+// Configure: src/config/queue.ts  (driver: 'bullmq')
 //
 // import { BullMQWorker } from '@lumiarq/framework/runtime';
 // import { env } from './env.js';
@@ -98,7 +98,7 @@ import './env.js';
 //
 // export const schedule = new CronScheduler();
 //
-// import '../bootstrap/schedule.js'; // register jobs in bootstrap/schedule.ts
+// import '../bootstrap/schedule.js'; // register jobs in src/config/schedule.ts
 //
 // await schedule.start();
 // console.log('[worker] Cron scheduler started');

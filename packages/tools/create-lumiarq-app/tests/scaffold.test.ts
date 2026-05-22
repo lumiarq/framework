@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, it } from 'vitest';
 
 import {
   DEFAULT_LOGGING_CONFIG_PATH,
@@ -12,7 +12,7 @@ import {
 
 describe('create-lumiarq-app scaffold defaults', () => {
   it('provides a default logging config file path', () => {
-    expect(DEFAULT_LOGGING_CONFIG_PATH).toBe('config/logging.ts');
+    expect(DEFAULT_LOGGING_CONFIG_PATH).toBe('src/config/logging.ts');
   });
 
   it('generates logging config source with console defaults', () => {
@@ -21,10 +21,14 @@ describe('create-lumiarq-app scaffold defaults', () => {
     expect(source).toContain("driver: 'console'");
   });
 
-  it('includes config/logging.ts in scaffold files', () => {
+  it('includes canonical scaffold files', () => {
     const files = getDefaultScaffoldFiles();
-    expect(files).toHaveLength(1);
-    expect(files[0]?.path).toBe('config/logging.ts');
+    expect(files).toHaveLength(3);
+    expect(files.map((file) => file.path)).toEqual([
+      'src/config/logging.ts',
+      'bootstrap/middleware.ts',
+      'bootstrap/worker.ts',
+    ]);
     expect(files[0]?.content).toContain("level: 'info'");
   });
 
