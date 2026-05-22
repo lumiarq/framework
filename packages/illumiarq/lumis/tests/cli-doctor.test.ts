@@ -102,6 +102,43 @@ describe('cli doctor pre-checks', () => {
     expect(output).toContain('Keep only src/storage/framework/cache/routes.loader.ts');
   });
 
+  it('reads storage root from canonical pkg/lumis/config.ts', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-pkg-config-storage-root-'));
+    tmpPaths.push(cwd);
+
+    mkdirSync(join(cwd, 'pkg', 'lumis'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'pkg', 'lumis', 'config.ts'),
+      [
+        'export default {',
+        '  paths: {',
+        "    storage: 'src/storage',",
+        '  },',
+        '} as const;',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'bootstrap', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'bootstrap', 'cache', 'routes.loader.ts'),
+      '// bootstrap cache\n',
+      'utf8',
+    );
+
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
+    writeFileSync(
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      '// storage cache\n',
+      'utf8',
+    );
+
+    const output = runDoctor(cwd);
+    expect(output).toContain('Duplicate route cache detected.');
+    expect(output).toContain('Keep only src/storage/framework/cache/routes.loader.ts');
+  });
+
   it('does not warn for duplicate route loader when only canonical storage path exists', () => {
     const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-canonical-routes-loader-'));
     tmpPaths.push(cwd);

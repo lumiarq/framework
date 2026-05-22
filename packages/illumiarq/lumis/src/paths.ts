@@ -33,21 +33,65 @@ export function appEnvFile(cwd: string): string {
   return resolve(cwd, APP_ENV_FILE);
 }
 
+type MinimalLumisConfig = {
+  paths?: {
+    storage?: string;
+  };
+};
+
+const STORAGE_ROOT_DEFAULT = 'storage';
+
+const LUMIS_CONFIG_CANDIDATES = [
+  'pkg/lumis/config.ts',
+  'src/config/lumis.ts',
+  'lumis.config.ts',
+  'pkg/lumis/config.json',
+  'lumis.config.json',
+] as const;
+
+function extractStorageRootFromTs(raw: string): string | null {
+  const match = raw.match(/storage\s*:\s*['"]([^'"]+)['"]/);
+  return match?.[1] ?? null;
+}
+
+function readStorageRootFromConfigFile(filePath: string): string | null {
+  try {
+    const raw = readFileSync(filePath, 'utf8');
+
+    if (filePath.endsWith('.json')) {
+      const config = JSON.parse(raw) as MinimalLumisConfig;
+      return config.paths?.storage ?? null;
+    }
+
+    return extractStorageRootFromTs(raw);
+  } catch {
+    return null;
+  }
+}
+
 /**
- * Reads the `paths.storage` key from `lumis.config.json` in the app's root.
+ * Reads the `paths.storage` key from canonical Lumis config locations.
  * Defaults to `"storage"` if not set.
  *
- * Apps that keep their storage directory under `src/` should set:
- *   { "paths": { "storage": "src/storage" } }
+ * Resolution order:
+ *   1. pkg/lumis/config.ts
+ *   2. src/config/lumis.ts
+ *   3. lumis.config.ts
+ *   4. pkg/lumis/config.json
+ *   5. lumis.config.json
  */
 export function readStorageRoot(cwd = process.cwd()): string {
-  const configPath = join(cwd, 'lumis.config.json');
-  if (!existsSync(configPath)) return 'storage';
-  try {
-    const raw = readFileSync(configPath, 'utf8');
-    const config = JSON.parse(raw) as { paths?: { storage?: string } };
-    return config.paths?.storage ?? 'storage';
-  } catch {
-    return 'storage';
+  for (const candidate of LUMIS_CONFIG_CANDIDATES) {
+    const configPath = join(cwd, candidate);
+    if (!existsSync(configPath)) {
+      continue;
+    }
+
+    const storageRoot = readStorageRootFromConfigFile(configPath);
+    if (storageRoot) {
+      return storageRoot;
+    }
   }
+
+  return STORAGE_ROOT_DEFAULT;
 }
