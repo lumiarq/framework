@@ -1,6 +1,6 @@
 {
   "name": "@lumiarq/framework",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "description": "LumiARQ — full-stack TypeScript meta-framework",
   "type": "module",
@@ -100,8 +100,7 @@
     }
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"

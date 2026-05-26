@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { RuleTester } from 'eslint';
 import noFrameworkSubpackageImport from '../src/rules/no-framework-subpackage-import.js';
-import { FRAMEWORK, PKG } from './fixtures/packages.js';
+import { FRAMEWORK, PKG } from './fixtures/packages.ts';
 
 // ─── Test setup ────────────────────────────────────────────────────────────
 
