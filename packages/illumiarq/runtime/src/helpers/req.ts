@@ -5,6 +5,8 @@
 // X-Forwarded-* headers are normalised before these helpers are called.
 // ---------------------------------------------------------------------------
 
+import { parseRequestUrl } from '@illumiarq/core';
+
 /**
  * Returns the client IP address.
  *
@@ -30,7 +32,7 @@ export function isRequestSecure(req: Request): boolean {
   if (proto) return proto === 'https';
 
   try {
-    return new URL(req.url).protocol === 'https:';
+    return parseRequestUrl(req).protocol === 'https:';
   } catch {
     return false;
   }

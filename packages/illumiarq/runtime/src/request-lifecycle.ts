@@ -10,6 +10,7 @@
  * middleware pipeline has prepared the request context.
  */
 
+import { headersToRecord } from '@illumiarq/core';
 import { createRequestContext, runWithContext } from './context/index.js';
 import type { CreateRequestContextOptions } from './context/index.js';
 import {
@@ -68,10 +69,7 @@ export async function handleRequest(
   const dispatch = composeMiddleware(middlewares);
 
   // Create the request context scoped to this request's headers.
-  const headersMap: Record<string, string> = {};
-  req.headers.forEach((value, key) => {
-    headersMap[key] = value;
-  });
+  const headersMap = headersToRecord(req.headers);
   const ctx = createRequestContext({
     ...opts.context,
     ...(opts.logger ? { logger: createContextLogger(opts.logger) } : {}),

@@ -4,7 +4,7 @@
  * @illumiarq/security and re-exported here for backward compatibility.
  */
 
-import { generateRequestId } from '@illumiarq/core';
+import { generateRequestId, headersToRecord } from '@illumiarq/core';
 import type { RenderMode } from '@illumiarq/http';
 
 // ─── Re-export from @illumiarq/security (backward compat) ────────────────────
@@ -45,10 +45,7 @@ export function deriveCacheControl(config: RouteRenderConfig): string {
 /** Reads or generates X-Request-Id and echoes it in the response. */
 export function requestIdMiddleware(): MiddlewareFn {
   return async (req: Request, next: () => Promise<Response>) => {
-    const headers: Record<string, string> = {};
-    req.headers.forEach((value: string, key: string) => {
-      headers[key] = value;
-    });
+    const headers = headersToRecord(req.headers);
     const id = generateRequestId(headers);
     return withHeaders(await next(), { 'X-Request-Id': id });
   };

@@ -48,6 +48,8 @@ export {
 // ─── HTTP utilities ────────────────────────────────────────────────────────────
 export { generateRequestId } from './http/request-id.js';
 export { sanitizeInput, sanitizeObject } from './http/sanitize.js';
+export { parseRequestUrl } from './http/request-url.js';
+export { headersToRecord } from './http/headers-to-record.js';
 
 // ─── Errors ───────────────────────────────────────────────────────────────────
 export { LumiARQError } from './errors/lumiarq-error.js';

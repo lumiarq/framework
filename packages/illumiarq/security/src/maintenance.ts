@@ -1,3 +1,4 @@
+import { parseRequestUrl } from '@illumiarq/core';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { MiddlewareFn } from './types.js';
@@ -32,7 +33,7 @@ export function maintenanceMiddleware(sentinelPath?: string): MiddlewareFn {
       return next();
     }
 
-    const url = new URL(req.url);
+    const url = parseRequestUrl(req);
     const secretParam = url.searchParams.get('secret');
     if (sentinel.secret && secretParam === sentinel.secret) {
       return next();

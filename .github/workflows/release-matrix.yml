@@ -25,8 +25,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: No source-level JS drift
+        run: bash scripts/check-source-js-drift.sh
+
       - name: Typecheck
         run: pnpm turbo typecheck
+
+      - name: Anti-coupling tests
+        run: pnpm --filter @illumiarq/core test
 
       - name: Lint
         run: pnpm turbo lint

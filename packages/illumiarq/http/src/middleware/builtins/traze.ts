@@ -5,6 +5,7 @@
  * A runtime-provided logger can be injected during boot for structured output.
  */
 
+import { parseRequestUrl } from '@illumiarq/core';
 import { defineMiddleware } from '../define-middleware.js';
 
 type TrazeLogger = {
@@ -24,7 +25,7 @@ export const trazeMiddleware = defineMiddleware({
   handler: async (req, next) => {
     const startedAt = Date.now();
     const method = req.method;
-    const path = new URL(req.url, 'http://localhost').pathname;
+    const path = parseRequestUrl(req).pathname;
 
     try {
       const response = await next();

@@ -22,6 +22,7 @@
  *   ...
  * }
  */
+import { parseRequestUrl } from '@illumiarq/core';
 import { z } from 'zod';
 import type { ZodTypeAny, ZodError } from 'zod';
 
@@ -93,7 +94,7 @@ export async function parseQuery<T extends ZodTypeAny>(
   req: Request,
   schema: T,
 ): Promise<z.infer<T>> {
-  const url = new URL(req.url);
+  const url = parseRequestUrl(req);
   const raw: Record<string, string | string[]> = {};
 
   for (const [key, value] of url.searchParams.entries()) {

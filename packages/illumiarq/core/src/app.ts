@@ -1,4 +1,5 @@
 // ─── Application environment helper ──────────────────────────────────────────
+// Safe before boot(): reads APP_ENV directly — never blocks on runtime lifecycle.
 
 export type AppEnvironment = 'local' | 'testing' | 'staging' | 'production';
 

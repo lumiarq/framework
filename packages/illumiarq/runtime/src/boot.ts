@@ -1,3 +1,4 @@
+import { headersToRecord } from '@illumiarq/core';
 import { Hono } from 'hono';
 import { getRegisteredRoutes, getMiddleware, composeMiddleware } from '@illumiarq/http';
 import type { MiddlewareFn } from '@illumiarq/http';
@@ -206,22 +207,9 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
         return new Response('Invalid request context', { status: 500 });
       }
 
-      const headersMap: Record<string, string> = {};
-      const requestHeaders = req.headers as Headers | Record<string, string | string[] | undefined>;
-
-      if (typeof (requestHeaders as Headers).forEach === 'function') {
-        (requestHeaders as Headers).forEach((value, key) => {
-          headersMap[key] = value;
-        });
-      } else {
-        Object.entries(requestHeaders).forEach(([key, value]) => {
-          if (Array.isArray(value)) {
-            headersMap[key] = value.join(', ');
-          } else if (typeof value === 'string') {
-            headersMap[key] = value;
-          }
-        });
-      }
+      const headersMap = headersToRecord(
+        req.headers as Headers | Record<string, string | string[] | undefined>,
+      );
 
       const context = createRequestContext({
         headers: headersMap,

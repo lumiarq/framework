@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/security",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "LumiARQ security middleware — CSRF, CORS, rate-limit, security-headers, trust-proxies, maintenance",
   "type": "module",

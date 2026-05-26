@@ -1,3 +1,4 @@
+import { parseRequestUrl } from '@illumiarq/core';
 import { HttpRequest } from './request.js';
 import type { ParsedParams, ParsedQuery } from '../types/http.types.js';
 
@@ -110,7 +111,7 @@ async function readInputBody(req: Request): Promise<Record<string, unknown>> {
  * When no key is provided, returns the full merged input object.
  */
 export async function input(req: Request, key?: string, fallback?: unknown): Promise<unknown> {
-  const url = new URL(req.url);
+  const url = parseRequestUrl(req);
   const queryData: Record<string, unknown> = {};
   for (const k of url.searchParams.keys()) {
     const all = url.searchParams.getAll(k);
@@ -162,7 +163,7 @@ export function fullUrl(req: Request): string {
  * Existing params with the same key are overwritten.
  */
 export function fullUrlWithQuery(req: Request, patch: Record<string, string>): string {
-  const url = new URL(req.url);
+  const url = parseRequestUrl(req);
   for (const [k, v] of Object.entries(patch)) {
     url.searchParams.set(k, v);
   }
