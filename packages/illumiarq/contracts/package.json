@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/contracts",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "license": "MIT",
   "description": "LumiARQ infrastructure contracts — TypeScript interfaces for Mail, Queue, Storage, Cache, EventBus, Logger. Zero dependencies.",
   "type": "module",
