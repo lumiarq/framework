@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/query",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "license": "MIT",
   "description": "LumiARQ query bridge — framework-agnostic loader bridge. TanStack Query is the default adapter, not a required dependency. Use SWR, Apollo, or plain fetch via @lumiarq/query/core.",
   "type": "module",

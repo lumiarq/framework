@@ -39,17 +39,23 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@illumiarq/contracts':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: workspace:*
+        version: link:packages/illumiarq/contracts
       '@illumiarq/core':
         specifier: workspace:*
         version: link:packages/illumiarq/core
       '@illumiarq/database':
         specifier: ^1.0.0
         version: 1.0.0(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
+      '@illumiarq/filesystem':
+        specifier: workspace:*
+        version: link:packages/illumiarq/filesystem
       '@illumiarq/http':
         specifier: ^1.0.0
         version: 1.0.0
+      '@illumiarq/key-value-storage':
+        specifier: workspace:*
+        version: link:packages/illumiarq/key-value-storage
       '@illumiarq/migrations':
         specifier: ^1.0.0
         version: 1.0.0(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
@@ -69,8 +75,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@illumiarq/veil':
-        specifier: ^1.0.0
-        version: 1.0.0(alpinejs@3.15.8)
+        specifier: ^1.0.6
+        version: 1.0.6(alpinejs@3.15.8)
       '@lumiarq/lumis':
         specifier: ^1.1.0
         version: 1.2.0(@lumiarq/ai@1.2.0)
@@ -137,8 +143,8 @@ importers:
         version: 0.38.4(@libsql/client@0.17.0)(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
     devDependencies:
       '@illumiarq/lumis':
-        specifier: ^1.1.0
-        version: 1.2.9(@lumiarq/ai@1.2.0)
+        specifier: ^1.2.11
+        version: 1.2.11(@lumiarq/ai@1.2.0)
       '@tailwindcss/cli':
         specifier: ^4.1.0
         version: 4.2.2
@@ -456,6 +462,22 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.19.17)(lightningcss@1.32.0)
 
+  packages/illumiarq/filesystem:
+    dependencies:
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)(lightningcss@1.32.0)
+
   packages/illumiarq/http:
     dependencies:
       '@illumiarq/core':
@@ -474,6 +496,25 @@ importers:
       vitest:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@22.19.17)(lightningcss@1.32.0)
+
+  packages/illumiarq/key-value-storage:
+    dependencies:
+      '@illumiarq/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@illumiarq/filesystem':
+        specifier: workspace:*
+        version: link:../filesystem
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)(lightningcss@1.32.0)
 
   packages/illumiarq/lumis:
     dependencies:
@@ -1975,9 +2016,8 @@ packages:
   '@illumiarq/http@1.0.0':
     resolution: {integrity: sha512-xwPNSFCaGHje1uZjbIQHg0nyG8abYk44CLfPgwJwZAh/mQC4BnUErafhfthVsfXbo+p5LX3z9LgPdkobI4K/gg==}
 
-  '@illumiarq/lumis@1.2.9':
-    resolution: {integrity: sha512-mtXM+0JabMa+GL981dyP3Vc3y2YMGgycmnEpA7yWNh/hwDxrxV9xakFkOy7MygPAE4KH2qQUy/l3lla6A362xA==}
-    engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
+  '@illumiarq/lumis@1.2.11':
+    resolution: {integrity: sha512-7SWmbcnhDILmYY8PBuiBA3bNGhyiv6EnYUKORCUnj0DdiAyv2DW0aApy+e1sXxd/JxSmhnthDn6BXq6wT0GxVQ==}
     hasBin: true
 
   '@illumiarq/migrations@1.0.0':
@@ -2023,6 +2063,14 @@ packages:
 
   '@illumiarq/veil@1.0.0':
     resolution: {integrity: sha512-ajQoSzSScRbRLK13btCrdaP3TEghsWnu86tYphoL9IgDZlbLj9D1PH2YpiXjJVLUdYfX+1SWwr1mKZ7wCvYlHg==}
+    peerDependencies:
+      alpinejs: ^3.13.0
+    peerDependenciesMeta:
+      alpinejs:
+        optional: true
+
+  '@illumiarq/veil@1.0.6':
+    resolution: {integrity: sha512-9UA6dHwmfZS/ivlUn2OSWe9RvgOUEBfOn9OIJm/mxgNKj397qqjC8Eybv7Wmm5FrHIHPctsIr0oMaGN0P+wCMA==}
     peerDependencies:
       alpinejs: ^3.13.0
     peerDependenciesMeta:
@@ -5874,19 +5922,13 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       zod: 3.25.76
 
-  '@illumiarq/lumis@1.2.9(@lumiarq/ai@1.2.0)':
+  '@illumiarq/lumis@1.2.11(@lumiarq/ai@1.2.0)':
     dependencies:
-      '@lumiarq/agent': 1.1.0
-      '@lumiarq/context': 1.0.1
-      '@lumiarq/generator': 1.0.1
-      '@lumiarq/pack-django': 1.0.1
-      '@lumiarq/pack-laravel': 1.0.1
-      '@lumiarq/pack-lumiarq': 1.0.1
-      '@lumiarq/pack-nextjs': 1.0.1
-      '@lumiarq/planner': 1.0.1
-      '@lumiarq/rag': 0.1.0(@lumiarq/ai@1.2.0)
-      '@lumiarq/tinker': 1.0.1
-      '@lumiarq/verifier': 1.0.1
+      '@illumiarq/adapters': link:packages/illumiarq/adapters
+      '@illumiarq/auth-starter': link:packages/illumiarq/auth-starter
+      '@illumiarq/search': link:packages/illumiarq/search
+      '@illumiarq/veil': link:packages/illumiarq/veil
+      '@lumiarq/lumis': 1.2.0(@lumiarq/ai@1.2.0)
     transitivePeerDependencies:
       - '@lumiarq/ai'
 
@@ -5969,6 +6011,10 @@ snapshots:
   '@illumiarq/tinker@1.0.0': {}
 
   '@illumiarq/veil@1.0.0(alpinejs@3.15.8)':
+    optionalDependencies:
+      alpinejs: 3.15.8
+
+  '@illumiarq/veil@1.0.6(alpinejs@3.15.8)':
     optionalDependencies:
       alpinejs: 3.15.8
 

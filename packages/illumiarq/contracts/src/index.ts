@@ -14,6 +14,12 @@ export * from './queue.contract.js';
 
 export * from './storage.contract.js';
 
+// ─── Key-value storage ───────────────────────────────────────────────────────
+export * from './key-value-storage.contract.js';
+
+// ─── Filesystem ───────────────────────────────────────────────────────────────
+export * from './filesystem.contract.js';
+
 // ─── Cache ────────────────────────────────────────────────────────────────────
 
 export * from './cache.contract.js';

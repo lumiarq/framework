@@ -48,8 +48,31 @@ export {
 } from './config-helpers.js';
 
 // ─── Tool config absorbers (pkg/ canonical layout) ───────────────────────────
-export { resolveToolConfigPath, type AbsorbedTool, type ResolvedToolConfig } from '@illumiarq/core';
+export {
+  resolveToolConfigPath,
+  defineContentLoader,
+  clearContentCache,
+  type AbsorbedTool,
+  type ResolvedToolConfig,
+  type ContentPage,
+  type TocEntry,
+  type ContentLoaderOptions,
+  type ContentLoader,
+} from '@illumiarq/core/node';
 export { defineVitestConfig, definePrettierConfig } from './config-absorbers/index.js';
+
+// ─── Capability adapters (M3) ───────────────────────────────────────────────────
+export {
+  MemoryFilesystemDriver,
+  NodeFilesystemDriver,
+  type NodeFilesystemOptions,
+} from '@illumiarq/filesystem';
+export {
+  MemoryKeyValueStorageDriver,
+  NodeKeyValueStorageDriver,
+  type NodeKeyValueStorageOptions,
+} from '@illumiarq/key-value-storage';
+export type { FilesystemContract, KeyValueStorageContract } from '@illumiarq/contracts';
 
 // ─── Runtime: Boot & Application ──────────────────────────────────────────────
 export {

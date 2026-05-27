@@ -10,7 +10,7 @@ import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { defineContentLoader, clearContentCache } from '../src/index.js';
+import { defineContentLoader, clearContentCache } from '../src/node/index.js';
 import { z } from 'zod';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/core",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "license": "MIT",
   "description": "LumiARQ core primitives — defineRoute, defineHandler, defineAction, defineTask, defineLoader, defineModule, definePolicy, defineEvent, defineConfig, EventBus, Gate, error types",
   "type": "module",
@@ -10,6 +10,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./node": {
+      "import": "./dist/node/index.js",
+      "types": "./dist/node/index.d.ts"
     }
   },
   "files": [
@@ -21,6 +25,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:portable": "tsc -p tsconfig.portable.json --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/",

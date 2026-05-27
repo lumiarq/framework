@@ -1,0 +1,36 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [],
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": [
+    "src/action/**/*",
+    "src/task/**/*",
+    "src/query/**/*",
+    "src/module/**/*",
+    "src/policy/**/*",
+    "src/event/**/*",
+    "src/config/define-config.ts",
+    "src/config/defaults.ts",
+    "src/http/irequest.ts",
+    "src/http/headers-to-record.ts",
+    "src/http/request-url.ts",
+    "src/http/sanitize.ts",
+    "src/http/resource.ts",
+    "src/errors/**/*",
+    "src/jwt/**/*",
+    "src/schemas.ts",
+    "src/utils/**/*",
+    "src/i18n/**/*",
+    "src/app.ts"
+  ],
+  "exclude": [
+    "src/config/resolve-tool-config.ts",
+    "src/content/**/*",
+    "src/event/event-bus.ts",
+    "src/http/request-id.ts",
+    "src/crypto/**/*"
+  ]
+}

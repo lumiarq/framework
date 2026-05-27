@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/auth",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "license": "MIT",
   "description": "LumiARQ headless auth engine — base actions, base tasks, contracts, validators. No routes, no handlers, no database schema.",
   "type": "module",

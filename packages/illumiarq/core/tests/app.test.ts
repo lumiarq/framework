@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { app } from '../src/app.js';
+import { app, configureAppEnvironment, resetAppEnvironment } from '../src/app.js';
 import type { AppEnvironment } from '../src/app.js';
 
 describe('app() — Application environment helper', () => {
@@ -7,9 +7,11 @@ describe('app() — Application environment helper', () => {
 
   beforeEach(() => {
     originalAppEnv = process.env['APP_ENV'];
+    configureAppEnvironment(() => (process.env['APP_ENV'] ?? 'local') as AppEnvironment);
   });
 
   afterEach(() => {
+    resetAppEnvironment();
     if (originalAppEnv === undefined) {
       delete process.env['APP_ENV'];
     } else {

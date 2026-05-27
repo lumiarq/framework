@@ -27,6 +27,8 @@ const PACKAGES = [
   // Level 2
   'packages/illumiarq/auth',
   'packages/illumiarq/cache',
+  'packages/illumiarq/filesystem',
+  'packages/illumiarq/key-value-storage',
   'packages/illumiarq/context',
   'packages/illumiarq/database',
   'packages/illumiarq/http',

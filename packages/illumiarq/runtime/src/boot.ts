@@ -1,4 +1,4 @@
-import { headersToRecord } from '@illumiarq/core';
+import { configureAppEnvironment, headersToRecord, type AppEnvironment } from '@illumiarq/core';
 import { Hono } from 'hono';
 import { getRegisteredRoutes, getMiddleware, composeMiddleware } from '@illumiarq/http';
 import type { MiddlewareFn } from '@illumiarq/http';
@@ -25,6 +25,11 @@ void _auth;
 void _csrf;
 void _throttle;
 void _traze;
+
+configureAppEnvironment(() => {
+  const raw = typeof process !== 'undefined' && process.env ? process.env['APP_ENV'] : undefined;
+  return (raw ?? 'local') as AppEnvironment;
+});
 
 /**
  * Bootstraps the LumiARQ application.

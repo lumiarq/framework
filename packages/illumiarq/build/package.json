@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/build",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "license": "MIT",
   "description": "LumiARQ build layer — route scanning, strategy classification, SSG prerender, sitemap generation, Vite integration",
   "type": "module",

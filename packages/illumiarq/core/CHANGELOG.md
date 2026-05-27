@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.5
+
+### Patch Changes
+
+- 57d6df8: Remove stale src JS drift with legacy @velo naming; ship dist-only npm tarball; document Illuminate-style namespace policy.
+- b7c252e: Fix serverless request URL parsing and header normalization; remove illumiarq source JS drift; add Wave 1 CI gates and LTS policy.
+
 All notable changes to `@illumiarq/core` are documented here.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).

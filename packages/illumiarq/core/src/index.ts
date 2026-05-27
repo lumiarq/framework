@@ -36,11 +36,6 @@ export type { ListenerFn, EventEnvelope } from './event/event-bus.js';
 // ─── Config ───────────────────────────────────────────────────────────────────
 export { defineConfig } from './config/define-config.js';
 export {
-  resolveToolConfigPath,
-  type AbsorbedTool,
-  type ResolvedToolConfig,
-} from './config/resolve-tool-config.js';
-export {
   CONTENT_DEFAULTS,
   AUTH_DEFAULTS,
   HTTP_DEFAULTS,
@@ -51,9 +46,10 @@ export {
 } from './config/defaults.js';
 
 // ─── HTTP utilities ────────────────────────────────────────────────────────────
+export type { IRequest, IRequestHeaders } from './http/irequest.js';
 export { generateRequestId } from './http/request-id.js';
 export { sanitizeInput, sanitizeObject } from './http/sanitize.js';
-export { parseRequestUrl } from './http/request-url.js';
+export { parseRequestUrl, type RequestUrlSource } from './http/request-url.js';
 export { headersToRecord } from './http/headers-to-record.js';
 
 // ─── Errors ───────────────────────────────────────────────────────────────────
@@ -107,7 +103,7 @@ export { url, setAppUrl } from './utils/url.js';
 export { t, setLocaleConfig, loadTranslations, getActiveLocale } from './i18n/index.js';
 
 // ─── Application environment ──────────────────────────────────────────────────
-export { app } from './app.js';
+export { app, configureAppEnvironment, resetAppEnvironment } from './app.js';
 export type { AppEnvironment } from './app.js';
 
 // ─── Testing utilities ────────────────────────────────────────────────────────
@@ -116,16 +112,6 @@ export {
   isInTestTransaction,
   runWithTestTransaction,
 } from './testing/test-transaction.js';
-
-// ─── Content loader ───────────────────────────────────────────────────────────
-export { defineContentLoader } from './content/define-content-loader.js';
-export type {
-  ContentPage,
-  TocEntry,
-  ContentLoaderOptions,
-  ContentLoader,
-} from './content/define-content-loader.js';
-export { clearCache as clearContentCache } from './content/content-cache.js';
 
 // ─── API Resource transformers ────────────────────────────────────────────────
 export { defineResource } from './http/resource.js';

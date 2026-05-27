@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/testing",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "license": "MIT",
   "description": "LumiArq test utilities — withTestContext, HTTP test client, stubs",
   "type": "module",

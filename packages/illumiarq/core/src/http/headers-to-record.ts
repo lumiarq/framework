@@ -1,9 +1,9 @@
-type HeaderLike = Headers | Record<string, string | string[] | undefined>;
+import type { IRequestHeaders } from './irequest.js';
 
 /**
  * Normalizes Web API Headers and Node.js IncomingMessage header objects.
  */
-export function headersToRecord(headers: HeaderLike): Record<string, string> {
+export function headersToRecord(headers: IRequestHeaders): Record<string, string> {
   const headersMap: Record<string, string> = {};
 
   if (typeof (headers as Headers).forEach === 'function') {
