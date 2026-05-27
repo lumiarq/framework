@@ -36,6 +36,11 @@ export type { ListenerFn, EventEnvelope } from './event/event-bus.js';
 // ─── Config ───────────────────────────────────────────────────────────────────
 export { defineConfig } from './config/define-config.js';
 export {
+  resolveToolConfigPath,
+  type AbsorbedTool,
+  type ResolvedToolConfig,
+} from './config/resolve-tool-config.js';
+export {
   CONTENT_DEFAULTS,
   AUTH_DEFAULTS,
   HTTP_DEFAULTS,

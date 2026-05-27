@@ -504,14 +504,66 @@ function runHealthPreChecks(): void {
     }
   }
 
+  // Vercel deployment hygiene (Phase 0)
+  const vercelJsonPath = join(cwd, 'vercel.json');
+  if (existsSync(vercelJsonPath)) {
+    let vercelRaw = '';
+    try {
+      vercelRaw = readFileSync(vercelJsonPath, 'utf8');
+    } catch {
+      vercelRaw = '';
+    }
+
+    const usesLegacyRoutes =
+      vercelRaw.includes('"routes"') &&
+      vercelRaw.includes('"handle"') &&
+      vercelRaw.includes('filesystem');
+
+    checks.push({
+      label: 'vercel.json uses rewrites (not legacy routes + filesystem)',
+      pass: !usesLegacyRoutes && vercelRaw.includes('"rewrites"'),
+      fix: 'Replace deprecated routes/handle:filesystem with rewrites → /api/index. See lumiarq-vercel-deployment-fix skill.',
+    });
+
+    checks.push({
+      label: 'vercel.json installCommand pins pnpm',
+      pass: vercelRaw.includes('"installCommand"') && vercelRaw.includes('pnpm'),
+      fix: 'Add installCommand: "corepack enable && pnpm install --frozen-lockfile" to vercel.json.',
+    });
+
+    checks.push({
+      label: 'vercel.json bundles framework cache for serverless',
+      pass:
+        vercelRaw.includes('"includeFiles"') && vercelRaw.includes('src/storage/framework/cache'),
+      fix: 'Add functions.api/index.js.includeFiles: "src/storage/framework/cache/**" so route/view caches ship with the function.',
+    });
+  }
+
+  checks.push({
+    label: 'api/index.js present (run pnpm run build:vercel first)',
+    pass: existsSync(join(cwd, 'api', 'index.js')),
+    fix: 'Run pnpm run build:vercel locally — Vercel requires api/index.js as the serverless entry.',
+  });
+
   // Route loader cache path checks (Wave 2 canonical layout)
-  const routesLoader = join(cwd, readStorageRoot(cwd), 'framework', 'cache', 'routes.loader.ts');
+  const storageRoot = readStorageRoot(cwd);
+  const routesLoader = join(cwd, storageRoot, 'framework', 'cache', 'routes.loader.ts');
+  const staleRootStorageLoader = join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts');
+
+  if (storageRoot !== 'storage' && existsSync(staleRootStorageLoader)) {
+    checks.push({
+      label: 'no stale root storage/ cache (use configured storage root)',
+      pass: false,
+      fix: `Remove storage/framework/cache — lumis should write to ${storageRoot}/framework/cache only.`,
+    });
+  }
+
   const bootstrapRoutesLoader = join(cwd, 'bootstrap', 'cache', 'routes.loader.ts');
 
   checks.push({
     label: 'route loader cache path is canonical',
     pass: !(existsSync(routesLoader) && existsSync(bootstrapRoutesLoader)),
-    fix: `Duplicate route cache detected. Keep only ${readStorageRoot(cwd)}/framework/cache/routes.loader.ts and remove bootstrap/cache/routes.loader.ts`,
+    fix: `Duplicate route cache detected. Keep only ${storageRoot}/framework/cache/routes.loader.ts and remove bootstrap/cache/routes.loader.ts`,
   });
 
   // Stale route loader warning

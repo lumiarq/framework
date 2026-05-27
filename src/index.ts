@@ -47,6 +47,10 @@ export {
   defineSecurityConfig,
 } from './config-helpers.js';
 
+// ─── Tool config absorbers (pkg/ canonical layout) ───────────────────────────
+export { resolveToolConfigPath, type AbsorbedTool, type ResolvedToolConfig } from '@illumiarq/core';
+export { defineVitestConfig, definePrettierConfig } from './config-absorbers/index.js';
+
 // ─── Runtime: Boot & Application ──────────────────────────────────────────────
 export {
   boot,

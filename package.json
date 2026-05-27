@@ -123,7 +123,7 @@
   "dependencies": {
     "@lumiarq/lumis": "^1.1.0",
     "@illumiarq/contracts": "^1.0.0",
-    "@illumiarq/core": "^1.0.0",
+    "@illumiarq/core": "workspace:*",
     "@illumiarq/runtime": "^1.0.0",
     "@illumiarq/database": "^1.0.0",
     "@illumiarq/migrations": "^1.0.0",

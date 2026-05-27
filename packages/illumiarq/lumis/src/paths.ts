@@ -39,19 +39,26 @@ type MinimalLumisConfig = {
   };
 };
 
-const STORAGE_ROOT_DEFAULT = 'storage';
+/** Canonical Lumiarq apps use `src/storage`; legacy apps may set `paths.storage` explicitly. */
+const STORAGE_ROOT_DEFAULT = 'src/storage';
 
 const LUMIS_CONFIG_CANDIDATES = [
+  'pkg/lumis.config.ts',
   'pkg/lumis/config.ts',
   'src/config/lumis.ts',
   'lumis.config.ts',
-  'pkg/lumis/config.json',
+  'pkg/lumis.config.json',
   'lumis.config.json',
 ] as const;
 
 function extractStorageRootFromTs(raw: string): string | null {
-  const match = raw.match(/storage\s*:\s*['"]([^'"]+)['"]/);
-  return match?.[1] ?? null;
+  const pathsBlock = raw.match(/paths\s*:\s*\{[^}]*storage\s*:\s*['"]([^'"]+)['"]/s);
+  if (pathsBlock?.[1]) {
+    return pathsBlock[1];
+  }
+
+  const direct = raw.match(/storage\s*:\s*['"]([^'"]+)['"]/);
+  return direct?.[1] ?? null;
 }
 
 function readStorageRootFromConfigFile(filePath: string): string | null {
@@ -74,11 +81,12 @@ function readStorageRootFromConfigFile(filePath: string): string | null {
  * Defaults to `"storage"` if not set.
  *
  * Resolution order:
- *   1. pkg/lumis/config.ts
- *   2. src/config/lumis.ts
- *   3. lumis.config.ts
- *   4. pkg/lumis/config.json
- *   5. lumis.config.json
+ *   1. pkg/lumis.config.ts
+ *   2. pkg/lumis/config.ts
+ *   3. src/config/lumis.ts
+ *   4. lumis.config.ts
+ *   5. pkg/lumis.config.json
+ *   6. lumis.config.json
  */
 export function readStorageRoot(cwd = process.cwd()): string {
   for (const candidate of LUMIS_CONFIG_CANDIDATES) {

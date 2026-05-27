@@ -61,9 +61,9 @@ describe('cli doctor pre-checks', () => {
       'utf8',
     );
 
-    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
     writeFileSync(
-      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
       '// storage cache\n',
       'utf8',
     );
@@ -143,16 +143,16 @@ describe('cli doctor pre-checks', () => {
     const cwd = mkdtempSync(join(tmpdir(), 'lumis-doctor-canonical-routes-loader-'));
     tmpPaths.push(cwd);
 
-    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
     writeFileSync(
-      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
       '// storage cache\n',
       'utf8',
     );
 
     const output = runDoctor(cwd);
-    expect(output).not.toContain('route loader cache path is canonical');
     expect(output).not.toContain('Duplicate route cache detected.');
+    expect(output).not.toContain('no stale root storage/ cache');
   });
 
   it('emits both duplicate-path and stale-route warnings when both conditions are true', () => {
@@ -166,9 +166,9 @@ describe('cli doctor pre-checks', () => {
       'utf8',
     );
 
-    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
     writeFileSync(
-      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
       '// storage cache\n',
       'utf8',
     );
@@ -199,9 +199,9 @@ describe('cli doctor pre-checks', () => {
       'utf8',
     );
 
-    mkdirSync(join(cwd, 'storage', 'framework', 'cache'), { recursive: true });
+    mkdirSync(join(cwd, 'src', 'storage', 'framework', 'cache'), { recursive: true });
     writeFileSync(
-      join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'),
+      join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'),
       '// storage cache\n',
       'utf8',
     );

@@ -165,14 +165,22 @@ describe('app command extensions', () => {
     const optimizeStatus = await optimizeForProduction(cwd);
     expect(optimizeStatus).toBe(0);
     expect(existsSync(join(cwd, 'bootstrap', 'cache', 'config.cache.json'))).toBe(true);
-    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(true);
-    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'search.index.json'))).toBe(true);
+    expect(existsSync(join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(
+      true,
+    );
+    expect(existsSync(join(cwd, 'src', 'storage', 'framework', 'cache', 'search.index.json'))).toBe(
+      true,
+    );
 
     const clearStatus = await clearOptimizationCaches(cwd);
     expect(clearStatus).toBe(0);
     expect(existsSync(join(cwd, 'bootstrap', 'cache', 'config.cache.json'))).toBe(false);
-    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(false);
-    expect(existsSync(join(cwd, 'storage', 'framework', 'cache', 'search.index.json'))).toBe(false);
+    expect(existsSync(join(cwd, 'src', 'storage', 'framework', 'cache', 'routes.loader.ts'))).toBe(
+      false,
+    );
+    expect(existsSync(join(cwd, 'src', 'storage', 'framework', 'cache', 'search.index.json'))).toBe(
+      false,
+    );
   });
 
   it('rejects path traversal outside project root', () => {
