@@ -18,6 +18,7 @@ import { loadLoggingConfig } from './config/load-logging.js';
 import { createRequestContext, runWithContext } from './context/index.js';
 import { createContextLogger } from './logging/context-logger.js';
 import type { LumiARQApp, BootHooks } from './types.js';
+import { buildWebRuntimeManifest } from './web-runtime/manifest.js';
 
 // Void the imports to suppress "unused variable" lint warnings — the import
 // side-effect (registering into the global middleware registry) is all we need.
@@ -86,8 +87,22 @@ export async function boot(hooks?: BootHooks): Promise<LumiARQApp> {
   // Register all routes from the Route facade registry
   // Routes are registered by route files calling Route.get/post/put/patch/delete()
   const routes = getRegisteredRoutes();
+  const manifest = await buildWebRuntimeManifest({
+    legacyRoutes: routes,
+    projectRoot: process.cwd(),
+    enableFilesystemRouting:
+      process.env['LUMIARQ_WEB_RUNTIME_FS'] === '1' ||
+      process.env['LUMIARQ_WEB_RUNTIME_FS'] === 'true',
+  });
+  for (const collision of manifest.diagnostics.collisions) {
+    console.warn(
+      `[LumiARQ] Route collision detected for ${collision.method} ${collision.signature}: ${collision.routes
+        .map((route) => route.path)
+        .join(', ')}`,
+    );
+  }
 
-  for (const routeDef of routes) {
+  for (const routeDef of manifest.routes) {
     if (!routeDef.method) {
       throw new Error(`Route definition missing method: ${routeDef.path}`);
     }

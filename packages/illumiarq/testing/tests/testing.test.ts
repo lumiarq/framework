@@ -3,6 +3,7 @@ import { withTestContext } from '../src/with-test-context.js';
 import { StubCache } from '../src/stubs/stub-cache.js';
 import { StubMailer } from '../src/stubs/stub-mailer.js';
 import { RequestLogger } from '../src/stubs/request-logger.js';
+import { runAdapterConformance } from '../src/conformance/adapter-conformance.js';
 
 // ── withTestContext ───────────────────────────────────────────────────────────
 
@@ -100,5 +101,33 @@ describe('StubMailer', () => {
     expect(mailer.sent).toHaveLength(2);
     expect(mailer.sent[0]).toEqual(msg);
     expect(mailer.sent[1]).toEqual(msg);
+  });
+});
+
+describe('runAdapterConformance', () => {
+  it('returns checksum and safety indicators', async () => {
+    const adapter = {
+      framework: 'react',
+      tier: 'ga' as const,
+      hydrateMode: 'full' as const,
+      async renderServer({ component }: { component: string; props: Record<string, unknown> }) {
+        return `<div>${component}</div>`;
+      },
+      renderClientEntry({ component }: { component: string; props: Record<string, unknown> }) {
+        return `mount("${component}")`;
+      },
+      serializeProps(props: Record<string, unknown>) {
+        return JSON.stringify(props).replaceAll('<', '\\u003C');
+      },
+    };
+
+    const result = await runAdapterConformance(adapter, {
+      component: 'Home',
+      props: { text: '<script>alert(1)</script>' },
+    });
+
+    expect(result.safeSerialization).toBe(true);
+    expect(result.hasClientEntryReference).toBe(true);
+    expect(result.checksum).toHaveLength(64);
   });
 });

@@ -31,6 +31,8 @@ import {
   clearViews,
   installAuth,
   listRoutes,
+  makeLayout,
+  makePage,
   optimizeForProduction,
   publishConfig,
   publishStubs,
@@ -143,6 +145,14 @@ async function main(): Promise<number> {
 
   if (cmd === 'route:cache') {
     return cacheRoutes();
+  }
+
+  if (cmd === 'make:page') {
+    return makePage(argv[1] ?? '', process.cwd(), argv.includes('--force'));
+  }
+
+  if (cmd === 'make:layout') {
+    return makeLayout(argv[1] ?? '', process.cwd(), argv.includes('--force'));
   }
 
   if (cmd === 'route:clear') {
@@ -271,6 +281,8 @@ function renderWrapperHelp(): void {
   writeLine('    lumis config:show <name>');
   writeLine('    lumis config:cache | config:clear');
   writeLine('    lumis route:list | route:check | route:cache | route:clear');
+  writeLine('    lumis make:page <route> [--force]');
+  writeLine('    lumis make:layout <route> [--force]');
   writeLine('    lumis view:cache | view:clear');
   writeLine('    lumis search:index | search:clear');
   writeLine('    lumis optimize | optimize:clear');

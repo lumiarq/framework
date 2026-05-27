@@ -39,3 +39,7 @@ export * from './notification.contract.js';
 // ─── Scheduler ────────────────────────────────────────────────────────────────
 
 export * from './scheduler.contract.js';
+
+// ─── Web runtime ──────────────────────────────────────────────────────────────
+
+export * from './web-runtime.contract.js';

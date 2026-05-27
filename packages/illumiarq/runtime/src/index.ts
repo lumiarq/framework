@@ -107,6 +107,14 @@ export type {
   RuntimeLoggingChannel,
   RuntimeLogLevel,
 } from './config/load-logging.js';
+export { buildWebRuntimeManifest } from './web-runtime/manifest.js';
+export type {
+  BuildWebRuntimeManifestOptions,
+  WebRuntimeManifest,
+  RuntimeRouteEntry,
+  RouteCollisionDiagnostic,
+} from './web-runtime/manifest.js';
+export { rankPath, toCollisionSignature } from './web-runtime/route-ranking.js';
 
 // ─── Test utilities ───────────────────────────────────────────────────────────
 export { withTestContext } from './with-test-context.js';

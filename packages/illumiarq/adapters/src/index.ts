@@ -24,6 +24,19 @@ export { createFetchAdapter } from './fetch/index.js';
 
 export { createLambdaAdapter } from './aws-lambda/index.js';
 export type { LambdaEvent, LambdaContext, LambdaResponse } from './aws-lambda/index.js';
+export { createReactAdapter } from './react/index.js';
+export type { ReactAdapterOptions } from './react/index.js';
+export { createVueAdapter } from './vue/index.js';
+export type { VueAdapterOptions } from './vue/index.js';
+export { createSvelteAdapter } from './svelte/index.js';
+export { createSolidAdapter } from './solid/index.js';
+export { createQwikAdapter } from './qwik/index.js';
+export type {
+  FrameworkAdapter,
+  HydrateMode,
+  AdapterTier,
+  BetaAdapterOptions,
+} from './web/types.js';
 
 export {
   planStaticBuild,

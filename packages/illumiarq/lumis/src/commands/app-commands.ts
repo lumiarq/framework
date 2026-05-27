@@ -23,7 +23,14 @@ import {
 import { cacheConfig, clearConfigCache } from './app/config-cache.js';
 import { pingDatabaseConnection, runDatabaseCommand } from './app/database.js';
 import { publishConfig } from './app/config-publish.js';
-import { cacheRoutes, checkRoutes, clearRouteCache, listRoutes } from './app/routes.js';
+import {
+  cacheRoutes,
+  checkRoutes,
+  clearRouteCache,
+  listRoutes,
+  makeLayout,
+  makePage,
+} from './app/routes.js';
 import { ensureParentDir, resolvePathWithinRoot } from './app/security.js';
 import { scheduleList, scheduleRun, workerList, workerStart } from './app/worker-schedule.js';
 
@@ -39,6 +46,8 @@ export {
   clearSearchIndex,
   clearViews,
   listRoutes,
+  makeLayout,
+  makePage,
   optimizeForProduction,
   pingDatabaseConnection,
   publishConfig,

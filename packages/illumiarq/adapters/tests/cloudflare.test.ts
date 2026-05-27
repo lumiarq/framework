@@ -1,25 +1,38 @@
 import { describe, it, expect } from 'vitest';
-import { buildCloudflareAdapter } from '../src/cloudflare/index.js';
+import { createCloudflareAdapter } from '../src/cloudflare/index.js';
 import { Hono } from 'hono';
+import type { LumiARQApp } from '@illumiarq/runtime';
 
-describe('buildCloudflareAdapter', () => {
+function createApp(): LumiARQApp {
+  return {
+    router: new Hono(),
+    modules: new Map(),
+    scheduler: {
+      register: async () => {},
+      start: async () => {},
+      stop: async () => {},
+    },
+  };
+}
+
+describe('createCloudflareAdapter', () => {
   it('returns an object with a fetch property', () => {
-    const app = new Hono();
-    const adapter = buildCloudflareAdapter(app);
+    const app = createApp();
+    const adapter = createCloudflareAdapter(app);
     expect(adapter).toHaveProperty('fetch');
   });
 
   it('the fetch property is a function', () => {
-    const app = new Hono();
-    const adapter = buildCloudflareAdapter(app);
+    const app = createApp();
+    const adapter = createCloudflareAdapter(app);
     expect(typeof adapter.fetch).toBe('function');
   });
 
   it('the fetch function handles a GET request and returns a Response', async () => {
-    const app = new Hono();
-    app.get('/', (c) => c.text('hello from cloudflare'));
+    const app = createApp();
+    app.router.get('/', (c) => c.text('hello from cloudflare'));
 
-    const adapter = buildCloudflareAdapter(app);
+    const adapter = createCloudflareAdapter(app);
     const response = await adapter.fetch(new Request('http://localhost/'));
 
     expect(response.status).toBe(200);
@@ -27,19 +40,21 @@ describe('buildCloudflareAdapter', () => {
   });
 
   it('returns distinct adapter objects for distinct app instances', () => {
-    const app1 = new Hono();
-    const app2 = new Hono();
-    const a1 = buildCloudflareAdapter(app1);
-    const a2 = buildCloudflareAdapter(app2);
+    const app1 = createApp();
+    const app2 = createApp();
+    const a1 = createCloudflareAdapter(app1);
+    const a2 = createCloudflareAdapter(app2);
     expect(a1).not.toBe(a2);
   });
 
   it("each adapter's fetch is bound to its specific app instance", async () => {
-    const app1 = new Hono().get('/', (c) => c.text('app1'));
-    const app2 = new Hono().get('/', (c) => c.text('app2'));
+    const app1 = createApp();
+    const app2 = createApp();
+    app1.router.get('/', (c) => c.text('app1'));
+    app2.router.get('/', (c) => c.text('app2'));
 
-    const a1 = buildCloudflareAdapter(app1);
-    const a2 = buildCloudflareAdapter(app2);
+    const a1 = createCloudflareAdapter(app1);
+    const a2 = createCloudflareAdapter(app2);
 
     const r1 = await a1.fetch(new Request('http://localhost/'));
     const r2 = await a2.fetch(new Request('http://localhost/'));

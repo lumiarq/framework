@@ -7,6 +7,7 @@
  */
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { Hono } from 'hono';
+import type { LumiARQApp } from '@illumiarq/runtime';
 
 // ─── Hoist mock BEFORE the vi.mock call (required for dynamic imports) ───────
 
@@ -20,6 +21,18 @@ vi.mock('@hono/node-server', () => ({
 const { startNodeServer } = await import('../src/node/index.js');
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function createApp(): LumiARQApp {
+  return {
+    router: new Hono(),
+    modules: new Map(),
+    scheduler: {
+      register: async () => {},
+      start: async () => {},
+      stop: async () => {},
+    },
+  };
+}
 
 function silenceConsole() {
   return vi.spyOn(console, 'info').mockImplementation(() => {});
@@ -35,44 +48,44 @@ afterEach(() => {
 describe('startNodeServer', () => {
   it('calls serve with the Hono app fetch handler', async () => {
     silenceConsole();
-    const app = new Hono();
+    const app = createApp();
     await startNodeServer(app);
 
     expect(mockServe).toHaveBeenCalledOnce();
-    expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ fetch: app.fetch }));
+    expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ fetch: app.router.fetch }));
   });
 
   it('uses default port 4000 when no options provided', async () => {
     silenceConsole();
-    await startNodeServer(new Hono());
+    await startNodeServer(createApp());
 
     expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ port: 4000 }));
   });
 
   it('uses default hostname 0.0.0.0 when no options provided', async () => {
     silenceConsole();
-    await startNodeServer(new Hono());
+    await startNodeServer(createApp());
 
     expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ hostname: '0.0.0.0' }));
   });
 
   it('passes a custom port through to serve', async () => {
     silenceConsole();
-    await startNodeServer(new Hono(), { port: 8080 });
+    await startNodeServer(createApp(), { port: 8080 });
 
     expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ port: 8080 }));
   });
 
   it('passes a custom hostname through to serve', async () => {
     silenceConsole();
-    await startNodeServer(new Hono(), { hostname: '127.0.0.1' });
+    await startNodeServer(createApp(), { hostname: '127.0.0.1' });
 
     expect(mockServe).toHaveBeenCalledWith(expect.objectContaining({ hostname: '127.0.0.1' }));
   });
 
   it('passes both custom port and hostname simultaneously', async () => {
     silenceConsole();
-    await startNodeServer(new Hono(), { port: 9000, hostname: 'localhost' });
+    await startNodeServer(createApp(), { port: 9000, hostname: 'localhost' });
 
     expect(mockServe).toHaveBeenCalledWith(
       expect.objectContaining({ port: 9000, hostname: 'localhost' }),
@@ -81,17 +94,17 @@ describe('startNodeServer', () => {
 
   it('logs the bound address on startup', async () => {
     const spy = silenceConsole();
-    await startNodeServer(new Hono(), { port: 4321, hostname: 'my-host' });
+    await startNodeServer(createApp(), { port: 4321, hostname: '127.0.0.1' });
 
     expect(spy).toHaveBeenCalledOnce();
     const msg = spy.mock.calls[0]![0] as string;
     expect(msg).toContain('4321');
-    expect(msg).toContain('my-host');
+    expect(msg).toContain('127.0.0.1');
   });
 
   it('log message contains the lumiarq prefix', async () => {
     const spy = silenceConsole();
-    await startNodeServer(new Hono());
+    await startNodeServer(createApp());
 
     const msg = spy.mock.calls[0]![0] as string;
     expect(msg).toContain('lumiarq');
@@ -99,14 +112,14 @@ describe('startNodeServer', () => {
 
   it('distinct Hono app instances each bind their own fetch function', async () => {
     silenceConsole();
-    const app1 = new Hono();
-    const app2 = new Hono();
+    const app1 = createApp();
+    const app2 = createApp();
 
     await startNodeServer(app1);
     await startNodeServer(app2);
 
     const calls = mockServe.mock.calls;
-    expect(calls[0]![0]).toMatchObject({ fetch: app1.fetch });
-    expect(calls[1]![0]).toMatchObject({ fetch: app2.fetch });
+    expect(calls[0]![0]).toMatchObject({ fetch: app1.router.fetch });
+    expect(calls[1]![0]).toMatchObject({ fetch: app2.router.fetch });
   });
 });

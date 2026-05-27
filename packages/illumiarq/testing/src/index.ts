@@ -14,3 +14,8 @@ export type { StubStorageOptions } from './stubs/stub-storage.js';
 export { StubCache } from './stubs/stub-cache.js';
 export { StubAudit } from './stubs/stub-audit.js';
 export type { StubAuditOptions } from './stubs/stub-audit.js';
+export { runAdapterConformance } from './conformance/adapter-conformance.js';
+export type {
+  AdapterConformanceTarget,
+  ConformanceResult,
+} from './conformance/adapter-conformance.js';

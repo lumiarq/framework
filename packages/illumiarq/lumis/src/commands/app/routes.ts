@@ -5,6 +5,61 @@ import { ui, writeError, writeLine } from '../../console.js';
 import { readStorageRoot } from '../../paths.js';
 import { runBridge } from './command-runtime.js';
 
+const PAGE_FILE_RE = /^page\.(ts|tsx|js|jsx|mjs|cjs)$/;
+
+type RouteManifestEntry = {
+  source: 'legacy' | 'filesystem';
+  method: 'GET' | 'POST';
+  path: string;
+  filePath: string;
+  signature: string;
+};
+
+function toSignature(path: string): string {
+  return path
+    .split('/')
+    .map((segment) => {
+      if (!segment) return '';
+      if (segment.startsWith(':')) {
+        return segment.endsWith('*') ? ':param*' : ':param';
+      }
+      return segment;
+    })
+    .join('/');
+}
+
+function toFsRoutePath(appDir: string, pageFilePath: string): string {
+  const rel = relative(appDir, pageFilePath).replaceAll('\\', '/');
+  const dir = rel.replace(/\/?page\.(ts|tsx|js|jsx|mjs|cjs)$/i, '');
+  if (!dir) return '/';
+  return `/${dir
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => {
+      const catchAll = segment.match(/^\[\.\.\.(.+)\]$/);
+      if (catchAll) return `:${catchAll[1]}*`;
+      const dynamic = segment.match(/^\[(.+)\]$/);
+      if (dynamic) return `:${dynamic[1]}`;
+      return segment;
+    })
+    .join('/')}`;
+}
+
+function collectFsPageFiles(root: string, bucket: string[] = []): string[] {
+  if (!existsSync(root)) return bucket;
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
+    const fullPath = join(root, entry.name);
+    if (entry.isDirectory()) {
+      collectFsPageFiles(fullPath, bucket);
+      continue;
+    }
+    if (PAGE_FILE_RE.test(entry.name)) {
+      bucket.push(fullPath);
+    }
+  }
+  return bucket;
+}
+
 export function cacheRoutes(cwd = process.cwd()): number {
   const routesRoot = join(cwd, 'src', 'modules');
   if (!existsSync(routesRoot)) {
@@ -55,10 +110,85 @@ export function cacheRoutes(cwd = process.cwd()): number {
 
   writeFileSync(loaderPath, content, 'utf8');
 
+  const legacyEntries: RouteManifestEntry[] = discovered.map((filePath) => {
+    const relPath = relative(join(cwd, 'src', 'modules'), filePath).replaceAll('\\', '/');
+    const noExt = relPath.replace(/\.(ts|js)$/i, '');
+    const routePath = `/${noExt
+      .replace(/\/http\/routes\//, '/')
+      .replace(/\.web$/i, '')
+      .replace(/\/index$/i, '')
+      .replace(/\/+/g, '/')}`;
+    return {
+      source: 'legacy',
+      method: 'GET',
+      path: routePath === '' ? '/' : routePath,
+      filePath: relative(cwd, filePath).replaceAll('\\', '/'),
+      signature: toSignature(routePath === '' ? '/' : routePath),
+    };
+  });
+
+  const appDir = join(cwd, 'src', 'app');
+  const fsEntries: RouteManifestEntry[] = collectFsPageFiles(appDir)
+    .sort((left, right) => left.localeCompare(right))
+    .flatMap((filePath) => {
+      const routePath = toFsRoutePath(appDir, filePath);
+      const base: RouteManifestEntry = {
+        source: 'filesystem',
+        method: 'GET',
+        path: routePath,
+        filePath: relative(cwd, filePath).replaceAll('\\', '/'),
+        signature: toSignature(routePath),
+      };
+      return [base, { ...base, method: 'POST' as const }];
+    });
+
+  const manifest = [...legacyEntries, ...fsEntries];
+  const collisions = new Map<string, RouteManifestEntry[]>();
+  for (const entry of manifest) {
+    const key = `${entry.method}:${entry.signature}`;
+    const list = collisions.get(key) ?? [];
+    list.push(entry);
+    collisions.set(key, list);
+  }
+  const collisionList = [...collisions.entries()]
+    .filter(([, list]) => list.length > 1)
+    .map(([key, list]) => ({
+      key,
+      routes: list.map((item) => ({
+        path: item.path,
+        source: item.source,
+        filePath: item.filePath,
+      })),
+    }));
+
+  const manifestPath = join(cwd, storageRoot, 'framework', 'cache', 'routes.manifest.json');
+  writeFileSync(
+    manifestPath,
+    JSON.stringify(
+      {
+        generatedAt: new Date().toISOString(),
+        routes: manifest,
+        diagnostics: {
+          collisions: collisionList,
+          routeGraph: manifest.map((entry) => `${entry.method} ${entry.path} (${entry.source})`),
+        },
+      },
+      null,
+      2,
+    ),
+    'utf8',
+  );
+
   writeLine();
   writeLine(ui.section('Route Cache'));
   writeLine(`  ${ui.ok(`Cached ${discovered.length} route files`)}`);
   writeLine(`  ${ui.bullet(relative(cwd, loaderPath))}`);
+  writeLine(`  ${ui.bullet(relative(cwd, manifestPath))}`);
+  if (collisionList.length > 0) {
+    writeLine(`  ${ui.warn(`Detected ${collisionList.length} route signature collisions`)}`);
+  } else {
+    writeLine(`  ${ui.ok('No route signature collisions detected')}`);
+  }
   writeLine();
   return 0;
 }
@@ -66,13 +196,100 @@ export function cacheRoutes(cwd = process.cwd()): number {
 export function clearRouteCache(cwd = process.cwd()): number {
   const storageRoot = readStorageRoot(cwd);
   const loaderPath = join(cwd, storageRoot, 'framework', 'cache', 'routes.loader.ts');
+  const manifestPath = join(cwd, storageRoot, 'framework', 'cache', 'routes.manifest.json');
   if (existsSync(loaderPath)) {
     rmSync(loaderPath, { force: true });
+  }
+  if (existsSync(manifestPath)) {
+    rmSync(manifestPath, { force: true });
   }
 
   writeLine();
   writeLine(ui.section('Route Clear'));
   writeLine(`  ${ui.ok(`Removed ${relative(cwd, loaderPath)}`)}`);
+  writeLine(`  ${ui.ok(`Removed ${relative(cwd, manifestPath)}`)}`);
+  writeLine();
+  return 0;
+}
+
+function makeScaffold(
+  cwd: string,
+  routeInput: string,
+  kind: 'page' | 'layout',
+  force: boolean,
+): { status: number; target: string; reason?: string } {
+  const normalized = routeInput.trim().replace(/^\/+|\/+$/g, '');
+  const targetDir =
+    normalized.length > 0 ? join(cwd, 'src', 'app', normalized) : join(cwd, 'src', 'app');
+  mkdirSync(targetDir, { recursive: true });
+  const filePath = join(targetDir, `${kind}.ts`);
+  if (existsSync(filePath) && !force) {
+    return {
+      status: 1,
+      target: filePath,
+      reason: `${kind}.ts already exists (use --force to overwrite)`,
+    };
+  }
+
+  const content =
+    kind === 'page'
+      ? [
+          "import type { PageModule } from '@illumiarq/contracts';",
+          '',
+          'const page: PageModule = {',
+          '  async render() {',
+          "    return { html: '<main><h1>New Page</h1></main>', payload: { initialData: null, pageVersion: 'v1' }, status: 200 };",
+          '  },',
+          '};',
+          '',
+          'export default page;',
+          '',
+        ].join('\n')
+      : [
+          'export default async function layout({',
+          '  childrenHtml,',
+          '}: {',
+          '  childrenHtml: string;',
+          '}) {',
+          "  return `<div data-layout='default'>${childrenHtml}</div>`;",
+          '}',
+          '',
+        ].join('\n');
+
+  writeFileSync(filePath, content, 'utf8');
+  return { status: 0, target: filePath };
+}
+
+export function makePage(routeInput: string, cwd = process.cwd(), force = false): number {
+  if (!routeInput) {
+    writeError(ui.fail('Usage: lumis make:page <route> [--force]'));
+    return 1;
+  }
+  const result = makeScaffold(cwd, routeInput, 'page', force);
+  if (result.status !== 0) {
+    writeError(ui.fail(result.reason ?? 'Unable to create page scaffold'));
+    return result.status;
+  }
+  writeLine();
+  writeLine(ui.section('Page Scaffold'));
+  writeLine(`  ${ui.ok(`Created ${relative(cwd, result.target)}`)}`);
+  writeLine();
+  return 0;
+}
+
+export function makeLayout(routeInput: string, cwd = process.cwd(), force = false): number {
+  if (!routeInput) {
+    writeError(ui.fail('Usage: lumis make:layout <route> [--force]'));
+    return 1;
+  }
+  const result = makeScaffold(cwd, routeInput, 'layout', force);
+  if (result.status !== 0) {
+    writeError(ui.fail(result.reason ?? 'Unable to create layout scaffold'));
+    return result.status;
+  }
+  writeLine();
+  writeLine(ui.section('Layout Scaffold'));
+  writeLine(`  ${ui.ok(`Created ${relative(cwd, result.target)}`)}`);
   writeLine();
   return 0;
 }
