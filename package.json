@@ -130,7 +130,7 @@
     "@illumiarq/adapters": "^1.0.0",
     "@illumiarq/build": "^1.0.0",
     "@illumiarq/auth": "^1.0.0",
-    "@illumiarq/veil": "^1.0.0",
+    "@illumiarq/veil": "^1.0.6",
     "@illumiarq/query": "^1.0.0",
     "@illumiarq/http": "^1.0.0",
     "@illumiarq/context": "^1.0.0",

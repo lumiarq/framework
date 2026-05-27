@@ -6,19 +6,14 @@ export function __t(key: string, locale: Record<string, string> = {}): string {
   return locale[key] ?? key;
 }
 
-/**
- * loadLocale — reads a JSON locale file from lang/<locale>.json at runtime.
- * Returns an empty map if the file does not exist or fails to parse.
- */
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+export { loadLocaleFiles } from './load-locale-files.js';
 
+import { loadLocaleFiles } from './load-locale-files.js';
+
+/**
+ * loadLocale — merges locale JSON for the active language tag.
+ * Supports lang/<locale>.json and src/lang/<locale>/*.json layouts.
+ */
 export function loadLocale(locale = 'en', cwd = process.cwd()): Record<string, string> {
-  const path = resolve(cwd, 'lang', `${locale}.json`);
-  if (!existsSync(path)) return {};
-  try {
-    return JSON.parse(readFileSync(path, 'utf8')) as Record<string, string>;
-  } catch {
-    return {};
-  }
+  return loadLocaleFiles(locale, cwd);
 }

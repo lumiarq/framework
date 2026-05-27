@@ -178,4 +178,12 @@ describe('loadLocale', () => {
     writeFileSync(resolve(tmp, 'lang', 'en.json'), '{ bad json }');
     expect(loadLocale('en', tmp)).toEqual({});
   });
+
+  it('merges src/lang/<locale>/*.json files', () => {
+    const langDir = resolve(tmp, 'src', 'lang', 'en');
+    mkdirSync(langDir, { recursive: true });
+    writeFileSync(resolve(langDir, 'system.json'), JSON.stringify({ 'nav.docs': 'Docs' }));
+    writeFileSync(resolve(langDir, 'home.json'), JSON.stringify({ 'home.title': 'Home' }));
+    expect(loadLocale('en', tmp)).toEqual({ 'nav.docs': 'Docs', 'home.title': 'Home' });
+  });
 });
