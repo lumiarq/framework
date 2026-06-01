@@ -18,7 +18,6 @@ overrides:
   '@lumiarq/pack-django': 1.0.1
   '@lumiarq/pack-laravel': 1.0.1
   '@lumiarq/ai': 1.2.0
-  '@lumiarq/lumis': link:../lumis
 
 importers:
 
@@ -79,8 +78,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(alpinejs@3.15.8)
       '@lumiarq/lumis':
-        specifier: link:../lumis
-        version: link:../lumis
+        specifier: ^1.1.0
+        version: 1.2.11
       '@trazze/sdk':
         specifier: ^0.1.0
         version: 0.1.0
@@ -144,8 +143,8 @@ importers:
         version: 0.38.4(@libsql/client@0.17.0)(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)
     devDependencies:
       '@illumiarq/lumis':
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.3.1
+        version: 1.3.1(alpinejs@3.15.8)
       '@tailwindcss/cli':
         specifier: ^4.1.0
         version: 4.2.2
@@ -535,8 +534,8 @@ importers:
         specifier: workspace:*
         version: link:../veil
       '@lumiarq/lumis':
-        specifier: link:../../../../lumis
-        version: link:../../../../lumis
+        specifier: ^1.2.12
+        version: 1.2.12
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -1996,6 +1995,12 @@ packages:
   '@illumiarq/adapters@1.0.0':
     resolution: {integrity: sha512-5lucn07abBTOAQhiEB7SZCS6M8aDeB4wP04x3ERtMXvpWICXhVPlBNIXXm8+5PXVjBUKmsc+oEs/6LNmZR08pw==}
 
+  '@illumiarq/adapters@1.2.0':
+    resolution: {integrity: sha512-PwkoL4oQOcvwxFY103JK3RPwUfwhvxv0W+LJUq45Dhve8Eb2pUrCcW2KJ3JzBboL1bjZlxq+kuCVwiR0B6jhpA==}
+
+  '@illumiarq/auth-starter@1.0.1':
+    resolution: {integrity: sha512-U9ty4uuGfSc2KH2/9pN/yirhqrO8hg1PvT8ePAWtyAVCdAkb8pZKvbP99pgl7AGEctkYiSmVit9o9D20AHTLVw==}
+
   '@illumiarq/auth@1.0.0':
     resolution: {integrity: sha512-h2C5oInCg/s/JvyNApk6eVEoyS7IcSmpTIaQNO15Zu7o1XVzjIcHytR2v6DU+rqPF99lfmZn1SoMDjCvlvjPEA==}
 
@@ -2026,8 +2031,8 @@ packages:
   '@illumiarq/key-value-storage@0.1.1':
     resolution: {integrity: sha512-P29uZR/eYq0wkQq9fPNE1IxVx0eKW1HexoG40CpsPmFOVDFi/CI/4ZIbC+QkGs65BEGkL/pVGHgZgww8j//Vtw==}
 
-  '@illumiarq/lumis@1.3.0':
-    resolution: {integrity: sha512-XN7yfybQhOTKt7AOQ7TF69rTZDLx6zuIxOtu9Rat2DD3TvGgO+ClBwpBYZfbaf4MUoGTKcqz0w5FktCIaoAXYQ==}
+  '@illumiarq/lumis@1.3.1':
+    resolution: {integrity: sha512-RrBwGuRISS3Hp4r6wcO8Kn/66cnfG+Jg+HxGX654eINRxY//JzAhN/VZnYV11h049Yq8Hgd4ICqv57cNvWnMOw==}
     hasBin: true
 
   '@illumiarq/migrations@1.0.0':
@@ -2062,8 +2067,14 @@ packages:
   '@illumiarq/runtime@1.0.0':
     resolution: {integrity: sha512-DIbkG79m2qIWuqQ4ViLRPzTFvY9lDAqJzFPt2RvsPgIuvQqN/vx23lidVQoPXFcZ87fCl5AitB7mbMPb98y1FQ==}
 
+  '@illumiarq/search@1.0.1':
+    resolution: {integrity: sha512-6bepZPMS42Icyxa90CKMrztH0gFp98Ns3zD8ayQPeuCruAkR5yfWmAM+GLrpCQpdWUCKGUnTLF0GeYtlYrxOzg==}
+
   '@illumiarq/security@1.0.0':
     resolution: {integrity: sha512-mU3e9wFlanRsysVV8xmKyRZ16LSfE6w40cdH3GuLO+CNMu3HZUiBv8dKUsaQfitYEFgl60/zEUm20nP+/bli2A==}
+
+  '@illumiarq/support@1.0.0':
+    resolution: {integrity: sha512-A1t8WqKymPJAsJ8eRMv4UYJx3Kdk4AcopqyXf2q6PuvymlRUZERHcd7BO6QpiSGYGCXxtKwDe9jBW3bmyvt4Gg==}
 
   '@illumiarq/testing@1.0.0':
     resolution: {integrity: sha512-mSHYt6dbtFv8GSO3Ofo6l5FmxyAeJnK6g4J5HohQ4elqrbxpE/nO2b4bzRBZFMZxo50iHktuK4tS5IXaJNf6Vw==}
@@ -2168,6 +2179,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@lumiarq/agent@1.1.0':
+    resolution: {integrity: sha512-sSg/YT8iaivmA+fsqNzRT61EFgj176Bb+3JplmyTcjg23bbVgOKk0zbI/gQ/hiAecdAwf9F1PN/i8ubkwijEPA==}
+
+  '@lumiarq/ai@1.2.0':
+    resolution: {integrity: sha512-nWZT6trWFZEemGWb+BzUPd8Vd1gfFlDY1pq3e7IxmVf+5My8v96Cmi/R0hjqUjC5XOLaSZHtxAe/QntOoZVHHQ==}
+
   '@lumiarq/context@1.0.1':
     resolution: {integrity: sha512-E7SDWnZhfykcLNWFyl1SmYTqmWa5OexhsNIT+ngHirGDjXlbilPuuEc8rxh95I5zgI20XtPTUMkRDMvBEh6+JA==}
 
@@ -2175,8 +2192,44 @@ packages:
     resolution: {integrity: sha512-MuGNQ+Lizaq5J3CragIB48s8cAaA0v2lqzqQv9P75InK7hFVvsCgGxBMYGxlB9K7kw06LM8dyH8yZN8JQlYGjg==}
     engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
 
+  '@lumiarq/generator@1.0.1':
+    resolution: {integrity: sha512-1vCV5+Jbb0pHQQPYTa2karfIieMaYoB3IDoBkRM0vxg9dBbqoVfiwmjWlvdlIws5JA/3o6fhFkydkywpkeyW0w==}
+
+  '@lumiarq/lumis@1.2.11':
+    resolution: {integrity: sha512-XYG872WCW6CLcj9z76ORE4OU2p8h51/Y/UjDyzlBoZaBYBGNPZJfEU+1Z6YMVjcGcjP64qoD4t8iw5qHkToKIA==}
+    engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
+    hasBin: true
+
+  '@lumiarq/lumis@1.2.12':
+    resolution: {integrity: sha512-rkMVc7NZ3jKJSdS37VHUzTGBkSPrAR0i/QwwaCUOXzjzx7I4w3a6LqRtx/ORp90rPSoVkkg2fS4MPWJ5S5uShg==}
+    engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
+    hasBin: true
+
+  '@lumiarq/pack-django@1.0.1':
+    resolution: {integrity: sha512-cRhT+w4uUtZmnrA0JZr28z/mXa1vaHshHBv119HQI4UV5LwU9rP1NhoGqcLv22hqijLtPxr7puxshJ89HmCEXQ==}
+
+  '@lumiarq/pack-laravel@1.0.1':
+    resolution: {integrity: sha512-HIdPm0cWFOoSdeDA+rhIrFkOKI/+M1ntXic2POOMNvPhmGoHYujXVlJ6YwBIrN7JQK7y3wsboytOQo8sIa5Jgg==}
+
   '@lumiarq/pack-lumiarq@1.0.1':
     resolution: {integrity: sha512-JT3hvrlcHegTP/EHyTa4+0XiK9xwjWxtx6uVCTyXDD8EcApVS7lvsXW14hgwrcEhvCbZ5//E+RXPRG+fy3v6YQ==}
+
+  '@lumiarq/pack-nextjs@1.0.1':
+    resolution: {integrity: sha512-67yW7mU96E0EStMFff7HdhyHLTDJxHzCI0siOKe43aooQi3kPd16Bkdpj7YKzBLZvs7Q5itbKA9y51nDOJ27KQ==}
+
+  '@lumiarq/planner@1.0.1':
+    resolution: {integrity: sha512-/mKQ2Od9HhtFPuyS3PMpr+vPThQCUEXbACXLawGC5uAS0PDjKNq9v0fOlB2uJICHZSf/Fu5DASteKpdEYeebRA==}
+
+  '@lumiarq/rag@0.1.0':
+    resolution: {integrity: sha512-DI/ImcEkzW8iyz/VWBd5sBIuGdk/PzrjHJA4v0UUw8Kt7zmvGisLT3Nmpu+wBPtEpHOxUzbFTJSbsqbq8EjuJA==}
+    peerDependencies:
+      '@lumiarq/ai': 1.2.0
+    peerDependenciesMeta:
+      '@lumiarq/ai':
+        optional: true
+
+  '@lumiarq/tinker@1.0.1':
+    resolution: {integrity: sha512-wFIFC0DHdIEfZ673kktKgkNIFYTXr+4pUsPXeR2WMm4m8zpKc31TKdMydAfxv9fl36xIm9/1cM0NYtCS0oIjBg==}
 
   '@lumiarq/verifier@1.0.1':
     resolution: {integrity: sha512-1okthct520kwV3n1nI62HGV9GmMxdcoCWwoFeqQsZec+FMyWJq1BrCpPcb/g53xETIq11Wk8R+jg0C1BjelWBQ==}
@@ -5812,6 +5865,18 @@ snapshots:
       '@illumiarq/runtime': 1.0.0
       hono: 4.12.7
 
+  '@illumiarq/adapters@1.2.0':
+    dependencies:
+      '@hono/node-server': 1.19.11(hono@4.12.7)
+      '@illumiarq/build': link:packages/illumiarq/build
+      '@illumiarq/core': link:packages/illumiarq/core
+      '@illumiarq/runtime': link:packages/illumiarq/runtime
+      hono: 4.12.7
+
+  '@illumiarq/auth-starter@1.0.1':
+    dependencies:
+      '@illumiarq/support': 1.0.0
+
   '@illumiarq/auth@1.0.0':
     dependencies:
       '@illumiarq/core': 1.0.0
@@ -5896,13 +5961,15 @@ snapshots:
       '@illumiarq/contracts': link:packages/illumiarq/contracts
       '@illumiarq/filesystem': link:packages/illumiarq/filesystem
 
-  '@illumiarq/lumis@1.3.0':
+  '@illumiarq/lumis@1.3.1(alpinejs@3.15.8)':
     dependencies:
-      '@illumiarq/adapters': link:packages/illumiarq/adapters
-      '@illumiarq/auth-starter': link:packages/illumiarq/auth-starter
-      '@illumiarq/search': link:packages/illumiarq/search
-      '@illumiarq/veil': link:packages/illumiarq/veil
-      '@lumiarq/lumis': link:../lumis
+      '@illumiarq/adapters': 1.2.0
+      '@illumiarq/auth-starter': 1.0.1
+      '@illumiarq/search': 1.0.1
+      '@illumiarq/veil': 1.0.6(alpinejs@3.15.8)
+      '@lumiarq/lumis': 1.2.12
+    transitivePeerDependencies:
+      - alpinejs
 
   '@illumiarq/migrations@1.0.0(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(better-sqlite3@11.10.0)(react@19.2.4)':
     dependencies:
@@ -5970,9 +6037,13 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       hono: 4.12.7
 
+  '@illumiarq/search@1.0.1': {}
+
   '@illumiarq/security@1.0.0':
     dependencies:
       '@illumiarq/core': 1.0.0
+
+  '@illumiarq/support@1.0.0': {}
 
   '@illumiarq/testing@1.0.0':
     dependencies:
@@ -6078,6 +6149,17 @@ snapshots:
   '@libsql/win32-x64-msvc@0.5.22':
     optional: true
 
+  '@lumiarq/agent@1.1.0':
+    dependencies:
+      '@lumiarq/ai': 1.2.0
+      '@lumiarq/context': 1.0.1
+      '@lumiarq/generator': 1.0.1
+      '@lumiarq/planner': 1.0.1
+      '@lumiarq/rag': 0.1.0(@lumiarq/ai@1.2.0)
+      '@lumiarq/verifier': 1.0.1
+
+  '@lumiarq/ai@1.2.0': {}
+
   '@lumiarq/context@1.0.1': {}
 
   '@lumiarq/framework@1.0.6(@tanstack/react-query@5.90.21(react@19.2.4))(@tanstack/solid-query@5.90.23(solid-js@1.9.11))(@tanstack/vue-query@5.92.9(vue@3.5.30(typescript@5.9.3)))(@types/better-sqlite3@7.6.13)(@types/react@19.2.14)(alpinejs@3.15.8)(better-sqlite3@11.10.0)(react@19.2.4)(svelte@5.53.11)(vue@3.5.30(typescript@5.9.3))':
@@ -6100,7 +6182,7 @@ snapshots:
       '@illumiarq/testing': 1.0.0
       '@illumiarq/tinker': 1.0.0
       '@illumiarq/veil': 1.0.6(alpinejs@3.15.8)
-      '@lumiarq/lumis': link:../lumis
+      '@lumiarq/lumis': 1.2.12
       '@trazze/sdk': 0.1.0
     transitivePeerDependencies:
       - '@aws-sdk/client-rds-data'
@@ -6141,10 +6223,70 @@ snapshots:
       - utf-8-validate
       - vue
 
+  '@lumiarq/generator@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+      '@lumiarq/planner': 1.0.1
+
+  '@lumiarq/lumis@1.2.11':
+    dependencies:
+      '@lumiarq/agent': 1.1.0
+      '@lumiarq/ai': 1.2.0
+      '@lumiarq/context': 1.0.1
+      '@lumiarq/generator': 1.0.1
+      '@lumiarq/pack-django': 1.0.1
+      '@lumiarq/pack-laravel': 1.0.1
+      '@lumiarq/pack-lumiarq': 1.0.1
+      '@lumiarq/pack-nextjs': 1.0.1
+      '@lumiarq/planner': 1.0.1
+      '@lumiarq/rag': 0.1.0(@lumiarq/ai@1.2.0)
+      '@lumiarq/tinker': 1.0.1
+      '@lumiarq/verifier': 1.0.1
+
+  '@lumiarq/lumis@1.2.12':
+    dependencies:
+      '@lumiarq/agent': 1.1.0
+      '@lumiarq/ai': 1.2.0
+      '@lumiarq/context': 1.0.1
+      '@lumiarq/generator': 1.0.1
+      '@lumiarq/pack-django': 1.0.1
+      '@lumiarq/pack-laravel': 1.0.1
+      '@lumiarq/pack-lumiarq': 1.0.1
+      '@lumiarq/pack-nextjs': 1.0.1
+      '@lumiarq/planner': 1.0.1
+      '@lumiarq/rag': 0.1.0(@lumiarq/ai@1.2.0)
+      '@lumiarq/tinker': 1.0.1
+      '@lumiarq/verifier': 1.0.1
+
+  '@lumiarq/pack-django@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+
+  '@lumiarq/pack-laravel@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+
   '@lumiarq/pack-lumiarq@1.0.1':
     dependencies:
       '@lumiarq/context': 1.0.1
       '@lumiarq/verifier': 1.0.1
+
+  '@lumiarq/pack-nextjs@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+
+  '@lumiarq/planner@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+
+  '@lumiarq/rag@0.1.0(@lumiarq/ai@1.2.0)':
+    optionalDependencies:
+      '@lumiarq/ai': 1.2.0
+
+  '@lumiarq/tinker@1.0.1':
+    dependencies:
+      '@lumiarq/context': 1.0.1
+      '@lumiarq/planner': 1.0.1
 
   '@lumiarq/verifier@1.0.1':
     dependencies:

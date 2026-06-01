@@ -5,7 +5,7 @@
 | Package                  | Pin               | Role                                  |
 | ------------------------ | ----------------- | ------------------------------------- |
 | `@lumiarq/framework`     | `1.0.6`           | Meta-framework entry                  |
-| `@illumiarq/lumis`       | `1.3.0`           | App CLI (`serve`, `build`, `preview`) |
+| `@illumiarq/lumis`       | `1.3.2`           | App CLI (`serve`, `build`, `preview`) |
 | `@illumiarq/runtime`     | `1.2.0`           | HTTP/runtime core                     |
 | `@illumiarq/contracts`   | `1.2.0`           | Portable contracts                    |
 | `@illumiarq/adapters`    | `1.2.0`           | Node / CF / static adapters           |
