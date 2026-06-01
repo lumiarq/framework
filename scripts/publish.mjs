@@ -45,6 +45,8 @@ const PACKAGES = [
   'packages/illumiarq/runtime',
   // Level 6
   'packages/illumiarq/adapters',
+  // App dev CLI (depends on adapters + @lumiarq/lumis agent host)
+  'packages/illumiarq/lumis',
   // Meta-package (root)
   '.',
   // Dev tools

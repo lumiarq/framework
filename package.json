@@ -171,7 +171,8 @@
       "@lumiarq/pack-nextjs": "1.0.1",
       "@lumiarq/pack-django": "1.0.1",
       "@lumiarq/pack-laravel": "1.0.1",
-      "@lumiarq/ai": "1.2.0"
+      "@lumiarq/ai": "1.2.0",
+      "@lumiarq/lumis": "link:../lumis"
     },
     "allowedDeprecatedVersions": {
       "node-domexception": "1"

@@ -27,9 +27,10 @@ function createApp(): LumiARQApp {
     router: new Hono(),
     modules: new Map(),
     scheduler: {
-      register: async () => {},
-      start: async () => {},
-      stop: async () => {},
+      // Minimal stub that satisfies the current SchedulerContract shape.
+      call: () => {},
+      jobs: () => [],
+      due: () => [],
     },
   };
 }
