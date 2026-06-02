@@ -69,7 +69,7 @@ export default {
       path: 'src/config/storage.ts',
       content: `export default {
   default: 'local',
-  disks: { local: { driver: 'local', root: 'storage/app' } },
+  disks: { local: { driver: 'local', root: 'src/storage/app' } },
 } as const;
 `,
     },
@@ -219,8 +219,104 @@ export function getProjectFiles(projectName: string, preset: Preset): ScaffoldFi
       )}\n`,
     },
     {
-      path: 'lumis.config.json',
-      content: `${JSON.stringify({ paths: { storage: 'src/storage' } }, null, 2)}\n`,
+      path: 'pkg/lumis.config.ts',
+      content: `export default {
+  paths: {
+    storage: 'src/storage',
+  },
+};
+`,
+    },
+    {
+      path: 'pkg/vitest.config.ts',
+      content: `import { defineConfig } from "vitest/config";
+import { resolve } from "node:path";
+
+const projectRoot = resolve(import.meta.dirname, "..");
+
+export default defineConfig({
+  test: {
+    root: projectRoot,
+    passWithNoTests: true,
+    globals: true,
+    environment: "node",
+    include: ["src/modules/**/tests/**/*.test.ts", "src/tests/**/*.test.ts"],
+  },
+  resolve: {
+    alias: {
+      "@": resolve(projectRoot, "src"),
+      "@/modules": resolve(projectRoot, "src/modules"),
+      "@/shared": resolve(projectRoot, "src/shared"),
+      "@/bootstrap": resolve(projectRoot, "bootstrap"),
+      "@/config": resolve(projectRoot, "src/config"),
+      "@/storage": resolve(projectRoot, "src/storage"),
+    },
+  },
+});
+`,
+    },
+    {
+      path: 'pkg/eslint.config.mjs',
+      content: `import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+
+export default [
+  {
+    ignores: ["dist/**", ".arc/**", "coverage/**", "node_modules/**", "src/storage/framework/cache/**"],
+  },
+  {
+    files: ["src/**/*.ts", "bootstrap/**/*.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: "module",
+      },
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        fetch: "readonly",
+        Request: "readonly",
+        Response: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        crypto: "readonly",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      "no-undef": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
+];
+`,
+    },
+    {
+      path: 'pkg/prettier.config.mjs',
+      content: `/** @type {import('prettier').Config} */
+export default {
+  semi: true,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: "all",
+  printWidth: 100,
+  endOfLine: "lf",
+};
+`,
+    },
+    {
+      path: '.prettierignore',
+      content: `node_modules
+dist
+.arc
+coverage
+src/storage/framework/cache
+`,
     },
     {
       path: '.gitignore',
@@ -228,7 +324,7 @@ export function getProjectFiles(projectName: string, preset: Preset): ScaffoldFi
 dist
 .arc
 .env
-storage/database.sqlite
+src/storage/database.sqlite
 *.log
 .DS_Store
 `,
@@ -241,7 +337,7 @@ APP_ENV=local
 NODE_ENV=development
 PORT=3000
 DB_CONNECTION=sqlite
-DATABASE_URL=file:./storage/database.sqlite
+DATABASE_URL=file:./src/storage/database.sqlite
 JWT_PRIVATE_KEY=
 JWT_PUBLIC_KEY=
 SESSION_SECRET=
@@ -252,6 +348,13 @@ SESSION_SECRET=
       content: `# ${projectName}
 
 LumiARQ application (${preset}).
+
+## Layout
+
+- App config: \`src/config/*\`
+- Tool configs: \`pkg/*\` (lumis, vitest, eslint, prettier)
+- Modules: \`src/modules/*\`
+- Storage: \`src/storage/*\`
 
 \`\`\`bash
 pnpm install
@@ -284,7 +387,7 @@ const schema = z.object({
   APP_URL: z.string().url().default('http://localhost:3000'),
   PORT: z.coerce.number().default(3000),
   DB_CONNECTION: z.enum(['sqlite', 'postgres']).default('sqlite'),
-  DATABASE_URL: z.string().min(1).default('file:./storage/database.sqlite'),
+  DATABASE_URL: z.string().min(1).default('file:./src/storage/database.sqlite'),
   JWT_PRIVATE_KEY: z.string().min(1),
   JWT_PUBLIC_KEY: z.string().min(1),
   SESSION_SECRET: z.string().min(32),

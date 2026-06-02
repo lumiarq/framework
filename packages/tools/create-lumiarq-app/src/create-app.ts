@@ -86,7 +86,10 @@ export function createLumiarqApp(options: CreateLumiarqAppOptions = {}): CreateL
   }
 
   fs.mkdirSync(projectRoot, { recursive: true });
-  fs.mkdirSync(path.join(projectRoot, 'storage', 'app'), { recursive: true });
+  fs.mkdirSync(path.join(projectRoot, 'src', 'storage', 'framework', 'cache'), {
+    recursive: true,
+  });
+  fs.mkdirSync(path.join(projectRoot, 'src', 'storage', 'app'), { recursive: true });
 
   const files = getProjectFiles(projectName, preset);
   writeScaffoldFiles(projectRoot, files);

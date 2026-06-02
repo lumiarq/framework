@@ -11,12 +11,14 @@ export function createPackageJson(projectName: string, _preset: Preset): string 
     engines: { node: '>=20' },
     scripts: {
       dev: 'lumis serve',
-      build: 'pnpm run build:node',
+      build: 'lumis route:cache && pnpm run build:node',
       'build:node':
-        'lumis route:cache && esbuild bootstrap/entry.ts --bundle --platform=node --target=node20 --format=esm --outfile=.arc/node/app.js --packages=external --tsconfig=tsconfig.json',
+        'esbuild bootstrap/entry.ts --bundle --platform=node --target=node20 --format=esm --outfile=.arc/node/app.js --packages=external --tsconfig=tsconfig.json',
       tc: 'tsc --noEmit',
-      test: 'vitest run --passWithNoTests',
-      lint: 'eslint src bootstrap --ext .ts',
+      test: 'vitest run --config pkg/vitest.config.ts',
+      lint: 'eslint src bootstrap --config pkg/eslint.config.mjs',
+      format: 'prettier --config pkg/prettier.config.mjs --write .',
+      'format:check': 'prettier --config pkg/prettier.config.mjs --check .',
     },
     pnpm: { overrides: PIN_OVERRIDES },
     dependencies: {
@@ -28,7 +30,11 @@ export function createPackageJson(projectName: string, _preset: Preset): string 
     devDependencies: {
       '@illumiarq/lumis': '^1.3.2',
       '@types/node': '^22.0.0',
+      '@typescript-eslint/eslint-plugin': '^8.46.0',
+      '@typescript-eslint/parser': '^8.46.0',
       esbuild: '^0.25.0',
+      eslint: '^9.39.0',
+      prettier: '^3.7.0',
       typescript: '^5.7.0',
       vitest: '^2.1.0',
       zod: '^3.24.0',

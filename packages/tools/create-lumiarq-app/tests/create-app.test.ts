@@ -17,6 +17,9 @@ describe('createLumiarqApp', () => {
 
     expect(result.preset).toBe('api-only');
     expect(fs.existsSync(path.join(root, 'package.json'))).toBe(true);
+    expect(fs.existsSync(path.join(root, 'pkg/lumis.config.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(root, 'pkg/vitest.config.ts'))).toBe(true);
+    expect(fs.existsSync(path.join(root, 'lumis.config.json'))).toBe(false);
     expect(fs.existsSync(path.join(root, 'bootstrap/entry.ts'))).toBe(true);
     expect(fs.existsSync(path.join(root, 'src/modules/Health/http/routes/health.api.ts'))).toBe(
       true,
