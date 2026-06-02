@@ -1,6 +1,6 @@
 {
   "name": "@illumiarq/lumis",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "license": "MIT",
   "description": "LumiARQ dev CLI — extends @lumiarq/lumis with serve / build / preview commands",
   "type": "module",
@@ -25,11 +25,12 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@illumiarq/core": "workspace:*",
     "@illumiarq/adapters": "workspace:*",
     "@illumiarq/auth-starter": "workspace:*",
     "@illumiarq/search": "workspace:*",
     "@illumiarq/veil": "workspace:*",
-    "@lumiarq/lumis": "^1.2.12"
+    "@lumiarq/lumis": "^1.2.14"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

@@ -33,4 +33,25 @@ describe('resolveToolConfigPath', () => {
     const resolved = resolveToolConfigPath(projectRoot, 'vitest');
     expect(resolved?.source).toBe('pkg-legacy');
   });
+
+  it('resolves pkg/vitest.config.mjs when ts is absent', () => {
+    projectRoot = join(tmpdir(), `lumiarq-tool-config-${Date.now()}`);
+    mkdirSync(join(projectRoot, 'pkg'), { recursive: true });
+    writeFileSync(join(projectRoot, 'pkg', 'vitest.config.mjs'), 'export default {}\n', 'utf8');
+
+    const resolved = resolveToolConfigPath(projectRoot, 'vitest');
+    expect(resolved?.source).toBe('pkg-flat');
+    expect(resolved?.path).toContain('pkg/vitest.config.mjs');
+  });
+
+  it('prefers pkg/eslint.config.mjs over root eslint.config.mjs', () => {
+    projectRoot = join(tmpdir(), `lumiarq-tool-config-${Date.now()}`);
+    mkdirSync(join(projectRoot, 'pkg'), { recursive: true });
+    writeFileSync(join(projectRoot, 'eslint.config.mjs'), 'export default []\n', 'utf8');
+    writeFileSync(join(projectRoot, 'pkg', 'eslint.config.mjs'), 'export default []\n', 'utf8');
+
+    const resolved = resolveToolConfigPath(projectRoot, 'eslint');
+    expect(resolved?.source).toBe('pkg-flat');
+    expect(resolved?.path).toContain('pkg/eslint.config.mjs');
+  });
 });

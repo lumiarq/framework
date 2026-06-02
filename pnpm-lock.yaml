@@ -527,6 +527,9 @@ importers:
       '@illumiarq/auth-starter':
         specifier: workspace:*
         version: link:../auth-starter
+      '@illumiarq/core':
+        specifier: workspace:*
+        version: link:../core
       '@illumiarq/search':
         specifier: workspace:*
         version: link:../search
@@ -534,8 +537,8 @@ importers:
         specifier: workspace:*
         version: link:../veil
       '@lumiarq/lumis':
-        specifier: ^1.2.12
-        version: 1.2.12
+        specifier: ^1.2.14
+        version: 1.2.14
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -2206,8 +2209,8 @@ packages:
     engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
     hasBin: true
 
-  '@lumiarq/lumis@1.2.12':
-    resolution: {integrity: sha512-rkMVc7NZ3jKJSdS37VHUzTGBkSPrAR0i/QwwaCUOXzjzx7I4w3a6LqRtx/ORp90rPSoVkkg2fS4MPWJ5S5uShg==}
+  '@lumiarq/lumis@1.2.14':
+    resolution: {integrity: sha512-Uk0GHuA7rJtoArMUVSz8lFbS6VdkeKuN74GbKGkFFr27PBYak7vAi3/Up8wT/hlysipAHJoXouFO8icEBN2HfA==}
     engines: {node: '>=20.0.0', pnpm: '>=9.0.0'}
     hasBin: true
 
@@ -5987,7 +5990,7 @@ snapshots:
       '@illumiarq/auth-starter': 1.0.1
       '@illumiarq/search': 1.0.1
       '@illumiarq/veil': 1.0.6(alpinejs@3.15.8)
-      '@lumiarq/lumis': 1.2.12
+      '@lumiarq/lumis': 1.2.14
     transitivePeerDependencies:
       - alpinejs
 
@@ -6202,7 +6205,7 @@ snapshots:
       '@illumiarq/testing': 1.0.0
       '@illumiarq/tinker': 1.0.0
       '@illumiarq/veil': 1.0.6(alpinejs@3.15.8)
-      '@lumiarq/lumis': 1.2.12
+      '@lumiarq/lumis': 1.2.14
       '@trazze/sdk': 0.1.0
     transitivePeerDependencies:
       - '@aws-sdk/client-rds-data'
@@ -6263,7 +6266,7 @@ snapshots:
       '@lumiarq/tinker': 1.0.1
       '@lumiarq/verifier': 1.0.1
 
-  '@lumiarq/lumis@1.2.12':
+  '@lumiarq/lumis@1.2.14':
     dependencies:
       '@lumiarq/agent': 1.1.1
       '@lumiarq/ai': 1.2.0
