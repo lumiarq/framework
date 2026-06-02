@@ -2,15 +2,16 @@
 
 ## Supported for production apps
 
-| Package                  | Pin               | Role                                  |
-| ------------------------ | ----------------- | ------------------------------------- |
-| `@lumiarq/framework`     | `1.0.6`           | Meta-framework entry                  |
-| `@illumiarq/lumis`       | `1.3.2`           | App CLI (`serve`, `build`, `preview`) |
-| `@illumiarq/runtime`     | `1.2.0`           | HTTP/runtime core                     |
-| `@illumiarq/contracts`   | `1.2.0`           | Portable contracts                    |
-| `@illumiarq/adapters`    | `1.2.0`           | Node / CF / static adapters           |
-| `@illumiarq/testing`     | `1.2.0`           | Test harness                          |
-| Remaining `@illumiarq/*` | `1.1.5` / `0.1.1` | See `consumer-pins.json`              |
+| Package                  | Pin               | Role                                                  |
+| ------------------------ | ----------------- | ----------------------------------------------------- |
+| `@lumiarq/framework`     | `1.0.6`           | Meta-framework entry                                  |
+| `@illumiarq/lumis`       | `1.3.3`           | App CLI (`serve`, `build`, `preview`, `test`, `lint`) |
+| `@lumiarq/lumis`         | `1.2.14`          | Agent CLI host (transitive via `@illumiarq/lumis`)    |
+| `@illumiarq/runtime`     | `1.2.0`           | HTTP/runtime core                                     |
+| `@illumiarq/contracts`   | `1.2.0`           | Portable contracts                                    |
+| `@illumiarq/adapters`    | `1.2.0`           | Node / CF / static adapters                           |
+| `@illumiarq/testing`     | `1.2.0`           | Test harness                                          |
+| Remaining `@illumiarq/*` | `1.1.5` / `0.1.1` | See `consumer-pins.json`                              |
 
 **Node:** 20.x · **Package manager:** pnpm 9+
 
