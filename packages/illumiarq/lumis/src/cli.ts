@@ -496,8 +496,24 @@ function runHealthPreChecks(): void {
   checks.push({
     label: 'prettier config uses canonical pkg path',
     pass:
-      !existsSync(join(cwd, '.prettierrc')) || existsSync(join(cwd, 'pkg', 'prettier.config.ts')),
-    fix: 'Create pkg/prettier.config.ts and run `lumis prettier:sync` to generate prettier.config.mjs. Then delete .prettierrc.',
+      (!existsSync(join(cwd, '.prettierrc')) &&
+        !existsSync(join(cwd, 'prettier.config.ts')) &&
+        !existsSync(join(cwd, 'prettier.config.mjs'))) ||
+      existsSync(join(cwd, 'pkg', 'prettier.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'prettier.config.mjs')),
+    fix: 'Move Prettier config to pkg/prettier.config.mjs (or .ts). Delete root .prettierrc / prettier.config.*.',
+  });
+
+  checks.push({
+    label: 'eslint config uses canonical pkg path',
+    pass:
+      (!existsSync(join(cwd, 'eslint.config.ts')) &&
+        !existsSync(join(cwd, 'eslint.config.mjs')) &&
+        !existsSync(join(cwd, '.eslintrc')) &&
+        !existsSync(join(cwd, '.eslintrc.json'))) ||
+      existsSync(join(cwd, 'pkg', 'eslint.config.ts')) ||
+      existsSync(join(cwd, 'pkg', 'eslint.config.mjs')),
+    fix: 'Move ESLint config to pkg/eslint.config.mjs and point lint scripts at --config pkg/eslint.config.mjs.',
   });
 
   // Warn if queue driver isn't stub but worker.ts is missing
