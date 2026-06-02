@@ -17,6 +17,9 @@
 ## Install contract
 
 ```bash
+npm create lumiarq-app@latest my-app
+# or: pnpm create lumiarq-app my-app --preset api-only
+
 pnpm add @lumiarq/framework @illumiarq/lumis
 ```
 

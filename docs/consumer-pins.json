@@ -23,7 +23,8 @@
     "@illumiarq/veil": "1.0.6",
     "@lumiarq/framework": "1.0.6",
     "@lumiarq/lumis": "1.2.12",
-    "@lumiarq/pack-lumiarq": "1.0.1"
+    "@lumiarq/pack-lumiarq": "1.0.1",
+    "create-lumiarq-app": "1.0.1"
   },
   "dependencyRanges": {
     "@illumiarq/adapters": "^1.2.0",
