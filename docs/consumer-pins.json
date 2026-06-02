@@ -22,7 +22,7 @@
     "@illumiarq/testing": "1.2.0",
     "@illumiarq/veil": "1.0.6",
     "@lumiarq/framework": "1.0.6",
-    "@lumiarq/lumis": "1.2.14",
+    "@lumiarq/lumis": "1.2.15",
     "@lumiarq/pack-lumiarq": "1.0.1",
     "create-lumiarq-app": "1.0.3"
   },
