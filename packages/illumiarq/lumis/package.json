@@ -30,7 +30,7 @@
     "@illumiarq/auth-starter": "workspace:*",
     "@illumiarq/search": "workspace:*",
     "@illumiarq/veil": "workspace:*",
-    "@lumiarq/lumis": "^1.2.14"
+    "@lumiarq/lumis": "^1.2.18"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

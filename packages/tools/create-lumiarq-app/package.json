@@ -1,6 +1,6 @@
 {
   "name": "create-lumiarq-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "description": "LumiARQ project initializer — npm create lumiarq-app",
   "publishConfig": {

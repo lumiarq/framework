@@ -6,7 +6,7 @@
 | ------------------------ | ----------------- | ----------------------------------------------------- |
 | `@lumiarq/framework`     | `1.0.6`           | Meta-framework entry                                  |
 | `@illumiarq/lumis`       | `1.3.3`           | App CLI (`serve`, `build`, `preview`, `test`, `lint`) |
-| `@lumiarq/lumis`         | `1.2.14`          | Agent CLI host (transitive via `@illumiarq/lumis`)    |
+| `@lumiarq/lumis`         | `1.2.18`          | Agent CLI host (transitive via `@illumiarq/lumis`)    |
 | `@illumiarq/runtime`     | `1.2.0`           | HTTP/runtime core                                     |
 | `@illumiarq/contracts`   | `1.2.0`           | Portable contracts                                    |
 | `@illumiarq/adapters`    | `1.2.0`           | Node / CF / static adapters                           |
@@ -39,7 +39,11 @@ Copy `pnpm.overrides` from [`consumer-pins.json`](./consumer-pins.json) so trans
 
 ```bash
 pnpm tc && pnpm lint && pnpm test && pnpm build
+mkdir -p .lumis && pnpm audit --json > .lumis/audit.json || true
+pnpm exec lumis doctor --strict
 ```
+
+`lumis doctor --strict` requires `@lumiarq/lumis@1.2.18+` (security + supply-chain gates from Wave 3–4).
 
 ## Security
 

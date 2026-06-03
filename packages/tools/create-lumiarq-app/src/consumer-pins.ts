@@ -20,7 +20,7 @@ export const PIN_OVERRIDES: Record<string, string> = {
   '@illumiarq/testing': '1.2.0',
   '@illumiarq/veil': '1.0.6',
   '@lumiarq/framework': '1.0.6',
-  '@lumiarq/lumis': '1.2.14',
+  '@lumiarq/lumis': '1.2.18',
   '@lumiarq/agent': '1.1.1',
   '@lumiarq/pack-lumiarq': '1.0.1',
 };
