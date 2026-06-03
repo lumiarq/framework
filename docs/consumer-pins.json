@@ -22,7 +22,7 @@
     "@illumiarq/testing": "1.2.0",
     "@illumiarq/veil": "1.0.6",
     "@lumiarq/framework": "1.0.6",
-    "@lumiarq/lumis": "1.2.15",
+    "@lumiarq/lumis": "1.2.18",
     "@lumiarq/pack-lumiarq": "1.0.1",
     "create-lumiarq-app": "1.0.3"
   },
@@ -31,7 +31,7 @@
     "@illumiarq/contracts": "^1.2.0",
     "@illumiarq/http": "^1.1.5",
     "@illumiarq/lumis": "^1.3.3",
-    "@lumiarq/lumis": "^1.2.14",
+    "@lumiarq/lumis": "^1.2.18",
     "@illumiarq/runtime": "^1.2.0",
     "@lumiarq/framework": "^1.0.6",
     "@lumiarq/pack-lumiarq": "^1.0.1"
